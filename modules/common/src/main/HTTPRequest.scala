@@ -147,7 +147,8 @@ object HTTPRequest:
   private def isGameExport(req: RequestHeader) =
     "^/@/[\\w-]{2,30}/download$".r.matches(req.path) ||
       "^/(api/games/user|games/export)/[\\w-]{2,30}($|/.+)".r.matches(req.path)
-  private def isStudyExport(req: RequestHeader) = "^/study/by/[\\w-]{2,30}/export.pgn$".r.matches(req.path)
+  private def isStudyExport(req: RequestHeader) =
+    "^/api/study/by/[\\w-]{2,30}/export.pgn$".r.matches(req.path)
   private def isAccount(req: RequestHeader) = req.path.startsWith("/account")
 
   def isClosedLoginPath(req: RequestHeader) =
