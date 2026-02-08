@@ -1,7 +1,8 @@
 import type AnalyseCtrl from '@/ctrl';
 import RelayCtrl, { type RelayTab } from './relayCtrl';
 import * as licon from 'lib/licon';
-import { bind, dataIcon, onInsert, hl, type LooseVNode, cmnToggleWrap, copyMeInput } from 'lib/view';
+import { bind, dataIcon, onInsert, hl, type LooseVNode, copyMeInput } from 'lib/view';
+import { cmnToggleWrap } from 'lib/view/cmn-toggle';
 import type { VNode } from 'snabbdom';
 import { innerHTML, richHTML } from 'lib/richText';
 import type {
