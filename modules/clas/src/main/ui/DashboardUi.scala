@@ -31,18 +31,19 @@ final class DashboardUi(helpers: Helpers, ui: ClasUi)(using NetDomain):
       frag(
         div(cls := "clas-show__top")(
           h1(dataIcon := Icon.Group, cls := "text")(c.name),
-          st.nav(cls := "dashboard-nav")(
-            a(cls := active.active("overview"), href := routes.Clas.show(c.id))(trans.clas.overview()),
-            a(cls := active.active("wall"), href := routes.Clas.wall(c.id))(trans.clas.news()),
-            a(
-              cls := active.active("progress"),
-              href := routes.Clas.progress(c.id, PerfKey.blitz, Days(7))
-            )(trans.clas.progress()),
-            a(cls := active.active("edit"), href := routes.Clas.edit(c.id))(trans.site.edit()),
-            a(cls := active.active("students"), href := routes.Clas.students(c.id))(
-              trans.clas.students()
+          c.isActive.option:
+            st.nav(cls := "dashboard-nav")(
+              a(cls := active.active("overview"), href := routes.Clas.show(c.id))(trans.clas.overview()),
+              a(cls := active.active("wall"), href := routes.Clas.wall(c.id))(trans.clas.news()),
+              a(
+                cls := active.active("progress"),
+                href := routes.Clas.progress(c.id, PerfKey.blitz, Days(7))
+              )(trans.clas.progress()),
+              a(cls := active.active("edit"), href := routes.Clas.edit(c.id))(trans.site.edit()),
+              a(cls := active.active("students"), href := routes.Clas.students(c.id))(
+                trans.clas.students()
+              )
             )
-          )
         ),
         standardFlash,
         c.archived.map: archived =>
@@ -113,12 +114,13 @@ final class DashboardUi(helpers: Helpers, ui: ClasUi)(using NetDomain):
               div(cls := "clas-teachers")(
                 trans.clas.teachersX(fragList(c.teachers.toList.map(t => userIdLink(t.some))))
               ),
-              div(cls := "clas-team"):
-                val url = c.teamId match
-                  case Some(teamId) => routes.Team.show(teamId).url
-                  case None => routes.Clas.edit(c.id).url + "#clas-team"
-                a(href := url, cls := "text", dataIcon := Icon.Trophy):
-                  trans.site.tournaments()
+              c.isActive.option:
+                div(cls := "clas-team"):
+                  val url = c.teamId match
+                    case Some(teamId) => routes.Team.show(teamId).url
+                    case None => routes.Clas.edit(c.id).url + "#clas-team"
+                  a(href := url, cls := "text", dataIcon := Icon.Trophy):
+                    trans.site.tournaments()
             )
           ),
           tournaments,

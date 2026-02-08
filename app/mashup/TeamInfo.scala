@@ -91,5 +91,5 @@ final class TeamInfoApi(
         )
 
   def clasTournaments(clas: Clas): Fu[PastAndNext] =
-    clas.hasTeam.orZero.so:
+    (clas.isActive && clas.hasTeam.orZero).so:
       teamRepo.byClasId(clas.id.into(TeamId)).flatMapz(tournaments(_, 1, 1))
