@@ -23,11 +23,7 @@ object home:
             )
             .add("hasUnreadLichessMessage", hasUnreadLichessMessage)
             .add("bots", Granter.opt(_.Beta))
-            .add(
-              "playban",
-              playban.map: pb =>
-                Json.obj("minutes" -> pb.mins, "remainingSeconds" -> (pb.remainingSeconds + 3))
-            )
+            .add("playban", playban.map(lila.playban.TempBan.lobbyJson))
         )
       )
       .css("lobby")
