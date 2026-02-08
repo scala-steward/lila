@@ -63,11 +63,13 @@ final class ClasUi(helpers: lila.ui.Helpers)(searchMenu: Context ?=> Frag):
             )
         )
 
-  def showArchived(archived: Clas.Recorded)(using Translate) =
-    div(
-      trans.clas.removedByX(userIdLink(archived.by.some)),
-      " ",
-      momentFromNowOnce(archived.at)
+  def showArchived(archived: Clas.Recorded)(using Translate): Tag =
+    div(cls := "clas-show__archived")(
+      div(
+        trans.clas.removedByX(userIdLink(archived.by.some)),
+        " ",
+        momentFromNowOnce(archived.at)
+      )
     )
 
   private def teacherMenu(active: Either[Clas.WithStudents, String], student: Option[Student])(using

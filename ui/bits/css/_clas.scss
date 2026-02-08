@@ -20,11 +20,10 @@ body {
 }
 
 %archived {
-  @extend %box-radius, %flex-between;
+  @extend %flex-between;
 
   background: $c-bg-zebra2;
   padding: 1em 2em;
-  margin-bottom: 2em;
 }
 
 .page-menu__content.box {

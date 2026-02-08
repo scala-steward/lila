@@ -46,8 +46,7 @@ final class DashboardUi(helpers: Helpers, ui: ClasUi)(using NetDomain):
         ),
         standardFlash,
         c.archived.map: archived =>
-          div(cls := "clas-show__archived archived")(
-            ui.showArchived(archived),
+          ui.showArchived(archived)(
             postForm(action := routes.Clas.archive(c.id, v = false)):
               form3.submit(trans.clas.reopen(), icon = none)(cls := "yes-no-confirm button-empty")
           )
@@ -511,11 +510,7 @@ final class DashboardUi(helpers: Helpers, ui: ClasUi)(using NetDomain):
             c.desc.trim.nonEmpty.option(div(cls := "clas-show__desc")(richText(c.desc)))
           ),
           standardFlash,
-          c.archived.map { archived =>
-            div(cls := "box__pad")(
-              div(cls := "clas-show__archived archived")(ui.showArchived(archived))
-            )
-          },
+          c.archived.map(ui.showArchived),
           table(cls := "slist slist-pad teachers")(
             thead:
               tr(
