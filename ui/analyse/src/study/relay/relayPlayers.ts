@@ -231,7 +231,7 @@ const playerView = (ctrl: RelayPlayers, show: PlayerToShow): VNode => {
               Object.entries(ratingCategs).map(([key, name]: [FideTC, string]) =>
                 hl(`div.fide-player__card${key === tc ? '.active' : ''}`, [
                   hl('em', fideTCAttrs(key), name),
-                  hl('span', [p.fide?.ratings?.find(r => r[0] === key)?.[1] || '-']),
+                  hl('span', [p.fide?.ratings[key] || '-']),
                 ]),
               ),
             p.score !== undefined &&
@@ -242,7 +242,7 @@ const playerView = (ctrl: RelayPlayers, show: PlayerToShow): VNode => {
             p.performances &&
               hl('div.fide-player__card', [
                 hl('em', i18n.site.performance),
-                p.performances.map(([tc, value]: [FideTC, number]) =>
+                Object.entries(p.performances).map(([tc, value]: [FideTC, number]) =>
                   hl(
                     'div',
                     fideTCAttrs(tc),
@@ -529,9 +529,9 @@ const playerTd = (player: RelayPlayer, ctrl: RelayPlayers, withTips: boolean): V
 const ratingDiff = (p: RelayPlayer | RelayPlayerGame, showIcons: boolean = false) => {
   if (isRelayPlayerGame(p)) return hl('div', showIcons && fideTCAttrs(p.fideTC), diffNode(p.ratingDiff));
   if (!p.ratingDiffs) return p.rating;
-  const rds = p.ratingDiffs;
+  const rds = Object.entries(p.ratingDiffs);
   return rds.map(([tc, diff]: [FideTC, number]) => {
-    const node = [p.ratingsMap?.find(r => r[0] === tc)?.[1], diffNode(diff)];
+    const node = [p.ratingsMap?.[tc], diffNode(diff)];
     return rds.length === 1 ? node : hl('div', fideTCAttrs(tc), node);
   });
 };
