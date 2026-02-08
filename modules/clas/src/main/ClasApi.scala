@@ -188,9 +188,26 @@ final class ClasApi(
           )
 
     def archive(from: Clas, v: Boolean)(using me: Me): Funit =
+      for clas <- doArchiveOnly(from, v)
+      yield teamSync(clas)
+
+    private def doArchiveOnly(from: Clas, v: Boolean)(using me: MyId): Fu[Clas] =
       val clas = from.copy(archived = v.option(Clas.Recorded(me.userId, nowInstant)))
       for _ <- coll.updateOrUnsetField($id(clas.id), "archived", clas.archived)
-      yield teamSync(clas)
+      yield clas
+
+    def archiveAllInactive: Funit =
+      for
+        inactiveClasses <- coll
+          .find(selectArchived(false) ++ "viewedAt".$lte(nowInstant.minusDays(30)))
+          .cursor[Clas](ReadPref.sec)
+          .list(100)
+        _ = inactiveClasses.nonEmptyOption.foreach: classes =>
+          logger.info(s"Archiving ${classes.size} inactive classes: ${classes.map(_.id).mkString(", ")}")
+        _ <- inactiveClasses.sequentiallyVoid: from =>
+          for clas <- doArchiveOnly(from, true)(using UserId.lichessAsMe)
+          yield teamSync(clas)(using None)
+      yield ()
 
   object student:
 
