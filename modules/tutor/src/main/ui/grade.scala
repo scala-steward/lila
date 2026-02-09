@@ -33,7 +33,12 @@ object grade:
         c.icon.frag,
         div(cls := "tutor-grade__content")(
           titleTag(cls := "tutor-grade__name")(concept.show(c)),
-          c.description.nonEmpty.option(p(cls := "tutor-grade__concept")(c.description)),
+          c.descShort.nonEmpty.option(
+            p(cls := "tutor-grade__concept")(
+              strong(c.descShort),
+              c.descLong.map(desc => frag(br, desc))
+            )
+          ),
           gradeVisual(c, metric),
           div(cls := "tutor-grade__detail")(
             c.unit.html(metric.mine.value),
