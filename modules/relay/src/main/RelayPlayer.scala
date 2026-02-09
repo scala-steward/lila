@@ -154,16 +154,12 @@ object RelayPlayer:
     def full(
         tour: RelayTour
     )(p: RelayPlayer, fidePlayer: Option[FidePlayer], user: Option[User], follow: Option[Boolean]): JsObject =
-      val tc = tour.info.fideTcOrGuess
-      lazy val eloPlayer = p.rating
-        .map(_.into(Elo))
-        .orElse(fidePlayer.flatMap(_.ratingOf(tc)))
-        .map:
-          Elo.Player(_, fidePlayer.fold(chess.rating.KFactor.default)(_.kFactorOf(tc)))
+      lazy val tcPlayerMap: Map[FideTC, Elo.Player] = p.ratingsMap.map: (tc, tcRating) =>
+        tc -> Elo.Player(tcRating.into(Elo), fidePlayer.fold(chess.rating.KFactor.default)(_.kFactorOf(tc)))
       val gamesJson = p.games.map: g =>
         val rd = tour.showRatingDiffs.so:
-          (eloPlayer, g.eloGame).tupled.map: (ep, eg) =>
-            Elo.computeRatingDiff(tc)(ep, List(eg))
+          (tcPlayerMap.get(g.fideTC), g.eloGame).mapN: (ep, eg) =>
+            Elo.computeRatingDiff(g.fideTC)(ep, List(eg))
         Json
           .obj(
             "round" -> g.round,
