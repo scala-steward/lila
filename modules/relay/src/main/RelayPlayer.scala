@@ -183,7 +183,9 @@ object RelayPlayer:
         .add("fide", fidePlayer.map(Json.toJsObject).map(_.add("follow", follow))) ++
         Json.obj("games" -> gamesJson)
     given OWrites[FidePlayer] = OWrites: p =>
-      Json.obj("ratings" -> p.ratingsMap, "year" -> p.year)
+      Json
+        .obj("year" -> p.year)
+        .add("ratings" -> p.ratingsMap.nonEmptyOption)
 
 private final class RelayPlayerApi(
     tourRepo: RelayTourRepo,
