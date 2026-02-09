@@ -30,7 +30,7 @@ $c-mselect: $c-primary;
     }
 
     &:focus-visible {
-      outline: 2px solid $c-primary;
+      outline: $outline;
     }
   }
 
@@ -41,7 +41,7 @@ $c-mselect: $c-primary;
   }
 
   &__toggle:focus-visible ~ .mselect__label {
-    outline: 2px solid $c-primary;
+    outline: $outline;
   }
 
   &__list {
@@ -97,7 +97,7 @@ $c-mselect: $c-primary;
       color: $c-over;
     }
     &:focus-visible {
-      outline: 2px solid $c-primary;
+      outline: $outline;
       outline-offset: -2px;
     }
     &::before {
