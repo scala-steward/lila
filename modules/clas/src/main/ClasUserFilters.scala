@@ -11,7 +11,7 @@ import lila.db.dsl.{ *, given }
 
 final class ClasUserFilters(using Executor, Materializer, Scheduler)(colls: ClasColls)(using mode: Mode):
 
-  private val loadImmediately = true && mode == Mode.Dev
+  private val loadImmediately = false && mode == Mode.Dev
 
   val student = ClasUserCache("student")(
     estimatedCount = if mode == Mode.Dev then 1_000 else 100_000,
