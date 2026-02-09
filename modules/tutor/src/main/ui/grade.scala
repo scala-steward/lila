@@ -56,7 +56,7 @@ object grade:
   private def gradeVisual[A: TutorNumber](c: TutorConcept, metric: TutorBothValues[A]) =
     div(
       cls := s"tutor-grade__visual tutor-grade__visual--${metric.grade.wording.id}",
-      title := s"${c.unit.text(metric.mine.value)} vs peers"
+      title := s"${c.unit.text(metric.mine.value)} vs peers: ${c.unit.text(metric.peer)}"
     ):
       lila.tutor.Grade.Wording.list.map: gw =>
         div(cls := (metric.grade.wording >= gw).option("lit"))
