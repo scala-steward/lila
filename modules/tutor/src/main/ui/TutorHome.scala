@@ -22,14 +22,16 @@ final class TutorHome(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi):
               p(
                 strong(
                   cls := "tutor__intro",
-                  "Hello, I have examined ",
+                  "Analysis complete on ",
                   full.report.nbGames.localize,
                   " recent rated games of yours."
                 )
               ),
-              p("Let's compare your play style to your peers: players with a rating very similar to yours."),
               p(
-                "It should give us some idea about what your strengths are, and where you have room for improvement."
+                "Each aspect of your playstyle is compared to other players of similar rating, called \"peers\"."
+              ),
+              p(
+                "It should give you some idea about what your strengths are, and where you have room for improvement."
               )
             )
         ),
@@ -133,7 +135,7 @@ final class TutorHome(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi):
               (in.position > 10).option:
                 frag("There are ", (in.position - 1), " players in the queue before you.", br)
               ,
-              "You will get your results in about ",
+              "Your report should be ready in about ",
               showMinutes(in.eta.toMinutes.toInt.atLeast(1)),
               "."
             )

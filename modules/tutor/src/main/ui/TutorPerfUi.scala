@@ -86,9 +86,12 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
     },
     frag(
       "Average rating: ",
-      strong(perfReport.stats.rating)
-      // ". Peers rating: ",
-      // strong(perfReport.stats.peers.showRatingRange)
+      strong(perfReport.stats.rating),
+      ". Peers: ",
+      perfReport.stats.peers.value.match
+        case (min, max) => s"$min to $max"
+      ,
+      "."
     )
   )
 
