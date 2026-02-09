@@ -64,4 +64,10 @@ input.range {
     border-color: transparent;
     color: transparent;
   }
+
+  &:focus-visible {
+    &::-webkit-slider-thumb {
+      outline: 2px solid $c-primary;
+    }
+  }
 }

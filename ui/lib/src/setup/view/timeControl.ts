@@ -115,12 +115,24 @@ export const timePickerAndSliders = (tc: TimeControl, minimumTimeRequiredIfReal:
   const tabs = showTabs
     ? hl(
         'div.tabs-horiz',
+        {
+          attrs: { role: 'tablist' },
+        },
         tc.modes.map(mode =>
           hl(
             'span',
             {
+              attrs: { role: 'tab', tabindex: 0 },
               class: { active: activeMode === mode },
-              on: { click: () => tc.mode(mode) },
+              on: {
+                click: () => tc.mode(mode),
+                keydown: (event: KeyboardEvent) => {
+                  if (event.code === 'Space') {
+                    event.preventDefault();
+                    tc.mode(mode);
+                  }
+                },
+              },
             },
             timeModes.find(m => m.key === mode)?.name || mode,
           ),
