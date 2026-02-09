@@ -17,8 +17,8 @@ importers:
         specifier: ^10.0.2
         version: 10.0.2
       '@lichess-org/pgn-viewer':
-        specifier: ^2.5.6
-        version: 2.5.6
+        specifier: ^2.5.7
+        version: 2.5.7
       '@types/lichess':
         specifier: workspace:*
         version: link:ui/@types/lichess
@@ -818,8 +818,8 @@ packages:
   '@lichess-org/chessground@10.0.2':
     resolution: {integrity: sha512-/te9eXc7Rcft0cPPftR5eTg8IyZ/xws4GjrQut0vxHTc7BOjC9dhAca0hWVxbtV3Mv4ezGCEoWk2dWCeMdW8oA==}
 
-  '@lichess-org/pgn-viewer@2.5.6':
-    resolution: {integrity: sha512-zY7mXJnqKbKpIimZvqVh9Qav7RpNrRmB4QPkvByIuI5aAIcBS50fQ5kyWBWDDSv6v4z35cMKsm4Qn8cydxU4mw==}
+  '@lichess-org/pgn-viewer@2.5.7':
+    resolution: {integrity: sha512-sX+BNspjAZvvw+VMNjTEXtUP0ScsGuKQ7SxFxLqpZsdRqtPzY2BEZAnf4E38w6WsnY7Tb4KKOr/0jZbTm2fkIA==}
 
   '@lichess-org/stockfish-web@0.2.2':
     resolution: {integrity: sha512-8MiUL3JRKGzxu4PdjU5Y4OFwArClpkdiPLrrdBjwN7WgaraYQcK+me1eZ2WN82AiW8VvGy/p1NpNachIB5SQbw==}
@@ -1986,7 +1986,7 @@ snapshots:
 
   '@lichess-org/chessground@10.0.2': {}
 
-  '@lichess-org/pgn-viewer@2.5.6':
+  '@lichess-org/pgn-viewer@2.5.7':
     dependencies:
       '@lichess-org/chessground': 10.0.2
       chessops: 0.15.0
