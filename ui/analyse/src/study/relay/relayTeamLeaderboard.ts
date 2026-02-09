@@ -53,63 +53,56 @@ export default class RelayTeamLeaderboard {
     this.redraw();
   };
 
-  standingsView = (): VNode => {
-    if (!this.standings) {
-      this.loadFromXhr();
-      return spinnerVdom();
-    }
-    return hl(
-      'table.relay-tour__teams__standings.slist.slist-pad',
-      {
-        hook: onInsert<HTMLTableElement>(el => {
-          this.table = tableAugment(el);
-          this.loadFromXhr();
-        }),
-      },
-      [
-        hl('thead', [
-          hl('tr', [
-            hl('th.text', { attrs: dataIcon(Group) }, `${i18n.team.team}`),
-            hl('th', i18n.broadcast.matches),
-            hl('th', { attrs: { 'data-sort-default': 1 } }, i18n.broadcast.matchPoints),
-            hl('th', i18n.broadcast.gamePoints),
-          ]),
-        ]),
-        hl(
-          'tbody',
-          this.standings.map(entry =>
-            hl('tr', [
-              hl(
-                'td',
-                hl(
-                  'a.team-name',
-                  {
-                    on: {
-                      click: this.toggleTeam(entry.name),
-                    },
-                  },
-                  entry.name,
-                ),
-              ),
-              hl('td', entry.matches.length),
-              hl(
-                'td',
-                { attrs: { 'data-sort': entry.mp * 1000 + entry.gp, title: i18n.broadcast.matchPoints } },
-                `${entry.mp}`,
-              ),
-              hl('td', { attrs: { title: i18n.broadcast.gamePoints } }, `${entry.gp}`),
+  standingsView = (): VNode =>
+    !this.standings
+      ? spinnerVdom()
+      : hl(
+          'table.relay-tour__teams__standings.slist.slist-pad',
+          {
+            hook: onInsert<HTMLTableElement>(el => {
+              this.table = tableAugment(el);
+            }),
+          },
+          [
+            hl('thead', [
+              hl('tr', [
+                hl('th.text', { attrs: dataIcon(Group) }, `${i18n.team.team}`),
+                hl('th', i18n.broadcast.matches),
+                hl('th', { attrs: { 'data-sort-default': 1 } }, i18n.broadcast.matchPoints),
+                hl('th', i18n.broadcast.gamePoints),
+              ]),
             ]),
-          ),
-        ),
-      ],
-    );
-  };
+            hl(
+              'tbody',
+              this.standings.map(entry =>
+                hl('tr', [
+                  hl(
+                    'td',
+                    hl(
+                      'a.team-name',
+                      {
+                        on: {
+                          click: this.toggleTeam(entry.name),
+                        },
+                      },
+                      entry.name,
+                    ),
+                  ),
+                  hl('td', entry.matches.length),
+                  hl(
+                    'td',
+                    { attrs: { 'data-sort': entry.mp * 1000 + entry.gp, title: i18n.broadcast.matchPoints } },
+                    `${entry.mp}`,
+                  ),
+                  hl('td', { attrs: { title: i18n.broadcast.gamePoints } }, `${entry.gp}`),
+                ]),
+              ),
+            ),
+          ],
+        );
 
   teamView = (): VNode => {
-    if (!this.standings) {
-      this.loadFromXhr();
-      return spinnerVdom();
-    }
+    if (!this.standings) return spinnerVdom();
     const foundTeam = this.standings.find(t => t.name === this.teamToShow);
     if (!foundTeam) {
       this.teamToShow = undefined;
@@ -183,7 +176,13 @@ export default class RelayTeamLeaderboard {
   };
 
   view = (): VNode =>
-    requiresI18n('team', this.redraw, () => (this.teamToShow ? this.teamView() : this.standingsView()));
+    requiresI18n('team', this.redraw, () =>
+      hl(
+        'div.relay-tour__team__results',
+        { hook: onInsert(this.loadFromXhr) },
+        this.teamToShow ? this.teamView() : this.standingsView(),
+      ),
+    );
 
   private toggleTeam = (team: RelayTeamName) => (ev: PointerEvent) => {
     ev.preventDefault();
