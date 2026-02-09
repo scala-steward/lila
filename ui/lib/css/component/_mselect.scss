@@ -5,7 +5,8 @@ $c-mselect: $c-primary;
   white-space: nowrap;
 
   &__toggle {
-    @include hide;
+    position: absolute;
+    z-index: -1;
   }
 
   &__label {
@@ -27,12 +28,20 @@ $c-mselect: $c-primary;
       color: $c-mselect;
       margin-inline: 0.4em 0;
     }
+
+    &:focus-visible {
+      outline: 2px solid $c-primary;
+    }
   }
 
   &__toggle:checked ~ .mselect__label {
     @include transition(opacity);
 
     opacity: 0;
+  }
+
+  &__toggle:focus-visible ~ .mselect__label {
+    outline: 2px solid $c-primary;
   }
 
   &__list {
@@ -62,6 +71,7 @@ $c-mselect: $c-primary;
 
       > * {
         opacity: 1;
+        visibility: visible;
         transition: opacity 125ms ease-in-out 125ms;
       }
     }
@@ -70,6 +80,8 @@ $c-mselect: $c-primary;
     white-space: nowrap;
     display: block;
     padding: 0.3em 1em;
+    visibility: hidden;
+    opacity: 0;
 
     @include transition;
 
@@ -84,10 +96,12 @@ $c-mselect: $c-primary;
       background: $c-mselect;
       color: $c-over;
     }
+    &:focus-visible {
+      outline: 2px solid $c-primary;
+      outline-offset: -2px;
+    }
     &::before {
       margin-inline-end: 0.4em;
     }
-
-    opacity: 0;
   }
 }
