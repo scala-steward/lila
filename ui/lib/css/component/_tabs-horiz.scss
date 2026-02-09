@@ -50,7 +50,7 @@ $c-tabs-active: $c-accent !default;
     }
 
     &:focus-visible {
-      outline: 2px solid $c-primary;
+      outline: $outline;
     }
   }
 

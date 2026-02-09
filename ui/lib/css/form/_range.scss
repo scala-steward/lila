@@ -67,7 +67,7 @@ input.range {
 
   &:focus-visible {
     &::-webkit-slider-thumb {
-      outline: 2px solid $c-primary;
+      outline: $outline;
     }
   }
 }

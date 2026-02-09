@@ -214,7 +214,7 @@ $c-slider: $c-setup;
             color: $c-font-clear;
           }
           &:focus-visible {
-            outline: 2px solid $c-primary;
+            outline: $outline;
           }
           &.active {
             background: $c-setup;
