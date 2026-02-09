@@ -126,12 +126,10 @@ object RelayPlayer:
 
   object json:
     import scalalib.Json.writeAs
-    import RelayJsonView.given
     given Writes[Outcome] = Json.writes
     given Writes[Outcome.Points] = writeAs(_.show)
     given Writes[Outcome.GamePoints] = writeAs(points => Outcome.showPoints(points.some))
     given Writes[FideTC] = writeAs(_.toString)
-    given Writes[RelayPlayer.Game] = Json.writes
     given Writes[Seq[(Tiebreak, TiebreakPoint)]] = Writes: tbs =>
       Json.toJson:
         tbs.map: (tb, tbv) =>
