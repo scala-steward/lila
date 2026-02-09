@@ -6,7 +6,7 @@ textarea {
   font: inherit;
   color: $c-font;
   &:focus-visible {
-    outline: 2px solid $c-primary;
+    outline: $outline;
     outline-offset: -2px;
   }
 }

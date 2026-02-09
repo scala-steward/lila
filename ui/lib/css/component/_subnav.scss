@@ -4,7 +4,7 @@
     white-space: nowrap;
 
     &:focus-visible {
-      outline: 2px solid $c-primary;
+      outline: $outline;
     }
   }
 
