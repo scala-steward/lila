@@ -82,13 +82,9 @@ $c-mselect: $c-primary;
     padding: 0.3em 1em;
     visibility: hidden;
     opacity: 0;
-
-    transition:
-      background $transition-duration,
-      border-color $transition-duration;
-
     color: $c-mselect;
     border-left: 3px solid transparent;
+    @include transition(background-color border-color);
 
     &.current {
       background: $c-bg-zebra;
