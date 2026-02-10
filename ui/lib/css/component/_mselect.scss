@@ -83,7 +83,8 @@ $c-mselect: $c-primary;
     visibility: hidden;
     opacity: 0;
 
-    @include transition;
+    @include transition(background);
+    @include transition(border-color);
 
     color: $c-mselect;
     border-left: 3px solid transparent;
