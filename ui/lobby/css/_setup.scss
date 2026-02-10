@@ -183,7 +183,7 @@ $c-slider: $c-setup;
       border-bottom: $border;
       margin-bottom: 1rem;
       width: 100%;
-      span {
+      button {
         &.active,
         &:hover {
           border-color: $c-setup;
@@ -213,6 +213,9 @@ $c-slider: $c-setup;
           &:hover {
             background: $c-bg-zebra2;
             color: $c-font-clear;
+          }
+          &:focus-visible {
+            outline: $outline;
           }
           &.active {
             background: $c-setup;
