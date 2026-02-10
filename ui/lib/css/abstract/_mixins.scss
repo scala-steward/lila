@@ -42,14 +42,6 @@
   }
 }
 
-@mixin hide {
-  display: none;
-
-  .blind-mode & {
-    display: inherit;
-  }
-}
-
 @mixin ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;
