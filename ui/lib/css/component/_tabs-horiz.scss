@@ -23,13 +23,9 @@ $c-tabs-active: $c-accent !default;
     border: 0;
     background: none;
     border-bottom: 2px solid transparent;
-
-    transition:
-      color 0.25s,
-      border-color 0.25s;
-
     min-width: 15%;
     letter-spacing: -0.5px;
+    @include transition(color border-color, 0.25s);
 
     @media (min-width: at-least($xx-small)) {
       letter-spacing: inherit;
