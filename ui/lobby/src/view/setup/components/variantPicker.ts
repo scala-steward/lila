@@ -30,7 +30,7 @@ export const variantPicker = (ctrl: LobbyController) => {
 
   const toggleVariant = () => setupCtrl.toggleVariantMenu();
   const updateCheckboxAndToggle = () => {
-    const checkbox = document.getElementById(inputId) as HTMLInputElement | null;
+    const checkbox = document.querySelector<HTMLInputElement>(`#${inputId}`);
     if (checkbox) checkbox.checked = false;
     toggleVariant();
   };
