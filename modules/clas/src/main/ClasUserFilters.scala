@@ -76,7 +76,7 @@ private final class ClasUserCache(name: String)(
     source
       .runWith:
         Sink.fold[Int, UserId](0): (counter, userId) =>
-          if counter % 1_000 == 0 then logNb(counter)
+          if counter % 10_000 == 0 then logNb(counter)
           nextBloom.add(userId.value)
           counter + 1
       .addEffect: nb =>
