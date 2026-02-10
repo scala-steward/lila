@@ -43,7 +43,7 @@ final class StormSelector(colls: PuzzleColls, cacheApi: CacheApi)(using Executor
     2349 -> 19,
     2499 -> 21
   )
-  private val setSize = ratingBuckets._2F.sum
+  private val setSize = ratingBuckets._2F.sum // 137
 
   private val batchProvider =
     BatchProvider[PuzzleSet]("stormSelector", timeout = 15.seconds): () =>
@@ -83,16 +83,19 @@ final class StormSelector(colls: PuzzleColls, cacheApi: CacheApi)(using Executor
             Sort(Ascending("rating")),
             Limit(setSize * nbSets)
           )
-        .map:
-          _.flatMap(puzzleReader.readOpt)
-        .map:
-          _.grouped(nbSets).toList.map(ThreadLocalRandom.shuffle).transpose
+        .flatMap: docs =>
+          val puzzles = docs.flatMap(puzzleReader.readOpt)
+          val groups = puzzles.grouped(nbSets).toList.map(ThreadLocalRandom.shuffle)
+          Future(groups.transpose).addFailureEffect: _ =>
+            logger.warn:
+              s"selector: $setSize x $nbSets. ${docs.size} docs, ${puzzles.size} puzzles, ${groups.size} groups"
       .logTimeIfGt(s"storm selector x$nbSets", 8.seconds)
-      .mon(_.storm.selector.time)
+      .monSuccess(_.storm.selector.time)
       .recoverWith:
         case e: IllegalArgumentException if nbSets > 1 =>
-          logger.warn(s"Storm selector x$nbSets failed, retrying with x1", e)
-          aggregateMultipleSets(1)
+          val retryNbSets = nbSets / 2
+          logger.warn(s"selector x$nbSets failed, retrying with x$retryNbSets", e)
+          aggregateMultipleSets(retryNbSets)
       .addEffect:
         _.foreach: puzzles =>
           monitor(puzzles.toVector)

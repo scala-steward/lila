@@ -3,7 +3,7 @@
 import { povChances } from '../winningChances';
 import * as licon from '@/licon';
 import { stepwiseScroll, type VNode, type LooseVNodes, bind, hl } from '@/view';
-import { cmnToggle } from 'lib/view/cmn-toggle';
+import { cmnToggle } from '@/view/cmn-toggle';
 import { defined, notNull, requestIdleCallback } from '@/index';
 import { type CevalHandler, type NodeEvals, CevalState } from '../types';
 import type { Position } from 'chessops/chess';

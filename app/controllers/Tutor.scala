@@ -57,7 +57,7 @@ final class Tutor(env: Env) extends LilaController(env):
   private def TutorPageAvailability(
       username: UserStr
   )(f: Context ?=> UserModel => TutorFullReport.Availability => Fu[Result]): EssentialAction =
-    Beta { _ ?=> me ?=>
+    Auth { _ ?=> me ?=>
       def proceed(user: UserWithPerfs) = env.tutor.api.availability(user).flatMap(f(user.user))
       if me.is(username) then env.user.api.withPerfs(me.value).flatMap(proceed)
       else
