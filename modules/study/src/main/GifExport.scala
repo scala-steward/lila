@@ -13,6 +13,16 @@ final class GifExport(
     ws: StandaloneWSClient,
     url: String
 )(using Executor):
+
+  private def writePocket(p: chess.variant.Crazyhouse.Pocket): JsObject =
+    Json.obj(
+      "p" -> p.pawn,
+      "n" -> p.knight,
+      "b" -> p.bishop,
+      "r" -> p.rook,
+      "q" -> p.queen
+    )
+
   def ofChapter(
       chapter: Chapter,
       theme: Option[String],
@@ -61,5 +71,14 @@ final class GifExport(
             .add("lastMove", node.moveOption.map(_.uci.uci))
             .add("delay", tail.isEmpty.option(500)) // more delay for last frame
             .add("glyph", showGlyphs.so(node.glyphs.move.map(_.symbol)))
+            .add(
+              "pockets",
+              node.crazyData.map { data =>
+                Json.obj(
+                  "white" -> writePocket(data.pockets.white),
+                  "black" -> writePocket(data.pockets.black)
+                )
+              }
+            )
         )
       case _ => arr
