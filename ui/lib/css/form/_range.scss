@@ -66,7 +66,9 @@ input.range {
   }
 
   &:focus-visible {
-    &::-webkit-slider-thumb {
+    &::-webkit-slider-thumb,
+    &::-moz-range-thumb,
+    &::-ms-thumb {
       outline: $outline;
     }
   }
