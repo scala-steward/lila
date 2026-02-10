@@ -61,6 +61,9 @@ final class FidePlayerApi(repo: FideRepo, cacheApi: CacheApi, picfitApi: PicfitA
           p.photo.map(p.id -> _)
       .map(_.toMap)
 
+  private[fide] def delete(id: FideId): Funit =
+    repo.playerColl.delete.one($id(id)).void
+
   object guessPlayer:
 
     private case class TitleName(title: Option[PlayerTitle], name: PlayerName)
