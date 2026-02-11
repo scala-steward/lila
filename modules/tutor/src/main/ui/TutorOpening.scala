@@ -36,11 +36,11 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
           boxTop(
             h1(
               a(
-                href := routes.Tutor.openings(user.username, perfReport.perf.key),
+                href := bits.urlOf(user.username, perfReport.perf.key, "opening".some),
                 dataIcon := Icon.LessThan,
                 cls := "text"
               ),
-              bits.perfSelector(full, perfReport.perf)(routes.Tutor.openings),
+              bits.perfSelector(full, perfReport.perf, "opening".some),
               s"$as ${report.family.name}",
               bits.otherUser(user)
             )
@@ -89,7 +89,7 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
       )
 
   def openings(full: TutorFullReport, report: TutorPerfReport, user: User)(using ctx: Context) =
-    bits.page(menu = perfUi.menu(user, report, "openings"))(cls := "tutor__openings tutor-layout"):
+    bits.page(menu = perfUi.menu(user, report, "opening".some))(cls := "tutor__openings tutor-layout"):
       frag(
         div(cls := "tutor__first-box box")(
           boxTop(
@@ -99,8 +99,8 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
                 dataIcon := Icon.LessThan,
                 cls := "text"
               ),
-              bits.perfSelector(full, report.perf)(routes.Tutor.openings),
-              bits.reportSelector(report, "openings", user),
+              bits.perfSelector(full, report.perf, "opening".some),
+              bits.reportSelector(report, "opening", user),
               bits.otherUser(user)
             )
           ),
