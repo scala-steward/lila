@@ -151,11 +151,7 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
           frag(
             boxTop(
               h1(
-                a(
-                  href := routes.Tutor.perf(user.username, report.perf.key),
-                  dataIcon := Icon.LessThan,
-                  cls := "text"
-                ),
+                backToPerf(report, user),
                 bits.perfSelector(full, report.perf, "phases".some),
                 bits.reportSelector(report, "phases", user),
                 bits.otherUser(user)
@@ -214,11 +210,7 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
           frag(
             boxTop(
               h1(
-                a(
-                  href := routes.Tutor.perf(user.username, report.perf.key),
-                  dataIcon := Icon.LessThan,
-                  cls := "text"
-                ),
+                backToPerf(report, user),
                 bits.perfSelector(full, report.perf, "pieces".some),
                 bits.reportSelector(report, "pieces", user),
                 bits.otherUser(user)
@@ -235,11 +227,7 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
         div(cls := "tutor__first-box box")(
           boxTop(
             h1(
-              a(
-                href := routes.Tutor.perf(user.username, report.perf.key),
-                dataIcon := Icon.LessThan,
-                cls := "text"
-              ),
+              backToPerf(report, user),
               bits.perfSelector(full, report.perf, "skills".some),
               bits.reportSelector(report, "skills", user),
               bits.otherUser(user)
@@ -263,11 +251,7 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
         div(cls := "tutor__first-box box")(
           boxTop(
             h1(
-              a(
-                href := routes.Tutor.perf(user.username, report.perf.key),
-                dataIcon := Icon.LessThan,
-                cls := "text"
-              ),
+              backToPerf(report, user),
               bits.perfSelector(full, report.perf, "time".some),
               bits.reportSelector(report, "time", user),
               bits.otherUser(user)
@@ -283,3 +267,10 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
           grade.peerGradeWithDetail(concept.clockTimeUsage, report.clockUsage, InsightPosition.Game)
         )
       )
+
+  private def backToPerf(report: TutorPerfReport, user: User) =
+    a(
+      href := routes.Tutor.perf(user.username, report.perf.key),
+      dataIcon := Icon.LessThan,
+      cls := "text"
+    )
