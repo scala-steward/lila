@@ -83,7 +83,7 @@ object concept:
   val resourcefulness =
     TutorConcept(
       "Resourcefulness",
-      "Come back from lost positions",
+      "How often you come back from lost positions.",
       frag(
         "Percentage of games that you managed to save (win or draw) after being in a lost position (< 33% ",
         winPercentLink("winning chances"),
@@ -96,7 +96,7 @@ object concept:
   val conversion =
     TutorConcept(
       "Conversion",
-      "Convert good positions into victories",
+      "How often you convert good positions into victories.",
       frag(
         "When you get a winning position (",
         winPercentLink("winning chances"),
