@@ -70,7 +70,7 @@ final class StormSelector(colls: PuzzleColls, cacheApi: CacheApi)(using Executor
                 Project($doc("_id" -> false, "ids" -> true)),
                 UnwindField("ids"),
                 // ensure we have enough after filtering deviation & color
-                Sample(nbPuzzles * nbSets * 7),
+                Sample(nbPuzzles * nbSets * 8),
                 PipelineOperator(withPuzzlePipeline(aggregationColor)),
                 UnwindField("puzzle"),
                 Sample(nbPuzzles * nbSets),
