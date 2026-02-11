@@ -276,14 +276,10 @@ const groupSelect = (ctx: RelayViewContext, group: RelayGroup) => {
   const { relay, study } = ctx;
   const inputId = 'mselect-group';
 
-  const toggleSelect = () => {
-    relay.groupSelectShow.toggle();
-    relay.redraw();
-  };
   const updateCheckboxAndToggle = () => {
     const checkbox = document.querySelector<HTMLInputElement>(`#${inputId}`);
     if (checkbox) checkbox.checked = false;
-    toggleSelect();
+    relay.groupSelectShow();
   };
 
   return hl(
@@ -294,7 +290,7 @@ const groupSelect = (ctx: RelayViewContext, group: RelayGroup) => {
     [
       hl('input.mselect__toggle', {
         attrs: { type: 'checkbox', id: inputId },
-        on: { change: toggleSelect },
+        on: { change: relay.groupSelectShow.toggle },
       }),
       hl(
         'label.mselect__label',
@@ -348,14 +344,10 @@ const roundSelect = (relay: RelayCtrl, study: StudyCtrl) => {
   const icon = roundStateIcon(round, true);
   const inputId = 'mselect-round';
 
-  const toggleSelect = () => {
-    relay.roundSelectShow.toggle();
-    relay.redraw();
-  };
   const updateCheckboxAndToggle = () => {
     const checkbox = document.querySelector<HTMLInputElement>(`#${inputId}`);
     if (checkbox) checkbox.checked = false;
-    toggleSelect();
+    relay.roundSelectShow.toggle();
   };
   const extractHrefAndNavigate = (event: MouseEvent | KeyboardEvent) => {
     const target = event.target as HTMLElement;
@@ -378,7 +370,7 @@ const roundSelect = (relay: RelayCtrl, study: StudyCtrl) => {
     [
       hl('input.mselect__toggle', {
         attrs: { type: 'checkbox', id: inputId },
-        on: { change: toggleSelect },
+        on: { change: relay.roundSelectShow.toggle },
       }),
       hl(
         'label.mselect__label.relay-tour__round-select__label',
