@@ -76,7 +76,7 @@ final class TutorHome(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi):
         grade.peerGrade(concept.speed, perfReport.globalClock),
         grade.peerGrade(concept.clockFlagVictory, perfReport.flagging.win),
         grade.peerGrade(concept.clockTimeUsage, perfReport.clockUsage),
-        perfReport.phases.map: phase =>
+        perfReport.phases.list.map: phase =>
           grade.peerGrade(concept.phase(phase.phase), phase.mix),
         bits.seeMore
       )

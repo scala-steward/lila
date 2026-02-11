@@ -20,26 +20,12 @@ case class TutorPerfReport(
     globalClock: TutorBothOption[ClockPercent],
     clockUsage: TutorBothOption[ClockPercent],
     openings: ByColor[TutorColorOpenings],
-    phases: List[TutorPhase],
+    phases: TutorPhases,
     pieces: List[TutorPiece],
     flagging: TutorFlagging
 ):
   lazy val estimateTotalTime: Option[FiniteDuration] =
     (perf != PerfType.Correspondence).option(stats.time * 2)
-
-  // Dimension comparison is not interesting for phase accuracy (opening always better)
-  // But peer comparison is gold
-  lazy val phaseAccuracyCompare = TutorCompare[Phase, AccuracyPercent](
-    InsightDimension.Phase,
-    TutorMetric.Accuracy,
-    phases.map { phase => (phase.phase, phase.accuracy) }
-  )
-
-  lazy val phaseAwarenessCompare = TutorCompare[Phase, GoodPercent](
-    InsightDimension.Phase,
-    TutorMetric.Awareness,
-    phases.map { phase => (phase.phase, phase.awareness) }
-  )
 
   lazy val pieceAccuracyCompare = TutorCompare[Role, AccuracyPercent](
     InsightDimension.PieceRole,
@@ -98,8 +84,6 @@ case class TutorPerfReport(
   def skillCompares =
     List(globalAccuracyCompare, globalAwarenessCompare, globalResourcefulnessCompare, globalConversionCompare)
 
-  def phaseCompares = List(phaseAccuracyCompare, phaseAwarenessCompare)
-
   def pieceCompares = List(pieceAccuracyCompare, pieceAwarenessCompare)
 
   val clockCompares = List(globalPressureCompare, timeUsageCompare)
@@ -108,13 +92,11 @@ case class TutorPerfReport(
     val op = openings(color)
     List(op.accuracyCompare, op.awarenessCompare, op.performanceCompare).map(_.as(color))
 
-  lazy val allCompares: List[TutorCompare[?, ?]] = openingCompares ::: phaseCompares
+  lazy val allCompares: List[TutorCompare[?, ?]] = openingCompares ::: phases.compares
 
   val skillHighlights = TutorCompare.mixedBag(skillCompares.flatMap(_.peerComparisons))
 
   val openingHighlights = TutorCompare.mixedBag(openingCompares.flatMap(_.allComparisons))
-
-  val phaseHighlights = TutorCompare.mixedBag(phaseCompares.flatMap(_.peerComparisons))
 
   val pieceHighlights = TutorCompare.mixedBag(pieceCompares.flatMap(_.peerComparisons))
 
@@ -122,7 +104,7 @@ case class TutorPerfReport(
 
   val relevantComparisons: List[AnyComparison] =
     openingCompares.flatMap(_.allComparisons) :::
-      phaseCompares.flatMap(_.peerComparisons) :::
+      phases.compares.flatMap(_.peerComparisons) :::
       clockCompares.flatMap(_.peerComparisons) :::
       skillCompares.flatMap(_.peerComparisons)
   val relevantHighlights = TutorCompare.mixedBag(relevantComparisons)

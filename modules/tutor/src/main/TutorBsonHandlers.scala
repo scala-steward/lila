@@ -58,9 +58,16 @@ private object TutorBsonHandlers:
         .map: docs =>
           TutorColorOpenings(docs.flatMap(_.asOpt[TutorOpeningFamily]))
 
+  private def listWrapper[A, W](using
+      handler: BSONHandler[List[A]]
+  )(from: List[A] => W, to: W => List[A]): BSONHandler[W] =
+    handler.as[W](from, to)
+
   given BSONDocumentHandler[TutorPhase] = Macros.handler
   given BSONDocumentHandler[TutorPiece] = Macros.handler
   given BSONDocumentHandler[TutorFlagging] = Macros.handler
   given BSONDocumentHandler[InsightPerfStats] = Macros.handler
+  given BSONHandler[TutorPhases] = listWrapper[TutorPhase, TutorPhases](TutorPhases.apply, _.list)
+
   given BSONDocumentHandler[TutorPerfReport] = Macros.handler
   given BSONDocumentHandler[TutorFullReport] = Macros.handler

@@ -1,5 +1,6 @@
 .tutor {
   &__concept {
+    text-transform: capitalize;
     @extend %flex-center-nowrap;
     i {
       position: relative;
