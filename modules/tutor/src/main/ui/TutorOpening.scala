@@ -112,13 +112,16 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
           st.section(cls := "tutor__openings__color")(
             h2("Your ", color.name, " openings"),
             div(cls := "tutor__openings__color__openings")(report.openings(color).families.map { fam =>
+              val opening = fam.family.anyOpening
               div(
                 cls := "tutor__openings__opening tutor-card tutor-card--link",
                 dataHref := routes.Tutor
                   .opening(user.username, report.perf.key, color, fam.family.key.value)
               )(
                 div(cls := "tutor-card__top")(
-                  div(cls := "no-square")(pieceTag(cls := s"pawn ${color.name}")),
+                  div(cls := "tutor-card__top__board")(
+                    chessgroundMini(opening.fen.board, color, lastMove = opening.lastUci)(div)
+                  ),
                   div(cls := "tutor-card__top__title")(
                     h3(cls := "tutor-card__top__title__text")(fam.family.name.value),
                     div(cls := "tutor-card__top__title__sub")(
@@ -142,5 +145,3 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
           )
         })
       )
-
-  private val pieceTag = tag("piece")
