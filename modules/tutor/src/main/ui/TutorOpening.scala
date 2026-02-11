@@ -36,11 +36,11 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
           boxTop(
             h1(
               a(
-                href := routes.Tutor.openings(user.username, perfReport.perf.key),
+                href := bits.urlOf(user.username, perfReport.perf.key, "opening".some),
                 dataIcon := Icon.LessThan,
                 cls := "text"
               ),
-              bits.perfSelector(full, perfReport.perf)(routes.Tutor.openings),
+              bits.perfSelector(full, perfReport.perf, "opening".some),
               s"$as ${report.family.name}",
               bits.otherUser(user)
             )
@@ -89,7 +89,7 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
       )
 
   def openings(full: TutorFullReport, report: TutorPerfReport, user: User)(using ctx: Context) =
-    bits.page(menu = perfUi.menu(user, report, "openings"))(cls := "tutor__openings tutor-layout"):
+    bits.page(menu = perfUi.menu(user, report, "opening".some))(cls := "tutor__openings tutor-layout"):
       frag(
         div(cls := "tutor__first-box box")(
           boxTop(
@@ -99,8 +99,8 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
                 dataIcon := Icon.LessThan,
                 cls := "text"
               ),
-              bits.perfSelector(full, report.perf)(routes.Tutor.openings),
-              bits.reportSelector(report, "openings", user),
+              bits.perfSelector(full, report.perf, "opening".some),
+              bits.reportSelector(report, "opening", user),
               bits.otherUser(user)
             )
           ),
@@ -112,13 +112,16 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
           st.section(cls := "tutor__openings__color")(
             h2("Your ", color.name, " openings"),
             div(cls := "tutor__openings__color__openings")(report.openings(color).families.map { fam =>
+              val opening = fam.family.anyOpening
               div(
                 cls := "tutor__openings__opening tutor-card tutor-card--link",
                 dataHref := routes.Tutor
                   .opening(user.username, report.perf.key, color, fam.family.key.value)
               )(
                 div(cls := "tutor-card__top")(
-                  div(cls := "no-square")(pieceTag(cls := s"pawn ${color.name}")),
+                  div(cls := "tutor-card__top__board")(
+                    chessgroundMini(opening.fen.board, color, lastMove = opening.lastUci)(div)
+                  ),
                   div(cls := "tutor-card__top__title")(
                     h3(cls := "tutor-card__top__title__text")(fam.family.name.value),
                     div(cls := "tutor-card__top__title__sub")(
@@ -142,5 +145,3 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
           )
         })
       )
-
-  private val pieceTag = tag("piece")

@@ -59,6 +59,7 @@ private object TutorBsonHandlers:
           TutorColorOpenings(docs.flatMap(_.asOpt[TutorOpeningFamily]))
 
   given BSONDocumentHandler[TutorPhase] = Macros.handler
+  given BSONDocumentHandler[TutorPiece] = Macros.handler
   given BSONDocumentHandler[TutorFlagging] = Macros.handler
   given BSONDocumentHandler[InsightPerfStats] = Macros.handler
   given BSONDocumentHandler[TutorPerfReport] = Macros.handler
