@@ -272,32 +272,32 @@ const share = (ctx: RelayViewContext) => {
   );
 };
 
-const groupSelect = (ctx: RelayViewContext, group: RelayGroup) => {
+const tourSelect = (ctx: RelayViewContext, group: RelayGroup) => {
   const { relay, study } = ctx;
-  const inputId = 'mselect-group';
+  const inputId = 'mselect-relay-tour';
 
   const updateCheckboxAndToggle = () => {
     const checkbox = document.querySelector<HTMLInputElement>(`#${inputId}`);
     if (checkbox) checkbox.checked = false;
-    relay.groupSelectShow(!checkbox);
+    relay.tourSelectShow(!checkbox);
   };
 
   return hl(
     'div.mselect.relay-tour__mselect.relay-tour__tour-select',
     {
-      class: { mselect__active: relay.groupSelectShow() },
+      class: { mselect__active: relay.tourSelectShow() },
     },
     [
       hl('input.mselect__toggle', {
         attrs: { type: 'checkbox', id: inputId },
-        on: { change: relay.groupSelectShow.toggle },
+        on: { change: relay.tourSelectShow.toggle },
       }),
       hl(
         'label.mselect__label',
         { attrs: { for: inputId } },
         group.tours.find(t => t.id === relay.data.tour.id)?.name || relay.data.tour.name,
       ),
-      relay.groupSelectShow() && [
+      relay.tourSelectShow() && [
         hl('label.fullscreen-mask', { on: { click: updateCheckboxAndToggle } }),
         hl(
           'nav.mselect__list',
@@ -342,7 +342,7 @@ const tourStateIcon = (tour: RelayTourPreview, titleAsText: boolean) =>
 const roundSelect = (relay: RelayCtrl, study: StudyCtrl) => {
   const { round } = relay;
   const icon = roundStateIcon(round, true);
-  const inputId = 'mselect-round';
+  const inputId = 'mselect-relay-round';
 
   const updateCheckboxAndToggle = () => {
     const checkbox = document.querySelector<HTMLInputElement>(`#${inputId}`);
@@ -495,7 +495,7 @@ const header = (ctx: RelayViewContext) => {
       hl('div.relay-tour__header__content', [
         hl('h1', group?.name || d.tour.name),
         hl('div.relay-tour__header__selectors', [
-          group && groupSelect(ctx, group),
+          group && tourSelect(ctx, group),
           roundSelect(relay, ctx.study),
         ]),
       ]),

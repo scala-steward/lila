@@ -21,7 +21,7 @@ export default class RelayCtrl {
   cooldown = false;
   tourShow: Toggle;
   roundSelectShow: Toggle;
-  groupSelectShow: Toggle;
+  tourSelectShow: Toggle;
   tab: Prop<RelayTab>;
   teams?: RelayTeams;
   players: RelayPlayers;
@@ -40,7 +40,7 @@ export default class RelayCtrl {
     this.tourShow = toggle((location.pathname.split('/broadcast/')[1].match(/\//g) || []).length < 3, v =>
       v ? study.ctrl.ceval.stop() : study.ctrl.startCeval(),
     );
-    this.groupSelectShow = toggle(false, this.study.ctrl.redraw);
+    this.tourSelectShow = toggle(false, this.study.ctrl.redraw);
     this.roundSelectShow = toggle(false, this.study.ctrl.redraw);
     if (study.ctrl.opts.chat) {
       const showLiveboard = () => this.tourShow() || !study.multiBoard.showResults();
