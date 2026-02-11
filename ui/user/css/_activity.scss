@@ -23,14 +23,12 @@
   }
 
   .entries {
-    display: flex;
-    flex-direction: column;
+    @extend %flex-column;
   }
 
   .entry {
-    display: flex;
+    @extend %flex-center;
     min-height: 64px;
-    align-items: center;
     position: relative;
     padding: 6px 0;
 
