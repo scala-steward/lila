@@ -272,22 +272,33 @@ const share = (ctx: RelayViewContext) => {
   );
 };
 
-const groupSelect = (ctx: RelayViewContext, group: RelayGroup) => {
-  const toggle = ctx.relay.groupSelectShow;
-  const clickHook = { hook: bind('click', toggle.toggle, ctx.relay.redraw) };
+const tourSelect = (ctx: RelayViewContext, group: RelayGroup) => {
+  const { relay, study } = ctx;
+  const inputId = 'mselect-relay-tour';
+
+  const updateCheckboxAndToggle = () => {
+    const checkbox = document.querySelector<HTMLInputElement>(`#${inputId}`);
+    if (checkbox) checkbox.checked = false;
+    relay.tourSelectShow(!checkbox);
+  };
+
   return hl(
     'div.mselect.relay-tour__mselect.relay-tour__tour-select',
     {
-      class: { mselect__active: toggle() },
+      class: { mselect__active: relay.tourSelectShow() },
     },
     [
+      hl('input.mselect__toggle', {
+        attrs: { type: 'checkbox', id: inputId },
+        on: { change: relay.tourSelectShow.toggle },
+      }),
       hl(
         'label.mselect__label',
-        clickHook,
-        group.tours.find(t => t.id === ctx.relay.data.tour.id)?.name || ctx.relay.data.tour.name,
+        { attrs: { for: inputId } },
+        group.tours.find(t => t.id === relay.data.tour.id)?.name || relay.data.tour.name,
       ),
-      toggle() && [
-        hl('label.fullscreen-mask', clickHook),
+      relay.tourSelectShow() && [
+        hl('label.fullscreen-mask', { on: { click: updateCheckboxAndToggle } }),
         hl(
           'nav.mselect__list',
           group.tours.map(tour =>
@@ -295,9 +306,16 @@ const groupSelect = (ctx: RelayViewContext, group: RelayGroup) => {
               'a.mselect__item',
               {
                 class: {
-                  current: tour.id === ctx.relay.data.tour.id,
+                  current: tour.id === relay.data.tour.id,
                 },
-                attrs: { href: ctx.study.embeddablePath(`/broadcast/-/${tour.id}`) },
+                attrs: { href: study.embeddablePath(`/broadcast/-/${tour.id}`) },
+                on: {
+                  keydown: (event: KeyboardEvent) => {
+                    if (event.key === 'Enter' && event.target) {
+                      (event.target as HTMLElement).click();
+                    }
+                  },
+                },
               },
               [tour.name, tourStateIcon(tour, false)],
             ),
@@ -313,7 +331,7 @@ const tourStateIcon = (tour: RelayTourPreview, titleAsText: boolean) =>
     ? hl('span.tour-state.ongoing', {
         attrs: { ...dataIcon(licon.DiscBig), title: i18n.broadcast.ongoing },
       })
-    : tour.active === false
+    : !tour.active
       ? hl(
           'span.tour-state.finished',
           { attrs: { ...dataIcon(licon.Checkmark), title: !titleAsText && i18n.site.finished } },
@@ -322,22 +340,47 @@ const tourStateIcon = (tour: RelayTourPreview, titleAsText: boolean) =>
       : undefined;
 
 const roundSelect = (relay: RelayCtrl, study: StudyCtrl) => {
-  const toggle = relay.roundSelectShow;
-  const clickHook = { hook: bind('click', toggle.toggle, relay.redraw) };
-  const round = relay.round;
+  const { round } = relay;
   const icon = roundStateIcon(round, true);
+  const inputId = 'mselect-relay-round';
+
+  const updateCheckboxAndToggle = () => {
+    const checkbox = document.querySelector<HTMLInputElement>(`#${inputId}`);
+    if (checkbox) checkbox.checked = false;
+    relay.roundSelectShow(!checkbox);
+  };
+  const extractHrefAndNavigate = (event: MouseEvent | KeyboardEvent) => {
+    const target = event.target as HTMLElement;
+    const href = $(target).find('a').attr('href') ?? $(target).parents('tr').find('a').attr('href');
+    if (href && href.split('#')[0] !== window.location.pathname) {
+      site.redirect(href);
+    } else {
+      updateCheckboxAndToggle();
+    }
+  };
+
   return hl(
     'div.mselect.relay-tour__mselect.relay-tour__round-select',
     {
-      class: { mselect__active: toggle() },
+      class: { mselect__active: relay.roundSelectShow() },
     },
     [
-      hl('label.mselect__label.relay-tour__round-select__label', clickHook, [
-        hl('span.relay-tour__round-select__name', round.name),
-        hl('span.relay-tour__round-select__status', icon || (!!round.startsAt && timeago(round.startsAt))),
-      ]),
-      toggle() && [
-        hl('label.fullscreen-mask', clickHook),
+      hl('input.mselect__toggle', {
+        attrs: { type: 'checkbox', id: inputId },
+        on: { change: relay.roundSelectShow.toggle },
+      }),
+      hl(
+        'label.mselect__label.relay-tour__round-select__label',
+        {
+          attrs: { for: inputId },
+        },
+        [
+          hl('span.relay-tour__round-select__name', round.name),
+          hl('span.relay-tour__round-select__status', icon || (!!round.startsAt && timeago(round.startsAt))),
+        ],
+      ),
+      relay.roundSelectShow() && [
+        hl('label.fullscreen-mask', { on: { click: updateCheckboxAndToggle } }),
         hl(
           'div.relay-tour__round-select__list.mselect__list',
           {
@@ -352,12 +395,6 @@ const roundSelect = (relay: RelayCtrl, study: StudyCtrl) => {
             'table',
             hl(
               'tbody',
-              {
-                hook: bind('click', e => {
-                  const target = e.target as HTMLElement;
-                  if (target.tagName !== 'A') site.redirect($(target).parents('tr').find('a').attr('href')!);
-                }),
-              },
               relay.data.rounds.map((round, i) =>
                 hl(
                   'tr.mselect__item',
@@ -366,13 +403,26 @@ const roundSelect = (relay: RelayCtrl, study: StudyCtrl) => {
                       ['current-round']: round.id === study.data.id,
                       ['ongoing-round']: !!round.ongoing,
                     },
+                    attrs: {
+                      tabindex: 0,
+                    },
+                    on: {
+                      click: extractHrefAndNavigate,
+                      keydown: (event: KeyboardEvent) => {
+                        if (event.key === 'Enter') {
+                          extractHrefAndNavigate(event);
+                        }
+                      },
+                    },
                   },
                   [
                     hl(
                       'td.name',
                       hl(
                         'a',
-                        { attrs: { href: study.embeddablePath(relay.roundUrlWithHash(round)) } },
+                        {
+                          attrs: { href: study.embeddablePath(relay.roundUrlWithHash(round)), tabindex: -1 },
+                        },
                         round.name,
                       ),
                     ),
@@ -442,7 +492,7 @@ const header = (ctx: RelayViewContext) => {
       hl('div.relay-tour__header__content', [
         hl('h1', group?.name || d.tour.name),
         hl('div.relay-tour__header__selectors', [
-          group && groupSelect(ctx, group),
+          group && tourSelect(ctx, group),
           roundSelect(relay, ctx.study),
         ]),
       ]),
