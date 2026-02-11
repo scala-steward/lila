@@ -8,15 +8,25 @@ import ScalatagsTemplate.{ *, given }
 final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi):
   import helpers.{ *, given }
 
-  def openingMenu(perfReport: TutorPerfReport, report: TutorOpeningFamily, as: Color, user: User) =
-    frag(
-      perfReport.openings(as).families.map { family =>
+  private def openingSelector(
+      perfReport: TutorPerfReport,
+      report: TutorOpeningFamily,
+      as: Color,
+      user: User
+  ) =
+    val all: List[(Color, TutorOpeningFamily)] = for
+      (color, fams) <- perfReport.openings.map(_.families).zipColor.mapList(identity)
+      fam <- fams
+    yield (color, fam)
+    lila.ui.bits.mselect(
+      "tutor-report-select",
+      span(s"$as ${report.family.name}"),
+      all.map: (color, family) =>
         a(
           href := routes.Tutor
             .opening(user.username, perfReport.perf.key, as, family.family.key.value),
-          cls := family.family.key.value.active(report.family.key.value)
-        )(family.family.name.value)
-      }
+          cls := (as == color && family.family.key == report.family.key).option("current")
+        )(s"$color ${family.family.name}")
     )
 
   def opening(
@@ -29,7 +39,7 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
   )(using Context) =
     bits.page(
       title = s"Lichess Tutor • ${perfReport.perf.trans} • ${as.name} • ${report.family.name.value}",
-      menu = openingMenu(perfReport, report, as, user)
+      menu = perfUi.menu(user, perfReport, "opening".some)
     )(cls := "tutor__opening tutor-layout"):
       frag(
         div(cls := "box tutor__first-box")(
@@ -41,7 +51,7 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
                 cls := "text"
               ),
               bits.perfSelector(full, perfReport.perf, "opening".some),
-              s"$as ${report.family.name}",
+              openingSelector(perfReport, report, as, user),
               bits.otherUser(user)
             )
           ),
