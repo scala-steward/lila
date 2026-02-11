@@ -352,10 +352,7 @@ const roundSelect = (relay: RelayCtrl, study: StudyCtrl) => {
   const extractHrefAndNavigate = (event: MouseEvent | KeyboardEvent) => {
     const target = event.target as HTMLElement;
     const href = $(target).find('a').attr('href') ?? $(target).parents('tr').find('a').attr('href');
-    const currentHref =
-      window.location.pathname + (window.location.hash.length > 0 ? window.location.hash : '#overview');
-
-    if (href && href !== currentHref) {
+    if (href && href.split('#')[0] !== window.location.pathname) {
       site.redirect(href);
     } else {
       updateCheckboxAndToggle();
