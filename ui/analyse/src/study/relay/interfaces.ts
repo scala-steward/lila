@@ -67,7 +67,7 @@ export type StatByFideTC = Record<FideTC, number>;
 export interface RelayTourInfo {
   format?: string;
   tc?: string;
-  fideTc?: FideTC;
+  fideTC?: FideTC;
   location?: string;
   players?: string;
   website?: string;
