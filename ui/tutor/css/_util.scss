@@ -27,6 +27,14 @@
   }
   .mascot-says {
     @extend %box-radius-bottom;
+    bad {
+      color: $c-grade-bad;
+      font-weight: bold;
+    }
+    good {
+      color: $c-grade-good;
+      font-weight: bold;
+    }
   }
 }
 
