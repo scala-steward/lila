@@ -32,9 +32,11 @@ case class TutorPieces(list: List[TutorPiece]):
 
   val highlights = TutorCompare.mixedBag(compares.flatMap(_.peerComparisons))
 
+  def apply(role: Role) = list.find(_.role == role)
+
   def frequency(role: Role) =
     val total = list.flatMap(_.accuracy).map(_.mine.count).sum
-    val count = ~list.find(_.role == role).flatMap(_.accuracy).map(_.mine.count)
+    val count = ~apply(role).flatMap(_.accuracy).map(_.mine.count)
     GoodPercent(count, total)
 
 private object TutorPieces:
