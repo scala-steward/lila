@@ -47,7 +47,7 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
             frag(report.perf.trans, " openings"),
             urlOf(user.username, report.perf.key, "opening".some).some
           )(
-            selectThreeOpenings(report).map: (color, fam) =>
+            selectFourOpenings(report).map: (color, fam) =>
               grade.peerGrade(concept.opening(fam.family, color), fam.mix, h4)
           ),
           angleCard(
@@ -103,19 +103,11 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
     )
   )
 
-  private def selectThreeOpenings(report: TutorPerfReport): List[(Color, TutorOpeningFamily)] =
-    val byColor = chess.ByColor[List[TutorOpeningFamily]]: color =>
-      report.openings(color).families.take(2)
-    val firstTwo: List[(Color, TutorOpeningFamily)] = byColor.zipColor.flatMap: (color, fams) =>
-      fams.headOption.map(color -> _)
-    val extraOne: List[(Color, TutorOpeningFamily)] =
-      byColor.zipColor
-        .flatMap: (color, fams) =>
-          fams.lift(1).map(color -> _)
-        .sortBy(-_._2.performance.mine.count)
-        .headOption
-        .toList
-    firstTwo ::: extraOne
+  private def selectFourOpenings(report: TutorPerfReport): List[(Color, TutorOpeningFamily)] =
+    for
+      color <- Color.all
+      ops <- report.openings(color).families.take(2)
+    yield color -> ops
 
   def menu(user: User, report: TutorPerfReport, active: Option[Angle])(using Context) = frag(
     a(href := routes.Tutor.user(user.username))("Tutor"),
