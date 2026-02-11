@@ -190,15 +190,6 @@ final class GifExport(
           arr :+ frame(position, position.history.lastMove, delay, glyph, clock)
         )
 
-  private def writePocket(p: chess.variant.Crazyhouse.Pocket): JsObject =
-    Json.obj(
-      "p" -> p.pawn,
-      "n" -> p.knight,
-      "b" -> p.bishop,
-      "r" -> p.rook,
-      "q" -> p.queen
-    )
-
   private def frame(
       position: Position,
       uci: Option[Uci],
@@ -215,12 +206,4 @@ final class GifExport(
       .add("delay", delay.map(_.centis))
       .add("glyph", glyph.map(_.symbol))
       .add("clock", clock)
-      .add(
-        "pockets",
-        position.crazyData.map { data =>
-          Json.obj(
-            "white" -> writePocket(data.pockets.white),
-            "black" -> writePocket(data.pockets.black)
-          )
-        }
-      )
+      .add("pockets", position.crazyData.map(_.pockets))
