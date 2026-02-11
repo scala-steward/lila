@@ -49,7 +49,7 @@ final class TutorBits(helpers: Helpers)(
     a(href := routes.Tutor.user(user.username), cls := report.isEmpty.option("active"))("Tutor"),
     full.report.perfs.map: p =>
       a(
-        cls := List("text" -> true, "active" -> report.exists(_.perf === p.perf)),
+        cls := List("active" -> report.exists(_.perf === p.perf)),
         dataIcon := p.perf.icon,
         href := routes.Tutor.perf(user.username, p.perf.key)
       )(p.perf.trans)
