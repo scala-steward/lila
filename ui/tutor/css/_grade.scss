@@ -66,7 +66,7 @@ $c-grade-good: $m-good_bg--mix-90;
         padding-bottom: 2em;
         border-bottom: $border;
       }
-      $icon-size: 11em;
+      $icon-size: max(5em, min(11em, 17vw));
       .tutor-icon {
         flex: 0 0 $icon-size;
         width: $icon-size;
