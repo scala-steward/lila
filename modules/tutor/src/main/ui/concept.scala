@@ -87,7 +87,7 @@ object concept:
       frag(
         "Percentage of games that you managed to save (win or draw) after being in a lost position (< 33% ",
         winPercentLink("winning chances"),
-        ").",
+        "). ",
         "It reflects how resilient you are in difficult positions, and how well you can find resources to turn things around."
       ).some,
       percent,
@@ -121,6 +121,16 @@ object concept:
     case Phase.End => TutorIcon.towerFall
 
   def phase(phase: Phase, unit: TutorUnit = percent) = adhoc(phase.name, phaseIcon(phase), unit)
+
+  val pieceIcon: chess.Role => TutorIcon =
+    case chess.Pawn => TutorIcon.pawn
+    case chess.Knight => TutorIcon.knight
+    case chess.Bishop => TutorIcon.bishop
+    case chess.Rook => TutorIcon.rook
+    case chess.Queen => TutorIcon.queen
+    case chess.King => TutorIcon.king
+
+  def piece(piece: chess.Role, unit: TutorUnit = percent) = adhoc(piece.name, pieceIcon(piece), unit)
 
   def opening(fam: LilaOpeningFamily, color: Color) = adhoc(s"${fam.name} as $color", TutorIcon.spellBook)
 

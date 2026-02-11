@@ -30,7 +30,7 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
                 frag(" played between ", showDate(dates.start), " and ", showDate(dates.end), ".")
             ),
             timePercentAndRating(full, report),
-            ul(TutorCompare.mixedBag(report.relevantComparisons)(4).map(compare.show))
+            ul(TutorCompare.mixedBag(report.relevantComparisons)(4).map(compare.show(_)))
           )
         ),
         div(cls := "tutor__perf__angles tutor-cards")(
@@ -67,15 +67,16 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
             frag(report.perf.trans, " phases"),
             urlOf(user.username, report.perf.key, "phases".some).some
           ):
-            report.phases.map: phase =>
+            report.phases.list.map: phase =>
               grade.peerGrade(concept.phase(phase.phase), phase.mix)
           ,
           angleCard(
             frag(report.perf.trans, " pieces"),
             urlOf(user.username, report.perf.key, "pieces".some).some
-          ):
-            report.phases.map: phase =>
-              grade.peerGrade(concept.phase(phase.phase), phase.mix)
+          )(
+            report.pieces.list.map: piece =>
+              grade.peerGrade(concept.piece(piece.role), piece.mix)
+          )(cls := "tutor__perf__angle--pieces")
         )
       )
 
@@ -113,7 +114,7 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
     a(href := routes.Tutor.user(user.username))("Tutor"),
     a(
       href := routes.Tutor.perf(user.username, report.perf.key),
-      cls := List("active" -> active.isEmpty, "text" -> true),
+      cls := List("active" -> active.isEmpty),
       dataIcon := report.perf.icon
     )(report.perf.trans),
     bits.reportAngles.map: (angle, name) =>
@@ -141,19 +142,12 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
       frag(
         div(cls := "tutor__first-box box")(
           frag(
-            boxTop(
-              h1(
-                backToPerf(report, user),
-                bits.perfSelector(full, report.perf, "phases".some),
-                bits.reportSelector(report, "phases", user),
-                bits.otherUser(user)
-              )
-            ),
-            bits.mascotSays(ul(report.phaseHighlights(3).map(compare.show)))
+            angleTop(full, report, user, "phases"),
+            bits.mascotSays(ul(report.phases.highlights(3).map(compare.show(_))))
           )
         ),
         div(cls := "tutor-cards tutor-cards--triple")(
-          report.phases.map: phase =>
+          report.phases.list.map: phase =>
             st.section(cls := "tutor-card tutor__phases__phase")(
               div(cls := "tutor-card__top")(
                 div(cls := "tutor-card__top__title tutor-card__top__title--pad")(
@@ -200,33 +194,37 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
       frag(
         div(cls := "tutor__first-box box")(
           frag(
-            boxTop(
-              h1(
-                backToPerf(report, user),
-                bits.perfSelector(full, report.perf, "pieces".some),
-                bits.reportSelector(report, "pieces", user),
-                bits.otherUser(user)
-              )
-            ),
-            bits.mascotSays(ul(report.pieceHighlights(3).map(compare.show)))
+            angleTop(full, report, user, "pieces"),
+            bits.mascotSays(ul(report.pieces.highlights(3).map(compare.show(_, "with"))))
           )
-        )
+        ),
+        div(cls := "tutor-cards"):
+          report.pieces.list.map: piece =>
+            div(cls := "tutor__pieces__piece tutor-card")(
+              div(cls := "tutor-card__top")(
+                concept.pieceIcon(piece.role).frag,
+                div(cls := "tutor-card__top__title")(
+                  h3(cls := "tutor-card__top__title__text")(piece.role.name),
+                  div(cls := "tutor-card__top__title__sub")(
+                    bits.percentFrag(report.pieces.frequency(piece.role)),
+                    " of your moves"
+                  )
+                )
+              ),
+              div(cls := "tutor-card__content tutor-grades")(
+                grade.peerGrade(concept.accuracy, piece.accuracy),
+                grade.peerGrade(concept.tacticalAwareness, piece.awareness)
+              )
+            )
       )
 
   def skills(full: TutorFullReport, report: TutorPerfReport, user: User)(using Context) =
     bits.page(menu = menu(user, report, "skills".some))(cls := "tutor__skills tutor-layout"):
       frag(
         div(cls := "tutor__first-box box")(
-          boxTop(
-            h1(
-              backToPerf(report, user),
-              bits.perfSelector(full, report.perf, "skills".some),
-              bits.reportSelector(report, "skills", user),
-              bits.otherUser(user)
-            )
-          ),
+          angleTop(full, report, user, "skills"),
           bits.mascotSays(
-            ul(report.skillHighlights(3).map(compare.show))
+            ul(report.skillHighlights(3).map(compare.show(_)))
           )
         ),
         div(cls := "tutor-grades box box-pad")(
@@ -241,16 +239,9 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
     bits.page(menu = menu(user, report, "time".some))(cls := "tutor__time tutor-layout"):
       frag(
         div(cls := "tutor__first-box box")(
-          boxTop(
-            h1(
-              backToPerf(report, user),
-              bits.perfSelector(full, report.perf, "time".some),
-              bits.reportSelector(report, "time", user),
-              bits.otherUser(user)
-            )
-          ),
+          angleTop(full, report, user, "time"),
           bits.mascotSays(
-            ul(report.timeHighlights(5).map(compare.show))
+            ul(report.timeHighlights(5).map(compare.show(_)))
           )
         ),
         div(cls := "tutor-grades box box-pad")(
@@ -258,6 +249,17 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
           grade.peerGradeWithDetail(concept.clockFlagVictory, report.flagging.win, InsightPosition.Game),
           grade.peerGradeWithDetail(concept.clockTimeUsage, report.clockUsage, InsightPosition.Game)
         )
+      )
+
+  private def angleTop(full: TutorFullReport, report: TutorPerfReport, user: User, angle: Angle)(using
+      Context
+  ) =
+    boxTop:
+      h1(
+        backToPerf(report, user),
+        bits.perfSelector(full, report.perf, angle.some),
+        bits.reportSelector(report, angle, user),
+        bits.otherUser(user)
       )
 
   private def backToPerf(report: TutorPerfReport, user: User) =
