@@ -69,7 +69,6 @@ export default class RelayCtrl {
       data.tour,
       () => this.openTab('players'),
       study.ctrl.isEmbed,
-      () => study.data.federations,
       () => (study.multiBoard.showResults() ? undefined : this.round.id),
       fideId => data.photos[fideId],
       this.redraw,
@@ -77,7 +76,6 @@ export default class RelayCtrl {
     this.teamLeaderboard = new RelayTeamLeaderboard(
       this.data.tour.id,
       () => this.openTab('team-results'),
-      this.study.data.federations,
       this.redraw,
       this.players,
     );

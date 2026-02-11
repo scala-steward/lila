@@ -4,7 +4,7 @@ import { json as xhrJson } from 'lib/xhr';
 import type { RelayTeamName, RelayTeamStandings, TourId } from './interfaces';
 import RelayPlayers, { renderPlayers, tableAugment, type RelayPlayer } from './relayPlayers';
 import { throttle } from 'lib';
-import type { Federations, StudyPlayerFromServer } from '../interfaces';
+import type { StudyPlayerFromServer } from '../interfaces';
 import { convertPlayerFromServer } from '../studyChapters';
 import type { Tablesort } from 'tablesort';
 
@@ -15,7 +15,6 @@ export default class RelayTeamLeaderboard {
   constructor(
     private readonly tourId: TourId,
     private readonly switchToTeamResultsTab: () => void,
-    private readonly federations: Federations | undefined,
     private readonly redraw: Redraw,
     private readonly players: RelayPlayers,
   ) {
@@ -27,7 +26,7 @@ export default class RelayTeamLeaderboard {
     this.standings = await xhrJson(`/broadcast/${this.tourId}/teams/standings`);
     this.standings?.forEach(teamEntry => {
       teamEntry.players = teamEntry.players.map((player: RelayPlayer & StudyPlayerFromServer) =>
-        convertPlayerFromServer(player, this.federations),
+        convertPlayerFromServer(player),
       );
     });
     this.table?.refresh();
