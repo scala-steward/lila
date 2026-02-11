@@ -30,7 +30,7 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
                 frag(" played between ", showDate(dates.start), " and ", showDate(dates.end), ".")
             ),
             timePercentAndRating(full, report),
-            ul(TutorCompare.mixedBag(report.relevantComparisons)(4).map(compare.show))
+            ul(TutorCompare.mixedBag(report.relevantComparisons)(4).map(compare.show(_)))
           )
         ),
         div(cls := "tutor__perf__angles tutor-cards")(
@@ -74,7 +74,7 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
             frag(report.perf.trans, " pieces"),
             urlOf(user.username, report.perf.key, "pieces".some).some
           )(
-            report.pieces.map: piece =>
+            report.pieces.list.map: piece =>
               grade.peerGrade(concept.piece(piece.role), piece.mix)
           )(cls := "tutor__perf__angle--pieces")
         )
@@ -114,7 +114,7 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
     a(href := routes.Tutor.user(user.username))("Tutor"),
     a(
       href := routes.Tutor.perf(user.username, report.perf.key),
-      cls := List("active" -> active.isEmpty, "text" -> true),
+      cls := List("active" -> active.isEmpty),
       dataIcon := report.perf.icon
     )(report.perf.trans),
     bits.reportAngles.map: (angle, name) =>
@@ -143,7 +143,7 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
         div(cls := "tutor__first-box box")(
           frag(
             angleTop(full, report, user, "phases"),
-            bits.mascotSays(ul(report.phases.highlights(3).map(compare.show)))
+            bits.mascotSays(ul(report.phases.highlights(3).map(compare.show(_))))
           )
         ),
         div(cls := "tutor-cards tutor-cards--triple")(
@@ -195,18 +195,19 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
         div(cls := "tutor__first-box box")(
           frag(
             angleTop(full, report, user, "pieces"),
-            bits.mascotSays(ul(report.pieceHighlights(3).map(compare.show)))
+            bits.mascotSays(ul(report.pieces.highlights(3).map(compare.show(_, "with"))))
           )
         ),
         div(cls := "tutor-cards"):
-          report.pieces.map: piece =>
+          report.pieces.list.map: piece =>
             div(cls := "tutor__pieces__piece tutor-card")(
               div(cls := "tutor-card__top")(
                 concept.pieceIcon(piece.role).frag,
                 div(cls := "tutor-card__top__title")(
                   h3(cls := "tutor-card__top__title__text")(piece.role.name),
                   div(cls := "tutor-card__top__title__sub")(
-                    "??% of your moves"
+                    bits.percentFrag(report.pieces.frequency(piece.role)),
+                    " of your moves"
                   )
                 )
               ),
@@ -223,7 +224,7 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
         div(cls := "tutor__first-box box")(
           angleTop(full, report, user, "skills"),
           bits.mascotSays(
-            ul(report.skillHighlights(3).map(compare.show))
+            ul(report.skillHighlights(3).map(compare.show(_)))
           )
         ),
         div(cls := "tutor-grades box box-pad")(
@@ -240,7 +241,7 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
         div(cls := "tutor__first-box box")(
           angleTop(full, report, user, "time"),
           bits.mascotSays(
-            ul(report.timeHighlights(5).map(compare.show))
+            ul(report.timeHighlights(5).map(compare.show(_)))
           )
         ),
         div(cls := "tutor-grades box box-pad")(

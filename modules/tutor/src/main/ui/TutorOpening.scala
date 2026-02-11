@@ -115,7 +115,7 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
             )
           ),
           bits.mascotSays(
-            report.openingHighlights(3).map(compare.show)
+            report.openingHighlights(3).map(compare.show(_))
           )
         ),
         div(cls := "tutor__openings__colors tutor__pad")(Color.all.map { color =>

@@ -68,6 +68,7 @@ private object TutorBsonHandlers:
   given BSONDocumentHandler[TutorFlagging] = Macros.handler
   given BSONDocumentHandler[InsightPerfStats] = Macros.handler
   given BSONHandler[TutorPhases] = listWrapper[TutorPhase, TutorPhases](TutorPhases.apply, _.list)
+  given BSONHandler[TutorPieces] = listWrapper[TutorPiece, TutorPieces](TutorPieces.apply, _.list)
 
   given BSONDocumentHandler[TutorPerfReport] = Macros.handler
   given BSONDocumentHandler[TutorFullReport] = Macros.handler

@@ -1,6 +1,6 @@
 package lila.tutor
 
-import chess.{ ByColor, Color, Role }
+import chess.{ ByColor, Color }
 
 import lila.analyse.AccuracyPercent
 import lila.common.LilaOpeningFamily
@@ -21,23 +21,11 @@ case class TutorPerfReport(
     clockUsage: TutorBothOption[ClockPercent],
     openings: ByColor[TutorColorOpenings],
     phases: TutorPhases,
-    pieces: List[TutorPiece],
+    pieces: TutorPieces,
     flagging: TutorFlagging
 ):
   lazy val estimateTotalTime: Option[FiniteDuration] =
     (perf != PerfType.Correspondence).option(stats.time * 2)
-
-  lazy val pieceAccuracyCompare = TutorCompare[Role, AccuracyPercent](
-    InsightDimension.PieceRole,
-    TutorMetric.Accuracy,
-    pieces.map { piece => (piece.role, piece.accuracy) }
-  )
-
-  lazy val pieceAwarenessCompare = TutorCompare[Role, GoodPercent](
-    InsightDimension.PieceRole,
-    TutorMetric.Awareness,
-    pieces.map { piece => (piece.role, piece.awareness) }
-  )
 
   lazy val globalAccuracyCompare = TutorCompare[PerfType, AccuracyPercent](
     InsightDimension.Perf,
@@ -84,8 +72,6 @@ case class TutorPerfReport(
   def skillCompares =
     List(globalAccuracyCompare, globalAwarenessCompare, globalResourcefulnessCompare, globalConversionCompare)
 
-  def pieceCompares = List(pieceAccuracyCompare, pieceAwarenessCompare)
-
   val clockCompares = List(globalPressureCompare, timeUsageCompare)
 
   def openingCompares: List[TutorCompare[LilaOpeningFamily, ?]] = Color.all.flatMap: color =>
@@ -97,8 +83,6 @@ case class TutorPerfReport(
   val skillHighlights = TutorCompare.mixedBag(skillCompares.flatMap(_.peerComparisons))
 
   val openingHighlights = TutorCompare.mixedBag(openingCompares.flatMap(_.allComparisons))
-
-  val pieceHighlights = TutorCompare.mixedBag(pieceCompares.flatMap(_.peerComparisons))
 
   val timeHighlights = TutorCompare.mixedBag(clockCompares.flatMap(_.peerComparisons))
 

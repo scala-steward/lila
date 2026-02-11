@@ -51,7 +51,8 @@ private object GoodPercent extends OpaqueDouble[GoodPercent]:
   given Percent[GoodPercent] = Percent.of(GoodPercent)
   given lila.db.NoDbHandler[GoodPercent] with {}
   extension (a: GoodPercent) def toInt = Percent.toInt(a)
-  def apply(a: Double, b: Double): GoodPercent = GoodPercent(100 * a / b)
+  def apply(a: Double, b: Double): GoodPercent =
+    if b > 0 then GoodPercent(100 * a / b) else GoodPercent(0)
 
 // value from -1 (worse) to +1 (best)
 private case class Grade private (value: Double):
