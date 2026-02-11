@@ -279,7 +279,7 @@ const groupSelect = (ctx: RelayViewContext, group: RelayGroup) => {
   const updateCheckboxAndToggle = () => {
     const checkbox = document.querySelector<HTMLInputElement>(`#${inputId}`);
     if (checkbox) checkbox.checked = false;
-    relay.groupSelectShow();
+    relay.groupSelectShow(!checkbox);
   };
 
   return hl(
@@ -347,7 +347,7 @@ const roundSelect = (relay: RelayCtrl, study: StudyCtrl) => {
   const updateCheckboxAndToggle = () => {
     const checkbox = document.querySelector<HTMLInputElement>(`#${inputId}`);
     if (checkbox) checkbox.checked = false;
-    relay.roundSelectShow.toggle();
+    relay.roundSelectShow(!checkbox);
   };
   const extractHrefAndNavigate = (event: MouseEvent | KeyboardEvent) => {
     const target = event.target as HTMLElement;
