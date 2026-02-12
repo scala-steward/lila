@@ -193,7 +193,8 @@ final class StreamerBits(helpers: Helpers)(picfitUrl: lila.memo.PicfitUrl):
           id,
           id,
           s.subscribed,
-          action = routes.Streamer.subscribe(s.streamer.userId, !s.subscribed).url.some
+          action = routes.Streamer.subscribe(s.streamer.userId, !s.subscribed).url.some,
+          cssClass = "cmn-favourite"
         ),
         trans.site.subscribe()
       )
