@@ -2825,6 +2825,10 @@ interface I18n {
     trappedPiece: string;
     /** A piece is unable to escape capture as it has limited moves. */
     trappedPieceDescription: string;
+    /** Swallow's tail mate */
+    swallowstailMate: string;
+    /** A checkmate pattern that visually resembles the appearance of a swallow’s tail, similar to a V shape. */
+    swallowstailMateDescription: string;
     /** Triangle mate */
     triangleMate: string;
     /** The queen and rook, one square away from the enemy king, are on the same rank or file, separated by one square, forming a triangle. */

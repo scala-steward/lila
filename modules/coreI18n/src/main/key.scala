@@ -1447,6 +1447,8 @@ object I18nKey:
     val `smotheredMateDescription`: I18nKey = "puzzleTheme:smotheredMateDescription"
     val `superGM`: I18nKey = "puzzleTheme:superGM"
     val `superGMDescription`: I18nKey = "puzzleTheme:superGMDescription"
+    val `swallowstailMate`: I18nKey = "puzzleTheme:swallowstailMate"
+    val `swallowstailMateDescription`: I18nKey = "puzzleTheme:swallowstailMateDescription"
     val `trappedPiece`: I18nKey = "puzzleTheme:trappedPiece"
     val `trappedPieceDescription`: I18nKey = "puzzleTheme:trappedPieceDescription"
     val `underPromotion`: I18nKey = "puzzleTheme:underPromotion"

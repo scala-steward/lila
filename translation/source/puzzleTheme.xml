@@ -71,6 +71,8 @@
   <string name="pillsburysMateDescription">The rook delivers checkmate, while the bishop helps to confine it.</string>
   <string name="morphysMate">Morphy's mate</string>
   <string name="morphysMateDescription">Use the bishop to check the king, while your rook helps to confine it.</string>
+  <string name="swallowstailMate">Swallow's tail mate</string>
+  <string name="swallowstailMateDescription">A checkmate pattern that visually resembles the appearance of a swallow’s tail, similar to a V shape.</string>
   <string name="triangleMate">Triangle mate</string>
   <string name="triangleMateDescription">The queen and rook, one square away from the enemy king, are on the same rank or file, separated by one square, forming a triangle.</string>
   <string name="vukovicMate">Vukovic mate</string>
