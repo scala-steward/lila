@@ -1391,6 +1391,8 @@ object I18nKey:
     val `pillsburysMateDescription`: I18nKey = "puzzleTheme:pillsburysMateDescription"
     val `morphysMate`: I18nKey = "puzzleTheme:morphysMate"
     val `morphysMateDescription`: I18nKey = "puzzleTheme:morphysMateDescription"
+    val `swallowstailMate`: I18nKey = "puzzleTheme:swallowstailMate"
+    val `swallowstailMateDescription`: I18nKey = "puzzleTheme:swallowstailMateDescription"
     val `triangleMate`: I18nKey = "puzzleTheme:triangleMate"
     val `triangleMateDescription`: I18nKey = "puzzleTheme:triangleMateDescription"
     val `vukovicMate`: I18nKey = "puzzleTheme:vukovicMate"

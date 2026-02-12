@@ -94,6 +94,7 @@ object PuzzleTheme:
   val short = PuzzleTheme(i.short, i.shortDescription)
   val skewer = PuzzleTheme(i.skewer, i.skewerDescription)
   val superGM = PuzzleTheme(i.superGM, i.superGMDescription)
+  val swallowstailMate = PuzzleTheme(i.swallowstailMate, i.swallowstailMateDescription)
   val trappedPiece = PuzzleTheme(i.trappedPiece, i.trappedPieceDescription)
   val underPromotion = PuzzleTheme(i.underPromotion, i.underPromotionDescription)
   val veryLong = PuzzleTheme(i.veryLong, i.veryLongDescription)
@@ -168,6 +169,7 @@ object PuzzleTheme:
       pillsburysMate,
       morphysMate,
       operaMate,
+      swallowstailMate,
       triangleMate,
       vukovicMate,
       smotheredMate
