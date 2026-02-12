@@ -13,6 +13,7 @@ import lila.db.dsl.{ *, given }
 import lila.rating.{ Perf, PerfType, UserPerfs }
 import lila.core.user.KidMode
 import lila.common.Bus
+import lila.core.perm.Granter
 
 final class ClasApi(
     colls: ClasColls,
@@ -94,8 +95,8 @@ final class ClasApi(
       userRepo.byOrderedIds(clas.teachers.toList, readPref = _.sec)
 
     def isTeacherOf(teacher: User, clasId: ClasId): Fu[Boolean] =
-      filters
-        .teacher(teacher.id)
+      Granter
+        .of(_.Teacher)(teacher)
         .so:
           coll.exists($id(clasId) ++ $doc("teachers" -> teacher.id))
 
