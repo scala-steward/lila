@@ -48,7 +48,7 @@ final class LightUserApi(repo: UserRepo, cacheApi: CacheApi)(using Executor)
           .find($id(id), projection)
           .one[LightUser]
           .recover:
-            case _: reactivemongo.api.bson.exceptions.BSONValueNotFoundException => LightUser.ghost.some
+            case _: exceptions.BSONValueNotFoundException => LightUser.ghost.some
     ,
     default = id => LightUser(id, id.into(UserName), None, None, PatronMonths.zero, None).some,
     strategy = Syncache.Strategy.WaitAfterUptime(10.millis),
