@@ -295,7 +295,7 @@ private final class RelayPlayerApi(
                           color,
                           tags.points,
                           round.rated,
-                          toursById.get(round.tourId).flatMap(_.info.fideTc).getOrElse(FideTC.standard),
+                          toursById.get(round.tourId).flatMap(_.info.fideTC).getOrElse(FideTC.standard),
                           round.customScoring,
                           unplayed = tags.value.contains(RelayGame.unplayedTag)
                         )

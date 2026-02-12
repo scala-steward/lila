@@ -45,7 +45,7 @@ final class SessionStore(val coll: Coll, cacheApi: lila.memo.CacheApi)(using Exe
     authCache.underlying.synchronous.invalidate(sessionId)
 
   private[security] def save(
-      sessionId: SessionId,
+      signupSessionId: Option[SessionId], // none to reuse if possible, some for signup
       userId: UserId,
       req: RequestHeader,
       apiVersion: Option[ApiVersion],
@@ -53,22 +53,28 @@ final class SessionStore(val coll: Coll, cacheApi: lila.memo.CacheApi)(using Exe
       fp: Option[FingerPrint],
       proxy: lila.core.security.IsProxy,
       pwned: IsPwned
-  ): Funit =
-    coll.insert
-      .one:
-        $doc(
-          "_id" -> sessionId,
-          "user" -> userId,
-          "ip" -> HTTPRequest.ipAddress(req),
-          "ua" -> HTTPRequest.userAgent(req).some.filter(_ != UserAgent.zero),
-          "date" -> nowInstant,
-          "up" -> up,
-          "api" -> apiVersion, // lichobile
-          "fp" -> fp.flatMap(lila.security.FingerHash.from),
-          "proxy" -> proxy.yes.option(proxy),
-          "pwned" -> pwned.yes.option(true)
-        )
-      .void
+  ): Fu[SessionId] =
+    val prevSelector = $doc(
+      "user" -> userId,
+      "ip" -> HTTPRequest.ipAddress(req),
+      "ua" -> HTTPRequest.userAgent(req).some.filter(_ != UserAgent.zero),
+      "up" -> false
+    )
+    val update = $doc(
+      "up" -> up,
+      "date" -> nowInstant,
+      "api" -> apiVersion, // lichobile
+      "fp" -> fp.flatMap(lila.security.FingerHash.from),
+      "proxy" -> proxy.yes.option(proxy),
+      "pwned" -> pwned.yes.option(true)
+    )
+    signupSessionId.isEmpty
+      .so(coll.primitiveOne[SessionId](prevSelector, "_id"))
+      .flatMap:
+        case Some(prev) => coll.update.one($id(prev), $set(update)).inject(prev)
+        case None =>
+          val sid = signupSessionId | SessionId(scalalib.SecureRandom.nextString(22))
+          coll.insert.one($id(sid) ++ prevSelector ++ update).inject(sid)
 
   private[security] def upsertOAuth(
       userId: UserId,
@@ -170,27 +176,22 @@ final class SessionStore(val coll: Coll, cacheApi: lila.memo.CacheApi)(using Exe
     def compositeKey = s"$ip $ua"
   private given BSONDocumentReader[DedupInfo] = Macros.reader
 
-  def dedup(userId: UserId, keepSessionId: SessionId): Funit =
-    coll
-      .find(
-        $doc(
-          "user" -> userId,
-          "up" -> true
-        )
-      )
+  def dedup(userId: UserId, keepSessionId: SessionId): Funit = for
+    sessions <- coll
+      .find($doc("user" -> userId, "up" -> true))
       .sort($doc("date" -> -1))
       .cursor[DedupInfo]()
       .list(1000)
-      .flatMap { sessions =>
-        val olds = sessions
-          .groupBy(_.compositeKey)
-          .view
-          .values
-          .flatMap(_.drop(1))
-          .filter(_._id != keepSessionId)
-          .map(_._id)
-        coll.delete.one($inIds(olds)).void
-      } >> uncacheAllOf(userId)
+    olds = sessions
+      .groupBy(_.compositeKey)
+      .view
+      .values
+      .flatMap(_.drop(1))
+      .filter(_._id != keepSessionId)
+      .map(_._id)
+    _ <- coll.delete.one($inIds(olds)).void
+    _ <- uncacheAllOf(userId)
+  yield ()
 
   def shareAnIpOrFp(users: PairOf[UserId]): Fu[Boolean] =
     coll.aggregateExists(_.sec): framework =>

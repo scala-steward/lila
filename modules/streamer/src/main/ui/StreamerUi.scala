@@ -38,11 +38,8 @@ final class StreamerUi(helpers: Helpers, bits: StreamerBits)(using netDomain: Ne
         div(cls := "overview")(
           bits.streamerTitle(s),
           s.streamer.headline.map(_.value).map { d =>
-            p(
-              cls := s"headline ${
-                  if d.length < 60 then "small" else if d.length < 120 then "medium" else "large"
-                }"
-            )(d)
+            val cssClass = if d.length < 60 then "small" else if d.length < 120 then "medium" else "large"
+            p(cls := s"headline $cssClass")(d)
           },
           div(cls := "services")(
             s.streamer.twitch.map: twitch =>
@@ -61,10 +58,7 @@ final class StreamerUi(helpers: Helpers, bits: StreamerBits)(using netDomain: Ne
                     p(cls := "at")(trs.lastStream(momentFromNow(liveAt)))
                 )
           ,
-          div(cls := "streamer-footer")(
-            (!requests).option(bits.subscribeButtonFor(s)),
-            bits.streamerProfile(s)
-          )
+          div(cls := "streamer-footer")(bits.streamerProfile(s))
         )
       )
 
@@ -77,12 +71,11 @@ final class StreamerUi(helpers: Helpers, bits: StreamerBits)(using netDomain: Ne
           bits.menu(if requests then "requests" else "index", none)(cls := " page-menu__menu"),
           div(cls := "page-menu__content box streamer-list")(
             boxTop(h1(dataIcon := Icon.Mic, cls := "text")(title)),
-            (!requests).option(
-              div(cls := "list force-ltr live")(
+            (!requests).option:
+              div(cls := "list force-ltr live"):
                 live.map: s =>
                   st.article(cls := "streamer")(widget(s, s.stream))
-              )
-            ),
+            ,
             div(cls := "list force-ltr infinite-scroll")(
               (live.size % 2 == 1).option(div(cls := "none")),
               pager.currentPageResults.map: s =>

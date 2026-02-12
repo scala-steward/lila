@@ -5,14 +5,16 @@ import { toggle as baseToggle, type Toggle } from '@/index';
 import * as xhr from '@/xhr';
 import * as licon from '@/licon';
 
+export function enter<E extends HTMLElement>(effect: (target: E) => void) {
+  return (e: Event): void => {
+    if (e instanceof KeyboardEvent && e.key === 'Enter') effect(e.target as E);
+  };
+}
+
 export function toggleBoxInit(): void {
   $('.toggle-box--toggle:not(.toggle-box--ready)').each(function (this: HTMLFieldSetElement) {
     const toggle = () => this.classList.toggle('toggle-box--toggle-off');
-    $(this)
-      .addClass('toggle-box--ready')
-      .children('legend')
-      .on('click', toggle)
-      .on('keypress', e => e.key === 'Enter' && toggle());
+    $(this).addClass('toggle-box--ready').children('legend').on('click', toggle).on('keydown', enter(toggle));
   });
 }
 

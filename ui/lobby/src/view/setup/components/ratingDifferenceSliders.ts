@@ -45,7 +45,7 @@ export const ratingDifferenceSliders = (ctrl: LobbyController) => {
         ? {
             title: i18n.site.ratingRangeIsDisabledBecauseYourRatingIsProvisional,
             'aria-disabled': 'true',
-            tabindex: 0,
+            tabindex: -1,
           }
         : undefined,
     },
