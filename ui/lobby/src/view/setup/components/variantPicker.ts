@@ -1,4 +1,4 @@
-import { hl } from 'lib/view';
+import { enter, hl } from 'lib/view';
 import type LobbyController from '@/ctrl';
 import { variants, variantsForGameType } from '@/options';
 import { option } from 'lib/setup/option';
@@ -72,12 +72,10 @@ export const variantPicker = (ctrl: LobbyController) => {
                       setupCtrl.variant(v.key);
                       updateCheckboxAndToggle();
                     },
-                    keydown: (event: KeyboardEvent) => {
-                      if (event.key === 'Enter') {
-                        setupCtrl.variant(v.key);
-                        updateCheckboxAndToggle();
-                      }
-                    },
+                    keydown: enter(() => {
+                      setupCtrl.variant(v.key);
+                      updateCheckboxAndToggle();
+                    }),
                   },
                 },
                 [

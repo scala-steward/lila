@@ -1,7 +1,7 @@
 import type AnalyseCtrl from '@/ctrl';
 import RelayCtrl, { type RelayTab } from './relayCtrl';
 import * as licon from 'lib/licon';
-import { bind, dataIcon, onInsert, hl, type LooseVNode, copyMeInput } from 'lib/view';
+import { bind, dataIcon, onInsert, hl, type LooseVNode, copyMeInput, enter } from 'lib/view';
 import { cmnToggleWrap } from 'lib/view/cmn-toggle';
 import type { VNode } from 'snabbdom';
 import { innerHTML, richHTML } from 'lib/richText';
@@ -310,11 +310,7 @@ const tourSelect = (ctx: RelayViewContext, group: RelayGroup) => {
                 },
                 attrs: { href: study.embeddablePath(`/broadcast/-/${tour.id}`) },
                 on: {
-                  keydown: (event: KeyboardEvent) => {
-                    if (event.key === 'Enter' && event.target) {
-                      (event.target as HTMLElement).click();
-                    }
-                  },
+                  keydown: enter(target => target.click()),
                 },
               },
               [tour.name, tourStateIcon(tour, false)],
@@ -349,8 +345,7 @@ const roundSelect = (relay: RelayCtrl, study: StudyCtrl) => {
     if (checkbox) checkbox.checked = false;
     relay.roundSelectShow(!checkbox);
   };
-  const extractHrefAndNavigate = (event: MouseEvent | KeyboardEvent) => {
-    const target = event.target as HTMLElement;
+  const extractHrefAndNavigate = (target: HTMLElement) => {
     const href = $(target).find('a').attr('href') ?? $(target).parents('tr').find('a').attr('href');
     if (href && href.split('#')[0] !== window.location.pathname) {
       site.redirect(href);
@@ -407,12 +402,8 @@ const roundSelect = (relay: RelayCtrl, study: StudyCtrl) => {
                       tabindex: 0,
                     },
                     on: {
-                      click: extractHrefAndNavigate,
-                      keydown: (event: KeyboardEvent) => {
-                        if (event.key === 'Enter') {
-                          extractHrefAndNavigate(event);
-                        }
-                      },
+                      click: e => extractHrefAndNavigate(e.target as HTMLElement),
+                      keydown: enter(extractHrefAndNavigate),
                     },
                   },
                   [
