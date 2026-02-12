@@ -1,7 +1,7 @@
 package lila.tutor
 package ui
 
-import lila.insight.{ InsightMetric, InsightDimension, Phase }
+import lila.insight.{ InsightMetric, Phase }
 import lila.ui.ScalatagsTemplate.*
 import lila.common.LilaOpeningFamily
 
@@ -10,8 +10,7 @@ sealed class TutorConcept(
     val descShort: String,
     val descLong: Option[Frag],
     val unit: TutorUnit,
-    val icon: TutorIcon,
-    val insightPath: Option[String] = none
+    val icon: TutorIcon
 )
 
 object concept:
@@ -51,8 +50,6 @@ object concept:
 
   private val winPercentLink = a(href := "/page/accuracy#first-compute-win")
   private val accuracyLink = a(href := "/page/accuracy#then-compute-accuracy")
-  private def insightPath(metric: InsightMetric, dimension: InsightDimension[?]) =
-    routes.Insight.path(UserStr("me"), metric.key, dimension.key, "").url.some
 
   val accuracy =
     TutorConcept(
@@ -64,8 +61,7 @@ object concept:
         ". It applies to all your moves, and reflects the global objective quality of your play."
       ).some,
       percent,
-      TutorIcon.targeting,
-      insightPath(InsightMetric.MeanAccuracy, InsightDimension.Perf)
+      TutorIcon.targeting
     )
   val tacticalAwareness =
     TutorConcept(
@@ -77,8 +73,7 @@ object concept:
         " of your moves after your opponent blunders. It shows your ability to identify and take advantage of tactical opportunities."
       ).some,
       percent,
-      TutorIcon.eyeTarget,
-      insightPath(InsightMetric.Awareness, InsightDimension.Perf)
+      TutorIcon.eyeTarget
     )
   val resourcefulness =
     TutorConcept(
