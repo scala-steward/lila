@@ -53,6 +53,7 @@ object PuzzleTheme:
     PuzzleTheme(i.dovetailMate, i.dovetailMateDescription)
   val equality = PuzzleTheme(i.equality, i.equalityDescription)
   val endgame = PuzzleTheme(i.endgame, i.endgameDescription)
+  val epauletteMate = PuzzleTheme(i.epauletteMate, i.epauletteMateDescription)
   val enPassant = PuzzleTheme(I18nKey.site.enPassant, i.enPassantDescription)
   val exposedKing = PuzzleTheme(i.exposedKing, i.exposedKingDescription)
   val fork = PuzzleTheme(i.fork, i.forkDescription)
@@ -162,6 +163,7 @@ object PuzzleTheme:
       cornerMate,
       doubleBishopMate,
       dovetailMate,
+      epauletteMate,
       hookMate,
       killBoxMate,
       pillsburysMate,

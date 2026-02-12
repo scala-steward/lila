@@ -1371,6 +1371,8 @@ object I18nKey:
     val `endgame`: I18nKey = "puzzleTheme:endgame"
     val `endgameDescription`: I18nKey = "puzzleTheme:endgameDescription"
     val `enPassantDescription`: I18nKey = "puzzleTheme:enPassantDescription"
+    val `epauletteMate`: I18nKey = "puzzleTheme:epauletteMate"
+    val `epauletteMateDescription`: I18nKey = "puzzleTheme:epauletteMateDescription"
     val `exposedKing`: I18nKey = "puzzleTheme:exposedKing"
     val `exposedKingDescription`: I18nKey = "puzzleTheme:exposedKingDescription"
     val `fork`: I18nKey = "puzzleTheme:fork"
