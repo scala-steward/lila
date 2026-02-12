@@ -345,8 +345,8 @@ const roundSelect = (relay: RelayCtrl, study: StudyCtrl) => {
     if (checkbox) checkbox.checked = false;
     relay.roundSelectShow(!checkbox);
   };
-  const extractHrefAndNavigate = (target: HTMLElement) => {
-    const href = $(target).find('a').attr('href') ?? $(target).parents('tr').find('a').attr('href');
+  const extractHrefAndNavigate = (round: RelayRound) => {
+    const href = study.embeddablePath(relay.roundUrlWithHash(round));
     if (href && href.split('#')[0] !== window.location.pathname) {
       site.redirect(href);
     } else {
@@ -402,21 +402,12 @@ const roundSelect = (relay: RelayCtrl, study: StudyCtrl) => {
                       tabindex: 0,
                     },
                     on: {
-                      click: e => extractHrefAndNavigate(e.target as HTMLElement),
-                      keydown: enter(extractHrefAndNavigate),
+                      click: () => extractHrefAndNavigate(round),
+                      keydown: enter(() => extractHrefAndNavigate(round)),
                     },
                   },
                   [
-                    hl(
-                      'td.name',
-                      hl(
-                        'a',
-                        {
-                          attrs: { href: study.embeddablePath(relay.roundUrlWithHash(round)), tabindex: -1 },
-                        },
-                        round.name,
-                      ),
-                    ),
+                    hl('td.name', round.name),
                     hl(
                       'td.time',
                       !!round.startsAt
