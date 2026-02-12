@@ -322,10 +322,10 @@ $hover-bg: $m-primary_bg--mix-30;
     }
     tr {
       display: table-row;
+      border-left: 3px solid transparent;
       &.current-round {
-        background: $m-primary_bg--mix-15;
-        border: 1px solid $m-primary_bg--mix-40;
-        border-width: 1px 0;
+        background: $c-bg-zebra;
+        border-left-color: $c-primary;
       }
       &:hover *,
       &:hover .round-state::before {

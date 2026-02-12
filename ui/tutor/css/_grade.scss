@@ -1,7 +1,3 @@
-$c-grade-bad: $m-bad_font--mix-80;
-$c-grade-avg: $m-brag_font-dim--mix-60;
-$c-grade-good: $m-good_bg--mix-90;
-
 .tutor {
   &-grades {
     @extend %flex-column;
