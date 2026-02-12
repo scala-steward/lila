@@ -132,10 +132,8 @@ final class Streamer(env: Env, apiC: => Api) extends LilaController(env):
   }
 
   def subscribe(streamer: UserStr, set: Boolean) = AuthBody { _ ?=> me ?=>
-    if set
-    then env.relation.subs.subscribe(me, streamer.id)
-    else env.relation.subs.unsubscribe(me, streamer.id)
-    Ok
+    for _ <- env.relation.subs.subscribe(me, streamer.id, set)
+    yield NoContent
   }
 
   def checkOnline(streamer: UserStr) = Auth { ctx ?=> me ?=>
