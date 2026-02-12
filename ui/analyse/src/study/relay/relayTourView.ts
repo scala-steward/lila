@@ -554,11 +554,7 @@ const makeTabs = (ctrl: AnalyseCtrl) => {
         attrs: { role: 'tab' },
         on: {
           click: () => relay.openTab(key),
-          keydown: (event: KeyboardEvent) => {
-            if (event.key === 'Enter') {
-              relay.openTab(key);
-            }
-          },
+          keydown: enter(() => relay.openTab(key)),
         },
       },
       name,
