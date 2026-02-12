@@ -28,12 +28,6 @@ final class FidePlayerApi(repo: FideRepo, cacheApi: CacheApi, picfitApi: PicfitA
             case (k, Some(v)) => k -> v
           .toMap
 
-  def federationNamesOf(ids: List[FideId]): Fu[Map[Federation.Id, Federation.Name]] =
-    idToPlayerCache
-      .getAll(ids)
-      .map: players =>
-        lila.fide.Federation.namesByIds(players.values.flatMap(_.flatMap(_.fed)))
-
   def withFollow(id: FideId)(using me: Option[Me]): Fu[Option[FidePlayer.WithFollow]] =
     idToPlayerCache
       .get(id)

@@ -38,7 +38,6 @@ final class Env(
   lazy val paginator = wire[FidePaginator]
 
   def federationsOf: Federation.FedsOf = playerApi.federationsOf
-  def federationNamesOf: Federation.NamesOf = playerApi.federationNamesOf
   def tokenize: Tokenize = FidePlayer.tokenize
   def guessPlayer: GuessPlayer = playerApi.guessPlayer.apply
   def getPlayer: GetPlayer = playerApi.get
