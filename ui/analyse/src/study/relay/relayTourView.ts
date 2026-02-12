@@ -1,7 +1,7 @@
 import type AnalyseCtrl from '@/ctrl';
 import RelayCtrl, { type RelayTab } from './relayCtrl';
 import * as licon from 'lib/licon';
-import { bind, dataIcon, onInsert, hl, type LooseVNode, copyMeInput } from 'lib/view';
+import { bind, dataIcon, onInsert, hl, type LooseVNode, copyMeInput, enter } from 'lib/view';
 import { cmnToggleWrap } from 'lib/view/cmn-toggle';
 import type { VNode } from 'snabbdom';
 import { innerHTML, richHTML } from 'lib/richText';
@@ -227,13 +227,13 @@ const share = (ctx: RelayViewContext) => {
     },
     [
       hl('fieldset.relay-tour__share.toggle-box.toggle-box--toggle', [
-        hl('legend', 'Share this broadcast by URL'),
+        hl('legend', { attrs: { tabindex: 0 } }, 'Share this broadcast by URL'),
         group && link(group.name, `/broadcast/${group.slug}/${group.id}`),
         link(tour.name, ctx.relay.tourPath()),
         link(tour.name + ' | ' + roundName, ctx.relay.roundPath()),
       ]),
       hl('fieldset.relay-tour__share.toggle-box.toggle-box--toggle.toggle-box--toggle-off', [
-        hl('legend', 'Download PGN'),
+        hl('legend', { attrs: { tabindex: 0 } }, 'Download PGN'),
         hl('p.form-group', [
           'We offer full PGN downloads for all our broadcasts.',
           hl('br'),
@@ -262,7 +262,7 @@ const share = (ctx: RelayViewContext) => {
         hl('p.form-group', 'Individual game download is available on each game page.'),
       ]),
       hl('fieldset.relay-tour__share.toggle-box.toggle-box--toggle.toggle-box--toggle-off', [
-        hl('legend', i18n.broadcast.embedThisBroadcast),
+        hl('legend', { attrs: { tabindex: 0 } }, i18n.broadcast.embedThisBroadcast),
         group &&
           link('Follow ongoing tournament', relayIframe(`/broadcast/${group.slug}/${group.id}`), iframeHelp),
         link('This tournament: ' + tour.name, relayIframe(ctx.relay.tourPath()), iframeHelp),
@@ -310,11 +310,7 @@ const tourSelect = (ctx: RelayViewContext, group: RelayGroup) => {
                 },
                 attrs: { href: study.embeddablePath(`/broadcast/-/${tour.id}`) },
                 on: {
-                  keydown: (event: KeyboardEvent) => {
-                    if (event.key === 'Enter' && event.target) {
-                      (event.target as HTMLElement).click();
-                    }
-                  },
+                  keydown: enter(target => target.click()),
                 },
               },
               [tour.name, tourStateIcon(tour, false)],
@@ -349,8 +345,7 @@ const roundSelect = (relay: RelayCtrl, study: StudyCtrl) => {
     if (checkbox) checkbox.checked = false;
     relay.roundSelectShow(!checkbox);
   };
-  const extractHrefAndNavigate = (event: MouseEvent | KeyboardEvent) => {
-    const target = event.target as HTMLElement;
+  const extractHrefAndNavigate = (target: HTMLElement) => {
     const href = $(target).find('a').attr('href') ?? $(target).parents('tr').find('a').attr('href');
     if (href && href.split('#')[0] !== window.location.pathname) {
       site.redirect(href);
@@ -407,12 +402,8 @@ const roundSelect = (relay: RelayCtrl, study: StudyCtrl) => {
                       tabindex: 0,
                     },
                     on: {
-                      click: extractHrefAndNavigate,
-                      keydown: (event: KeyboardEvent) => {
-                        if (event.key === 'Enter') {
-                          extractHrefAndNavigate(event);
-                        }
-                      },
+                      click: e => extractHrefAndNavigate(e.target as HTMLElement),
+                      keydown: enter(extractHrefAndNavigate),
                     },
                   },
                   [

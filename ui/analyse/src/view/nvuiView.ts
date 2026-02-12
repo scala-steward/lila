@@ -1,4 +1,4 @@
-import { type VNode, type LooseVNodes, type VNodeChildren, hl, bind, noTrans } from 'lib/view';
+import { type VNode, type LooseVNodes, type VNodeChildren, hl, bind, noTrans, enter } from 'lib/view';
 import { defined } from 'lib';
 import { text as xhrText } from 'lib/xhr';
 import type AnalyseCtrl from '../ctrl';
@@ -226,12 +226,13 @@ export function clickHook(main?: (el: HTMLElement) => void, post?: () => void) {
           main?.(el);
           post?.();
         });
-        el.addEventListener('keydown', (e: KeyboardEvent) => {
-          if (e.key === 'Enter') {
+        el.addEventListener(
+          'keydown',
+          enter(() => {
             main?.(el);
             post?.();
-          }
-        });
+          }),
+        );
       },
     },
   };
