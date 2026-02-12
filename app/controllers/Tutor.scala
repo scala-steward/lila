@@ -10,7 +10,7 @@ import lila.tutor.{ TutorFullReport, TutorPerfReport, TutorQueue }
 
 final class Tutor(env: Env) extends LilaController(env):
 
-  def home = Beta { _ ?=> me ?=>
+  def home = Auth { _ ?=> me ?=>
     Redirect(routes.Tutor.user(me.username))
   }
 
