@@ -13,14 +13,7 @@ import type {
 import { playerColoredResult } from './customScoreStatus';
 import { playerFedFlag } from '../playerBars';
 import { userLink, userTitle } from 'lib/view/userLink';
-import type {
-  ChapterId,
-  Federations,
-  FideId,
-  PointsStr,
-  StudyPlayer,
-  StudyPlayerFromServer,
-} from '../interfaces';
+import type { ChapterId, FideId, PointsStr, StudyPlayer, StudyPlayerFromServer } from '../interfaces';
 import { sortTable, extendTablesortNumber } from 'lib/tablesort';
 import { defined } from 'lib';
 import { type Attrs, type Hooks, init as initSnabbdom, attributesModule, type VNodeData } from 'snabbdom';
@@ -90,7 +83,6 @@ export default class RelayPlayers {
     readonly tour: RelayTour,
     readonly switchToPlayerTab: () => void,
     readonly isEmbed: boolean,
-    private readonly federations: () => Federations | undefined,
     readonly hideResultsSinceRoundId: () => RoundId | undefined,
     readonly fidePhoto: (id: FideId) => Photo | undefined,
     private readonly redraw: Redraw,
@@ -126,18 +118,17 @@ export default class RelayPlayers {
     const players: (RelayPlayer & StudyPlayerFromServer)[] = await xhrJson(
       `/broadcast/${this.tour.id}/players`,
     );
-    this.players = players.map(p => convertPlayerFromServer(p, this.federations()));
+    this.players = players.map(convertPlayerFromServer);
     this.table?.refresh();
     this.redraw();
   };
 
   loadPlayerWithGames = async (id: RelayPlayerId) => {
-    const feds = this.federations();
     const full: RelayPlayerWithGames = await xhrJson(
       `/broadcast/${this.tour.id}/players/${encodeURIComponent(id)}`,
-    ).then(p => convertPlayerFromServer(p, feds));
+    ).then(convertPlayerFromServer);
     full.games.forEach((g: RelayPlayerGame) => {
-      g.opponent = convertPlayerFromServer(g.opponent as RelayPlayer & StudyPlayerFromServer, feds);
+      g.opponent = convertPlayerFromServer(g.opponent as RelayPlayer & StudyPlayerFromServer);
     });
     return full;
   };
@@ -207,7 +198,7 @@ const playerView = (ctrl: RelayPlayers, show: PlayerToShow): VNode => {
                           hl(
                             'a.fide-player__federation',
                             { attrs: { href: `/fide/federation/${p.fed.name}` } },
-                            [playerFedFlag(p.fed), p.fed.name],
+                            [playerFedFlag(p.fed), p.fed.i18nName],
                           ),
                         ),
                       ]),
@@ -519,7 +510,7 @@ const playerTd = (player: RelayPlayer, ctrl: RelayPlayers, withTips: boolean): V
             hl('img.mini-game__flag', {
               attrs: { src: site.asset.fideFedSrc(player.fed.id) },
             }),
-            player.fed.name,
+            player.fed.i18nName,
           ]),
       ]),
     ]),

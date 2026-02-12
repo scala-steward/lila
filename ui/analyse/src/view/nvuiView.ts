@@ -583,7 +583,9 @@ function renderStudyPlayer(ctrl: AnalyseCtrl, color: Color): VNode | undefined {
       keys
         .reduce<string[]>(
           (strs, [key, i18n]) =>
-            player[key] ? strs.concat(`${i18n}: ${key === 'fed' ? player[key].name : player[key]}`) : strs,
+            player[key]
+              ? strs.concat(`${i18n}: ${key === 'fed' ? player[key].i18nName : player[key]}`)
+              : strs,
           [],
         )
         .join(' '),
