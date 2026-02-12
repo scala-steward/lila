@@ -138,17 +138,13 @@ final class Streamer(env: Env, apiC: => Api) extends LilaController(env):
     Ok
   }
 
-  def checkOnline(streamer: UserStr) = Auth { _ ?=> me ?=>
+  def checkOnline(streamer: UserStr) = Auth { ctx ?=> me ?=>
     val uid = streamer.id
-    val isMod = isGranted(_.ModLog)
-    if ctx.is(uid) || isMod then
-      limit
-        .streamerOnlineCheck(uid, rateLimited)(api.forceCheck(uid))
-        .inject(
-          Redirect(routes.Streamer.show(uid).url)
-            .flashSuccess(s"Please wait one minute while we check, then reload the page.")
-        )
-    else Unauthorized
+    limit
+      .streamerOnlineCheck(uid -> ctx.ip, rateLimited)(api.forceCheck(uid))
+      .inject:
+        Redirect(routes.Streamer.show(uid).url)
+          .flashSuccess(s"Please wait one minute while we check, then reload the page.")
   }
 
   def onTwitchEventSub = AnonBodyOf(parse.tolerantText): body =>
