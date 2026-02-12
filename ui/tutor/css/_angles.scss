@@ -1,5 +1,7 @@
 .tutor__perf__angle--pieces {
-  grid-column: span 2;
+  @media (min-width: at-least($medium)) {
+    grid-column: span 2;
+  }
   .tutor-grades {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

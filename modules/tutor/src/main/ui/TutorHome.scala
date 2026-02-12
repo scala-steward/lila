@@ -35,10 +35,48 @@ final class TutorHome(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi):
               )
             )
         ),
+        tutorConcepts,
         div(cls := "tutor__perfs tutor-cards")(
           full.report.perfs.toList.map { perfReportCard(full.report, _, user) }
         )
       )
+
+  private def tutorConcept(icon: Frag, name: Frag, desc: Frag) =
+    div(cls := "tutor-concept")(
+      div(cls := "tutor-concept__icon")(icon),
+      div(cls := "tutor-concept__content")(
+        h3(cls := "tutor-concept__name")(name),
+        div(cls := "tutor-concept__desc")(desc)
+      )
+    )
+
+  private def tutorConcepts =
+    fieldset(cls := "tutor__concepts toggle-box toggle-box--toggle toggle-box--toggle-off")(
+      legend("Tutor concepts"),
+      div(cls := "tutor-concepts")(
+        tutorConcept(
+          iconTag(Icon.Group),
+          "Peers",
+          frag(
+            strong("Players with a rating similar to yours, in a given time control."),
+            p(
+              "Each aspect of your playstyle is compared to that of your peers, giving you a concrete idea of how you perform in each area compared to players of similar strength."
+            )
+          )
+        ),
+        List(
+          concept.accuracy,
+          concept.tacticalAwareness,
+          concept.resourcefulness,
+          concept.conversion,
+          concept.performance,
+          concept.speed,
+          concept.clockFlagVictory,
+          concept.clockTimeUsage
+        ).map: c =>
+          tutorConcept(c.icon.frag, concept.show(c), frag(strong(c.descShort), c.descLong.map(p(_))))
+      )
+    )
 
   private def waitGame(game: (Pov, PgnStr)) =
     div(
