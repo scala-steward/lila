@@ -140,11 +140,12 @@ final class Streamer(env: Env, apiC: => Api) extends LilaController(env):
 
   def checkOnline(streamer: UserStr) = Auth { ctx ?=> me ?=>
     val uid = streamer.id
-    limit
-      .streamerOnlineCheck(uid -> ctx.ip, rateLimited)(api.forceCheck(uid))
-      .inject:
-        Redirect(routes.Streamer.show(uid).url)
-          .flashSuccess(s"Please wait one minute while we check, then reload the page.")
+    val redir = Redirect(routes.Streamer.show(uid).url)
+    if !env.socket.isOnline.exec(uid)
+    then redir.flashFailure("That player is not currently online.")
+    else
+      for _ <- limit.streamerOnlineCheck(uid -> ctx.ip, rateLimited)(api.forceCheck(uid))
+      yield redir.flashSuccess(s"Please wait one minute while we check, then reload the page.")
   }
 
   def onTwitchEventSub = AnonBodyOf(parse.tolerantText): body =>
