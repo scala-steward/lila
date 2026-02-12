@@ -2659,7 +2659,7 @@ interface I18n {
     endgameDescription: string;
     /** A tactic involving the en passant rule, where a pawn can capture an opponent pawn that has bypassed it using its initial two-square move. */
     enPassantDescription: string;
-    /** Epaulette Mate */
+    /** Epaulette mate */
     epauletteMate: string;
     /** Two adjacent escape squares for a checked king are occupied by other pieces. */
     epauletteMateDescription: string;
