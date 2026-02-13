@@ -22,7 +22,7 @@ final class SessionStore(val coll: Coll, cacheApi: lila.memo.CacheApi)(using Exe
   private val authCache = cacheApi[SessionId, Option[AuthInfo]](65_536, "security.session.info"):
     _.expireAfterAccess(5.minutes).buildAsyncFuture[SessionId, Option[AuthInfo]]: id =>
       coll
-        .find($doc("_id" -> id, "up" -> true), authInfoProjection.some)
+        .find($doc("_id" -> id, "up" -> true))
         .one[Bdoc]
         .map:
           _.flatMap: doc =>
@@ -32,7 +32,6 @@ final class SessionStore(val coll: Coll, cacheApi: lila.memo.CacheApi)(using Exe
 
   def authInfo(sessionId: SessionId) = authCache.get(sessionId)
 
-  private val authInfoProjection = $doc("user" -> true, "fp" -> true, "date" -> true, "_id" -> false)
   private def uncache(sessionId: SessionId): Unit =
     blocking { blockingUncache(sessionId) }
   private def uncacheAllOf(userId: UserId): Funit =
