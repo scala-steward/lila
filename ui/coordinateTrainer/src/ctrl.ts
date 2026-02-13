@@ -96,8 +96,6 @@ export default class CoordinateTrainerCtrl {
     $('#zentog').on('click', () => pubsub.emit('zen'));
     site.mousetrap.bind('z', () => pubsub.emit('zen'));
 
-    site.mousetrap.bind('enter', () => (this.playing ? null : this.start()));
-
     window.addEventListener('resize', () => requestAnimationFrame(this.updateCharts), true);
     this.voice = makeVoice({ redraw: this.redraw, tpe: 'coords' });
     this.voice.mic.initRecognizer([...'abcdefgh', ...Object.keys(rankWords), 'start', 'stop'], {

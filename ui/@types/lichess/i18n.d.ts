@@ -3723,8 +3723,6 @@ interface I18n {
     keyNextBranch: string;
     /** Next inaccuracy */
     keyNextInaccuracy: string;
-    /** Next (Learn from your mistakes) */
-    keyNextLearnFromYourMistakes: string;
     /** Next mistake */
     keyNextMistake: string;
     /** Previous branch */
