@@ -32,7 +32,7 @@ final class StreamerUi(helpers: Helpers, bits: StreamerBits)(using netDomain: Ne
     def widget(s: Streamer.WithContext, stream: Option[Stream]) =
       frag(
         if requests then a(href := s"${routes.Streamer.edit}?u=${s.user.username}", cls := "overlay")
-        else bits.redirectLink(s.user.username, stream.isDefined.some)(cls := "overlay"),
+        else bits.redirectLink(s.user.username, false.some)(cls := "overlay"),
         stream.isDefined.option(span(cls := "live-ribbon")(span(trans.streamer.live()))),
         bits.thumbnail(s.streamer, s.user),
         div(cls := "overview")(
