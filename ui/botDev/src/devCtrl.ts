@@ -11,22 +11,22 @@ import { pubsub } from 'lib/pubsub';
 import { type PermaLog, makeLog } from 'lib/permalog';
 import type { GameObserver } from './gameCtrl';
 
-export interface Result {
-  winner: Color | undefined;
+export type Result = {
+  winner?: Color;
   white?: string;
   black?: string;
-}
+};
 
-interface Test {
+type Test = {
   type: 'matchup' | 'roundRobin' | 'rate';
   players: string[];
   initialFen?: string;
-}
+};
 
-export interface Matchup {
+export type Matchup = {
   white: string;
   black: string;
-}
+};
 
 interface Script extends Test {
   games: Matchup[];
@@ -147,7 +147,7 @@ export class DevCtrl implements GameObserver {
     else return this.ratings[uid]?.[speed] ?? { r: 1500, rd: 350 };
   }
 
-  setRating(uid: string | undefined, speed: LocalSpeed, rating: Glicko): Promise<any> {
+  setRating(uid: string | undefined, speed: LocalSpeed, rating: Glicko): Promise<void | IDBValidKey> {
     if (!uid || !env.bot.bots.has(uid)) return Promise.resolve();
     this.ratings[uid] ??= {};
     this.ratings[uid][speed] = rating;
@@ -203,7 +203,7 @@ export class DevCtrl implements GameObserver {
     );
   }
 
-  private updateRatings(whiteUid: string, blackUid: string, winner: Color | undefined): Promise<any> {
+  private updateRatings(whiteUid: string, blackUid: string, winner?: Color): Promise<(void | IDBValidKey)[]> {
     const whiteScore = winner === 'white' ? 1 : winner === 'black' ? 0 : 0.5;
     const rats = [whiteUid, blackUid].map(uid => this.getRating(uid, env.game.speed));
 
