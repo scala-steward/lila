@@ -306,8 +306,7 @@
   }
 
   .box {
-    @extend %box-neat;
-
+    @extend %box-radius-bottom;
     .top {
       @extend %metal, %box-radius-top;
 
