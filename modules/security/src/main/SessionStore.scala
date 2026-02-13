@@ -160,7 +160,7 @@ final class SessionStore(val coll: Coll, cacheApi: lila.memo.CacheApi)(using Exe
       .find(
         $doc(
           "user" -> user.id,
-          "date".$gt(user.createdAt.atLeast(nowInstant.minusYears(1)))
+          "date".$gt(nowInstant.minusYears(1))
         ),
         $doc("_id" -> false, "ip" -> true, "ua" -> true, "fp" -> true, "date" -> true).some
       )
