@@ -25,7 +25,6 @@ $hover-bg: $m-primary_bg--mix-30;
       flex: 0 0 $player-height;
       button {
         @extend %flex-center-nowrap, %metal;
-        border: none;
         outline: none;
         &:hover {
           background: $hover-bg;
