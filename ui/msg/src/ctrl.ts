@@ -232,7 +232,7 @@ export default class MsgCtrl {
     if (this.textStore?.get()) network.typing(user);
   });
 
-  receiveTyping = (userId: string, cancel?: any) => {
+  receiveTyping = (userId: string, cancel?: boolean) => {
     if (this.typing) {
       clearTimeout(this.typing.timeout);
       this.typing = undefined;

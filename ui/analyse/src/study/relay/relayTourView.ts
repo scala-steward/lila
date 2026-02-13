@@ -419,7 +419,7 @@ const roundSelect = (relay: RelayCtrl, study: StudyCtrl) => {
                     ),
                     hl(
                       'td.time',
-                      !!round.startsAt
+                      round.startsAt
                         ? commonDateFormat(new Date(round.startsAt))
                         : round.startsAfterPrevious &&
                             i18n.broadcast.startsAfter(
