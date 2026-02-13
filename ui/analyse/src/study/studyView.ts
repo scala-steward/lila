@@ -90,11 +90,6 @@ export function studySideNodes(ctrl: StudyCtrl, withSearch: boolean): LooseVNode
     (ctrl.chapters.list.looksNew() && !ctrl.members.canContribute()) ||
     makeTab('chapters', i18n.study[ctrl.relay ? 'nbGames' : 'nbChapters'](ctrl.chapters.list.size()));
 
-  const openForm = () => {
-    ctrl.form.open(!ctrl.form.open());
-    ctrl.redraw();
-  };
-
   const tabs = hl('div.tabs-horiz', { attrs: { role: 'tablist' } }, [
     chaptersTab,
     ctrl.members.size() > 0 && makeTab('members', i18n.study.nbMembers(ctrl.members.size())),
@@ -109,8 +104,10 @@ export function studySideNodes(ctrl: StudyCtrl, withSearch: boolean): LooseVNode
       hl('button.more.narrow', {
         attrs: { ...dataIcon(licon.Hamburger), title: i18n.study.editStudy },
         on: {
-          click: openForm,
-          keydown: enter(openForm),
+          click: () => {
+            ctrl.form.open(!ctrl.form.open());
+            ctrl.redraw();
+          },
         },
       }),
   ]);
