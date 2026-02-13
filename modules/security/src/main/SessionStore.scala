@@ -135,7 +135,7 @@ final class SessionStore(val coll: Coll, cacheApi: lila.memo.CacheApi)(using Exe
     coll
       .find($doc("user" -> userId, "up" -> true))
       .sort($doc("date" -> -1))
-      .cursor[UserSession]()
+      .cursor[UserSession](ReadPref.sec)
       .list(nb)
 
   def allSessions(userId: UserId): AkkaStreamCursor[UserSession] =
@@ -165,7 +165,7 @@ final class SessionStore(val coll: Coll, cacheApi: lila.memo.CacheApi)(using Exe
         $doc("_id" -> false, "ip" -> true, "ua" -> true, "fp" -> true, "date" -> true).some
       )
       .sort($sort.desc("date"))
-      .cursor[Info]()
+      .cursor[Info](ReadPref.sec)
       .list(1000)
 
   // remains of never-confirmed accounts that got cleaned up
@@ -215,9 +215,6 @@ final class SessionStore(val coll: Coll, cacheApi: lila.memo.CacheApi)(using Exe
         ),
         Limit(1)
       )
-
-  def ips(user: User): Fu[Set[IpAddress]] =
-    coll.distinctEasy[IpAddress, Set]("ip", $doc("user" -> user.id))
 
   private[security] def recentByIpExists(ip: IpAddress, since: FiniteDuration): Fu[Boolean] =
     coll.secondary.exists:
