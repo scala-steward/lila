@@ -53,16 +53,12 @@ final class SessionStore(val coll: Coll, cacheApi: lila.memo.CacheApi)(using Exe
       proxy: lila.core.security.IsProxy,
       pwned: IsPwned
   ): Fu[SessionId] =
+    val sessionId = SessionId(scalalib.SecureRandom.nextString(22))
     val baseDoc = $doc(
       "user" -> userId,
       "ip" -> HTTPRequest.ipAddress(req),
       "ua" -> HTTPRequest.userAgent(req).some.filter(_ != UserAgent.zero)
     )
-    val prevSelector = baseDoc ++ $doc(
-      "up" -> false,
-      "signup".$ne(true)
-    )
-    val sessionId = SessionId(scalalib.SecureRandom.nextString(22))
     val newDoc = baseDoc ++ $doc(
       "_id" -> sessionId,
       "date" -> nowInstant,
@@ -76,6 +72,7 @@ final class SessionStore(val coll: Coll, cacheApi: lila.memo.CacheApi)(using Exe
         val doc = newDoc ++ $doc("signup" -> true, "up" -> false)
         coll.insert.one(doc).void
       else
+        val prevSelector = baseDoc ++ $doc("up" -> false, "signup".$ne(true))
         for
           _ <- coll.delete.one(prevSelector)
           doc = newDoc ++ $doc("up" -> true)
