@@ -18,7 +18,7 @@ export function initModule({ input }: { input: HTMLInputElement }) {
       .map(a => a.cloneNode(true) as HTMLAnchorElement)
       .map(a => {
         a.classList.add('complete-result', 'complete-result--menu');
-        if (!!a.querySelector('.home')) a.innerHTML = i18n.site.play;
+        if (a.querySelector('.home')) a.innerHTML = i18n.site.play;
         return a;
       });
     // distinct by href
