@@ -135,7 +135,7 @@ final class StreamerBits(helpers: Helpers)(picfitUrl: lila.memo.PicfitUrl):
     )
 
   def redirectLink(username: UserStr, isStreaming: Option[Boolean] = None): Tag =
-    a(href := routes.Streamer.show(username, redirect = ~isStreaming))
+    a(href := routes.Streamer.show(username, redirect = isStreaming | true))
 
   def liveStreams(l: LiveStreams.WithTitles)(using Translate): Frag =
     st.section(cls := "lobby__streams")(
