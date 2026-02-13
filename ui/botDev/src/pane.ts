@@ -190,7 +190,7 @@ export class Pane<Info extends PaneInfo = PaneInfo> {
     return kids.every(x => x.enabled || x.isOptional) && this.requirementsAllow;
   }
 
-  private evaluate(requirement: Requirement | undefined): boolean {
+  private evaluate(requirement?: Requirement): boolean {
     if (typeof requirement === 'string') {
       const req = requirement.trim();
       if (req.startsWith('!')) {
@@ -202,7 +202,7 @@ export class Pane<Info extends PaneInfo = PaneInfo> {
       const op = req.match(requiresOpRe)?.[0] as string;
       const [left, right] = req.split(op).map(x => x.trim());
 
-      if ([left, right].some(x => this.host.panes.byId[x]?.enabled === false)) return false;
+      if ([left, right].some(x => !this.host.panes.byId[x]?.enabled)) return false;
 
       const maybeLeftPane = this.host.panes.byId[left];
       const maybeRightPane = this.host.panes.byId[right];
