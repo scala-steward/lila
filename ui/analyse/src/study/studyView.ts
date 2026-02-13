@@ -105,7 +105,7 @@ export function studySideNodes(ctrl: StudyCtrl, withSearch: boolean): LooseVNode
         attrs: { ...dataIcon(licon.Hamburger), title: i18n.study.editStudy },
         on: {
           click: () => {
-            ctrl.form.open(!ctrl.form.open());
+            ctrl.form.open.toggle();
             ctrl.redraw();
           },
         },
