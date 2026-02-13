@@ -78,8 +78,10 @@ export async function initModule(): Promise<void> {
 }
 
 function tmpRandomTutorLink() {
-  const userId = $('main.page-menu').data('username').toLowerCase();
-  if (!myUserId() || !userId || myUserId() != userId) return;
+  const me = myUserId(),
+    userId = $('main.page-menu').data('username').toLowerCase();
+  if (!me || !userId || me != userId) return;
+  if (me.charAt(0) < 'o') return; // lame sampling
   const getNbGames = (icon: string) => {
     const text = $(`.sub-ratings a[data-icon=${icon}] rating span:last-child`).text();
     return Number.parseInt(text.replaceAll(/\D/g, ''));
