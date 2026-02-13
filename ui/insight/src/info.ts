@@ -14,7 +14,7 @@ export function tutor() {
       attrs: { href: '/tutor' },
     },
     [
-      h('img.uflair', {
+      h('img', {
         attrs: { src: site.asset.flairSrc('nature.octopus-howard') },
       }),
       h('span', [h('strong', 'Try out Tutor'), h('em', 'Compare to your peers!')]),
