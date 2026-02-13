@@ -90,14 +90,12 @@ export class DevCtrl implements GameObserver {
     if (ply === 0) {
       const white = env.game.nameOf('white');
       const black = env.game.nameOf('black');
-      const stringify = (obj: any) =>
-        JSON.stringify(obj, (_, v) => (!obj ? '' : typeof v === 'number' ? v.toFixed(2) : v));
       this.trace.push(
         `\n${white} vs ${black} ${env.game.speed} ${env.game.initial ?? ''}` +
           `${env.game.increment ? `-${env.game.increment}` : ''} ${env.game.live.initialFen}`,
       );
-      this.trace.push(`\nWhite: '${white}' ${env.bot.white ? stringify(env.bot.white) : ''}`);
-      this.trace.push(`Black: '${black}' ${env.bot.black ? stringify(env.bot.black) : ''}`);
+      this.trace.push(`\nWhite: '${white}' ${env.bot.white ? this.stringify(env.bot.white) : ''}`);
+      this.trace.push(`Black: '${black}' ${env.bot.black ? this.stringify(env.bot.black) : ''}`);
     }
     if (ply % 2 === 0) this.trace.push(`\n ${'-'.repeat(64)} Move ${ply / 2 + 1} ${'-'.repeat(64)}`);
     if (!env.bot[turn]) this.trace.push(`  ${ply}. '${env.game.nameOf(turn)}' at '${fen}': '${uci}'`);
@@ -235,5 +233,9 @@ export class DevCtrl implements GameObserver {
 
   private get testInProgress(): boolean {
     return this.script.games.length !== 0;
+  }
+
+  private stringify(obj: any) {
+    return JSON.stringify(obj, (_, v) => (!obj ? '' : typeof v === 'number' ? v.toFixed(2) : v));
   }
 }
