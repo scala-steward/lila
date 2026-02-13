@@ -2124,7 +2124,6 @@ object I18nKey:
     val `keyShowOrHideComments`: I18nKey = "keyShowOrHideComments"
     val `keyEnterOrExitVariation`: I18nKey = "keyEnterOrExitVariation"
     val `keyRequestComputerAnalysis`: I18nKey = "keyRequestComputerAnalysis"
-    val `keyNextLearnFromYourMistakes`: I18nKey = "keyNextLearnFromYourMistakes"
     val `keyNextBlunder`: I18nKey = "keyNextBlunder"
     val `keyNextMistake`: I18nKey = "keyNextMistake"
     val `keyNextInaccuracy`: I18nKey = "keyNextInaccuracy"
