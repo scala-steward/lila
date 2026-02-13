@@ -103,7 +103,6 @@ export function studySideNodes(ctrl: StudyCtrl, withSearch: boolean): LooseVNode
         attrs: { ...dataIcon(licon.Search) },
         on: {
           click: () => ctrl.search.open(true),
-          keydown: enter(() => ctrl.search.open(true)),
         },
       }),
     ctrl.members.isOwner() &&
