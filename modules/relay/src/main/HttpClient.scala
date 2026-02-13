@@ -95,7 +95,7 @@ private final class HttpClient(
   private def toRequest(url: URL)(using CanProxy): StandaloneWSRequest =
     val req = ws
       .url(url.toString)
-      .withRequestTimeout(5.seconds)
+      .withRequestTimeout(6.seconds)
       .withFollowRedirects(false)
     proxySelector(url).foldLeft(req)(_ withProxyServer _)
 
