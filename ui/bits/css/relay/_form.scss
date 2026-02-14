@@ -82,7 +82,7 @@
     color: $c-font-dimmer;
   }
   .relay-form__subnav__tour-parent {
-    @extend %box-radius;
+    @include box-radius;
     background: $c-bg-box;
     margin-bottom: 5px;
   }

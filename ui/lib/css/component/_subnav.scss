@@ -60,7 +60,7 @@
 
     /* active border must go over the page content */
     a {
-      @extend %box-radius;
+      @include box-radius;
       display: flex;
       align-items: center;
       gap: 1ch;

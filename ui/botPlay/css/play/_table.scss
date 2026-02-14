@@ -21,7 +21,7 @@
   }
   .board-menu {
     @include mq-at-least-col2 {
-      @extend %box-radius-top;
+      @include box-radius-top;
       bottom: $buttons-height;
       border-bottom: 2px solid $c-secondary;
     }
