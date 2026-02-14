@@ -84,10 +84,13 @@ final class PlaybanApi(
         seconds = Seconds(nowSeconds - game.movedAt.toSeconds)
         if unreasonableTime.exists(seconds >= _)
       yield
+        val inc = RageSit.imbalanceInc(game, flaggerColor)
         for
-          _ <- save(Outcome.Sitting, userId, RageSit.imbalanceInc(game, flaggerColor), game.source)
+          _ <- save(Outcome.Sitting, userId, inc, game.source)
           _ <- propagateSitting(game, userId)
-        yield feedback.sitting(Pov(game, flaggerColor))
+        yield inc match
+          case RageSit.Update.Inc(v) if v < 0 => feedback.sitting(Pov(game, flaggerColor))
+          case _ => ()
 
     // flagged after waiting a short time;
     // but the previous move used a long time.
@@ -103,10 +106,13 @@ final class PlaybanApi(
             limit <- unreasonableTime
           yield lastMovetime.roundSeconds >= limit)
         .map: userId =>
+          val inc = RageSit.imbalanceInc(game, flaggerColor)
           for
-            _ <- save(Outcome.SitMoving, userId, RageSit.imbalanceInc(game, flaggerColor), game.source)
+            _ <- save(Outcome.SitMoving, userId, inc, game.source)
             _ <- propagateSitting(game, userId)
-          yield feedback.sitting(Pov(game, flaggerColor))
+          yield inc match
+            case RageSit.Update.Inc(v) if v < 0 => feedback.sitting(Pov(game, flaggerColor))
+            case _ => ()
 
     IfBlameable(game):
       sitting.orElse(sitMoving).getOrElse(good(game, Status.Outoftime, flaggerColor))
