@@ -4321,7 +4321,7 @@ interface I18n {
     signIn: string;
     /** Register */
     signUp: string;
-    /** We will only send you emails related to your account and never share your email. */
+    /** We will only send you emails about your account and never share your email. */
     signupEmailPromise: string;
     /** Sign up to host or join a simul */
     signUpToHostOrJoinASimul: string;
