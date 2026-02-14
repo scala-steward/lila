@@ -30,7 +30,7 @@ export default function moveTest(ctrl: PuzzleCtrl): MoveTestReturn {
     checkmate: node.san!.endsWith('#'),
   }));
 
-  for (const i in nodes) {
+  for (let i = 0; i < nodes.length; i++) {
     if (nodes[i].checkmate) return (ctrl.node.puzzle = 'win');
     const uci = nodes[i].uci!,
       solUci = ctrl.data.puzzle.solution[i];
