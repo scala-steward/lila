@@ -8,7 +8,7 @@
 @import 'games';
 
 @mixin hamburger-visible {
-  border-radius: $box-radius-size $box-radius-size 0 0;
+  @extend %box-radius-top;
   background: $c-bg-header-dropdown;
   color: $c-font-clear;
   box-shadow: -1px 5px 6px rgba(0, 0, 0, 0.3);
@@ -116,8 +116,7 @@
               border-top-left-radius: $box-radius-size;
             }
             &:last-child {
-              border-bottom-left-radius: $box-radius-size;
-              border-bottom-right-radius: $box-radius-size;
+              @extend %box-radius-bottom;
             }
           }
         }

@@ -12,13 +12,13 @@
     z-index: $z-mz-menu-4;
   }
   @media (max-width: at-most($small)) {
+    @extend %box-radius;
     position: fixed;
     top: 50% !important;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: $z-context-menu-108;
     min-width: 80%;
-    border-radius: $box-radius-size;
   }
 
   > div {
