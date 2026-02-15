@@ -143,8 +143,8 @@
   }
   .board-menu {
     @include mq-at-least-col2 {
+      @include box-radius-top;
       bottom: $col3-uniboard-controls;
-      border-radius: $box-radius-size $box-radius-size 0 0;
       border-bottom: 2px solid $c-secondary;
     }
   }
