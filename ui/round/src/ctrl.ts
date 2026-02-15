@@ -527,7 +527,8 @@ export default class RoundController implements MoveRootCtrl {
   }
 
   reload = (d: RoundData): void => {
-    if (d.steps.length !== this.data.steps.length) this.ply = d.steps[d.steps.length - 1].ply;
+    const posChanged = d.steps.length !== this.data.steps.length;
+    if (posChanged) this.ply = d.steps[d.steps.length - 1].ply;
     util.upgradeServerData(d);
     this.data = d;
     this.clearJust();
@@ -541,6 +542,7 @@ export default class RoundController implements MoveRootCtrl {
       });
     if (this.corresClock) this.corresClock.update(d.correspondence!.white, d.correspondence!.black);
     if (!this.replaying()) groundReload(this);
+    if (posChanged) this.chessground.cancelPremove();
     this.setTitle();
     this.moveOn.next();
     this.setQuietMode();
