@@ -385,7 +385,7 @@ export default class RoundController implements MoveRootCtrl {
         let txt = i18n.site.yourTurn;
         if (this.ply < 1) txt = `${joined}\n${txt}`;
         else {
-          let move = d.steps[d.steps.length - 1].san;
+          let move = util.lastStep(this.data).san;
           const turn = plyToTurn(this.ply);
           move = `${turn}${this.ply % 2 === 1 ? '.' : '...'} ${move}`;
           txt = `${opponent}\nplayed ${move}.\n${txt}`;
@@ -528,7 +528,7 @@ export default class RoundController implements MoveRootCtrl {
 
   reload = (d: RoundData): void => {
     const posChanged = d.steps.length !== this.data.steps.length;
-    if (posChanged) this.ply = d.steps[d.steps.length - 1].ply;
+    if (posChanged) this.ply = util.lastPly(d);
     util.upgradeServerData(d);
     this.data = d;
     this.clearJust();
@@ -550,7 +550,7 @@ export default class RoundController implements MoveRootCtrl {
     this.autoScroll();
     this.onChange();
     this.setLoading(false);
-    this.pluginUpdate(d.steps[d.steps.length - 1].fen);
+    this.pluginUpdate(util.lastStep(this.data).fen);
   };
 
   endWithData = (o: ApiEnd): void => {
@@ -560,7 +560,7 @@ export default class RoundController implements MoveRootCtrl {
     d.game.boosted = o.boosted;
     d.player.blindfold = false;
     this.userJump(this.lastPly());
-    d.game.fen = d.steps[d.steps.length - 1].fen;
+    d.game.fen = util.lastStep(this.data).fen;
     // If losing/drawing on time but locally it is the opponent's turn, move did not reach server before the end
     if (
       o.status.name === 'outoftime' &&
