@@ -669,12 +669,12 @@ final class StudyApi(
                   newChapter.practice != chapter.practice ||
                   newChapter.gamebook != chapter.gamebook ||
                   newChapter.description != chapter.description
+              shouldSendChapterPreviews = newChapter.name != chapter.name
               _ <- shouldResetPosition.so:
                 studyRepo.setPosition(study.id, study.position.withPath(UciPath.root))
             yield
-              if shouldReload
-              then sendTo(study.id)(_.reloadStudy(who))
-              else sendChaperPreviews(study)
+              if shouldReload then sendTo(study.id)(_.reloadStudy(who))
+              if shouldSendChapterPreviews then sendChaperPreviews(study)
         }
 
   def descChapter(studyId: StudyId, data: ChapterMaker.DescData)(who: Who) =
