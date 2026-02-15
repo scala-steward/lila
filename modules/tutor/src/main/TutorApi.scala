@@ -49,13 +49,13 @@ final class TutorApi(
 
   // we only wait for queue.start
   // NOT for builder
-  private def buildThenRemoveFromQueue(userId: UserId) =
+  private def buildThenRemoveFromQueue(config: TutorReportConfig) =
     val chrono = Chronometer.start
-    logger.info(s"Start $userId")
-    for _ <- queue.start(userId)
-    yield builder(userId).foreach: built =>
+    logger.info(s"Start ${config.user}")
+    for _ <- queue.start(config.user)
+    yield builder(config).foreach: built =>
       logger.info:
-        s"${if built.isDefined then "Complete" else "Fail"} $userId in ${chrono().seconds} seconds"
+        s"${if built.isDefined then "Complete" else "Fail"} ${config.user} in ${chrono().seconds} seconds"
       cache.put(
         userId,
         built match

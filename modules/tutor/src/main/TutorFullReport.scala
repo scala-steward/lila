@@ -3,8 +3,13 @@ package lila.tutor
 import lila.rating.PerfType
 import lila.tutor.TutorCompare.AnyComparison
 
-case class TutorFullReport(
+case class TutorReportConfig(
     user: UserId,
+    dates: TimeInterval
+)
+
+case class TutorFullReport(
+    config: TutorReportConfig,
     at: Instant,
     perfs: List[TutorPerfReport]
 ):
@@ -40,7 +45,7 @@ case class TutorFullReport(
       .sortBy(-_._1.grade.abs)
       .take(nb)
 
-  override def toString = s"Report($user, $at, ${perfs.map(_.perf.key).mkString("+")})"
+  override def toString = s"Report($config, $at, ${perfs.map(_.perf.key).mkString("+")})"
 
 object TutorFullReport:
 
@@ -58,3 +63,4 @@ object TutorFullReport:
     val at = "at"
     val millis = "millis"
     val perfs = "perfs"
+    val dates = "dates"
