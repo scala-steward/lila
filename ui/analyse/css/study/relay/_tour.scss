@@ -321,7 +321,7 @@ $hover-bg: $m-primary_bg--mix-30;
     }
     a {
       display: flex;
-      padding: 0;
+      padding: 0 1em 0 0;
       align-items: center;
       border-left: 3px solid transparent;
       &.current-round {
@@ -337,20 +337,22 @@ $hover-bg: $m-primary_bg--mix-30;
       }
     }
     .name {
-      padding: 0.3em 1em;
+      padding: 0.3em 0 0.3em 1em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
     }
     .time,
     .status {
+      @extend %roboto;
       font-size: 0.9rem;
       color: $c-font-dim;
-    }
-    .time {
-      @extend %roboto;
-      padding: 0.5em 1em;
+      margin-left: auto;
     }
     .status {
-      padding: 0.5em 1.5rem 0.5em 0;
-      margin-left: auto;
+      &:empty {
+        display: none;
+      }
     }
   }
 
