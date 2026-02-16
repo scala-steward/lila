@@ -391,8 +391,8 @@ const roundSelect = (relay: RelayCtrl, study: StudyCtrl) => {
               {
                 attrs: { href: study.embeddablePath(relay.roundUrlWithHash(round)) },
                 class: {
-                  ['current-round']: round.id === study.data.id,
-                  ['ongoing-round']: !!round.ongoing,
+                  'current-round': round.id === study.data.id,
+                  'ongoing-round': !!round.ongoing,
                 },
                 on: {
                   click: e => extractHrefAndNavigate(e, round),
