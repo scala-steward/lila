@@ -1,10 +1,5 @@
 import type { MaybeVNodes } from 'lib/view';
-import {
-  maxPerPage,
-  myPage,
-  pagerData,
-  renderPager as sharedRenderPager,
-} from 'lib/view/pagination';
+import { maxPerPage, myPage, pagerData, renderPager as sharedRenderPager } from 'lib/view/pagination';
 import type TournamentController from './ctrl';
 import type { Pagination } from './interfaces';
 import * as search from './search';

@@ -61,11 +61,29 @@ export function renderPager(
         ...(ctrl.searching
           ? [searchInput]
           : [
-              navButton('First', licon.JumpFirst, () => ctrl.userSetPage(1), enabled && page > 1, ctrl.redraw),
+              navButton(
+                'First',
+                licon.JumpFirst,
+                () => ctrl.userSetPage(1),
+                enabled && page > 1,
+                ctrl.redraw,
+              ),
               navButton('Prev', licon.JumpPrev, ctrl.userPrevPage, enabled && page > 1, ctrl.redraw),
               h('span.page', (pag.nbResults ? pag.from + 1 : 0) + '-' + pag.to + ' / ' + pag.nbResults),
-              navButton('Next', licon.JumpNext, ctrl.userNextPage, enabled && page < pag.nbPages, ctrl.redraw),
-              navButton('Last', licon.JumpLast, ctrl.userLastPage, enabled && page < pag.nbPages, ctrl.redraw),
+              navButton(
+                'Next',
+                licon.JumpNext,
+                ctrl.userNextPage,
+                enabled && page < pag.nbPages,
+                ctrl.redraw,
+              ),
+              navButton(
+                'Last',
+                licon.JumpLast,
+                ctrl.userLastPage,
+                enabled && page < pag.nbPages,
+                ctrl.redraw,
+              ),
               scrollToMeButton(ctrl),
             ]),
       ]
