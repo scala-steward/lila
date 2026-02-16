@@ -14,8 +14,22 @@ final class Tutor(env: Env) extends LilaController(env):
     Redirect(routes.Tutor.user(me.username))
   }
 
-  def user(username: UserStr) = TutorPage(username) { _ ?=> av =>
-    Ok.page(views.tutor.home(av.report))
+  def user(username: UserStr) = Auth { _ ?=> _ ?=>
+    Found(allowedUser(username)): user =>
+      for
+        withPerfs <- env.user.api.withPerfs(user)
+        av <- env.tutor.api.availability(withPerfs)
+        res <- av match
+          case TutorFullReport.InsufficientGames =>
+            BadRequest.page(views.tutor.home.empty.insufficientGames(username.id))
+          case TutorFullReport.Empty(in: TutorQueue.InQueue) =>
+            for
+              waitGames <- env.tutor.queue.waitingGames(user.id)
+              page <- renderPage(views.tutor.home.empty.queued(in, withPerfs, waitGames))
+            yield Accepted(page)
+          case TutorFullReport.Empty(_) => Accepted.page(views.tutor.home.empty.start(user.id))
+          case TutorFullReport.Available(r) => Ok.page(views.tutor.home(r))
+      yield res
   }
 
   def report(username: UserStr, range: String) = TutorReport(username, range) { _ ?=> full =>
@@ -74,22 +88,6 @@ final class Tutor(env: Env) extends LilaController(env):
           av <- env.tutor.api.availability(withPerfs)
           res <- f(withPerfs)(av)
         yield res
-    }
-
-  private def TutorPage(
-      username: UserStr
-  )(f: Context ?=> TutorFullReport.Available => Fu[Result]): EssentialAction =
-    TutorPageAvailability(username) { _ ?=> user => availability =>
-      availability match
-        case TutorFullReport.InsufficientGames =>
-          BadRequest.page(views.tutor.home.empty.insufficientGames(username.id))
-        case TutorFullReport.Empty(in: TutorQueue.InQueue) =>
-          for
-            waitGames <- env.tutor.queue.waitingGames(user.id)
-            page <- renderPage(views.tutor.home.empty.queued(in, user, waitGames))
-          yield Accepted(page)
-        case TutorFullReport.Empty(_) => Accepted.page(views.tutor.home.empty.start(user.id))
-        case available: TutorFullReport.Available => f(available)
     }
 
   private def TutorReport(username: UserStr, range: String)(
