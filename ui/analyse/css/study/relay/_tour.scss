@@ -320,21 +320,22 @@ $hover-bg: $m-primary_bg--mix-30;
         min-width: unset;
       }
     }
-    tr {
-      display: table-row;
+    a {
+      display: flex;
+      padding: 0;
+      align-items: center;
       border-left: 3px solid transparent;
       &.current-round {
         background: $c-bg-zebra;
         border-left-color: $c-primary;
       }
-      &:hover *,
-      &:hover .round-state::before {
+      &:hover {
         background: $c-primary;
-        color: $c-over;
+        *,
+        .round-state::before {
+          color: $c-over;
+        }
       }
-    }
-    td {
-      cursor: pointer;
     }
     .name {
       padding: 0.3em 1em;
@@ -350,7 +351,7 @@ $hover-bg: $m-primary_bg--mix-30;
     }
     .status {
       padding: 0.5em 1.5rem 0.5em 0;
-      text-align: end;
+      margin-left: auto;
     }
   }
 
