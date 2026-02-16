@@ -28,25 +28,18 @@ final private class TutorBuilder(
 
   val maxTime = fishnet.maxTime + 3.minutes
 
-  def apply(config: TutorReportConfig): Fu[Option[TutorFullReport]] = for
+  def apply(config: TutorConfig): Fu[TutorFullReport] = for
     user <- userApi.withPerfs(config.user).orFail(s"No such user ${config.user}")
-    hasFresh <- hasFreshReport(user)
-    report <- (!hasFresh).so:
-      val chrono = lila.common.Chronometer.lapTry(produce(user, config))
-      chrono.mon { r => lila.mon.tutor.buildFull(r.isSuccess) }
-      for
-        lap <- chrono.lap
-        report <- Future.fromTry(lap.result)
-        doc = bsonWriteObjTry(report).get ++ $doc(
-          "_id" -> s"${report.config.user}:${dateFormatter.print(report.at)}",
-          "millis" -> lap.millis
-        )
-        _ <- colls.report(_.insert.one(doc).void)
-        _ <- messenger.postPreset(config.user, doneMsg).void
-      yield report.some
+    chrono = lila.common.Chronometer.lapTry(produce(user, config))
+    _ = chrono.mon { r => lila.mon.tutor.buildFull(r.isSuccess) }
+    lap <- chrono.lap
+    report <- Future.fromTry(lap.result)
+    doc = bsonWriteObjTry(report).get ++ $doc("_id" -> report.id, "millis" -> lap.millis)
+    _ <- colls.report(_.insert.one(doc).void)
+    _ <- messenger.postPreset(config.user, doneMsg).void
   yield report
 
-  private def produce(user: UserWithPerfs, config: TutorReportConfig): Fu[TutorFullReport] = for
+  private def produce(user: UserWithPerfs, config: TutorConfig): Fu[TutorFullReport] = for
     _ <- insightApi.indexAll(user, force = false).monSuccess(_.tutor.buildSegment("insight-index"))
     perfStats <- perfStatsApi(user, eligiblePerfKeysOf(user).map(PerfType(_)), fishnet.maxGamesToConsider)
       .monSuccess(_.tutor.buildSegment("perf-stats"))
@@ -63,13 +56,6 @@ final private class TutorBuilder(
   private[tutor] def eligiblePerfKeysOf(user: UserWithPerfs): List[PerfKey] =
     lila.rating.PerfType.standardWithUltra.filter: pt =>
       user.perfs(pt).latest.exists(_.isAfter(nowInstant.minusMonths(12)))
-
-  private def hasFreshReport(user: User): Fu[Boolean] = colls.report:
-    _.exists:
-      $doc(
-        TutorFullReport.F.user -> user.id,
-        TutorFullReport.F.at.$gt(nowInstant.minusMinutes(TutorFullReport.freshness.toMinutes.toInt))
-      )
 
   private def findPeerMatches(
       perfs: Map[PerfType, lila.insight.MeanRating]
@@ -102,8 +88,6 @@ final private class TutorBuilder(
       .addEffect: matches =>
         perfs.keys.foreach: pt =>
           lila.mon.tutor.peerMatch(matches.exists(_.perf == pt), pt.key).increment()
-
-  private val dateFormatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
   lazy private val doneMsg =
     lila.core.msg.MsgPreset("Tutor complete", s"Your tutor report is ready! ${routeUrl(routes.Tutor.home())}")

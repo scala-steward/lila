@@ -11,19 +11,19 @@ import ScalatagsTemplate.{ *, given }
 final class TutorHome(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi):
   import helpers.{ *, given }
 
-  def apply(full: TutorFullReport.Available, user: User)(using Context) =
-    bits.page(menu = bits.menu(full, user, none))(cls := "tutor__home tutor-layout"):
+  def apply(full: TutorFullReport)(using Context) =
+    bits.page(menu = bits.menu(full, none))(cls := "tutor__home tutor-layout"):
       frag(
         div(cls := "box tutor__first-box")(
-          boxTop(h1("Lichess Tutor", bits.beta, bits.otherUser(user))),
-          if full.report.perfs.isEmpty then empty.mascotSaysInsufficient
+          boxTop(h1("Lichess Tutor", bits.beta, bits.otherUser(full.user))),
+          if full.perfs.isEmpty then empty.mascotSaysInsufficient
           else
             bits.mascotSays(
               p(
                 strong(
                   cls := "tutor__intro",
                   "Analysis complete on ",
-                  full.report.nbGames.localize,
+                  full.nbGames.localize,
                   " recent rated games of yours."
                 )
               ),
@@ -37,7 +37,7 @@ final class TutorHome(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi):
         ),
         tutorConcepts,
         div(cls := "tutor__perfs tutor-cards")(
-          full.report.perfs.toList.map { perfReportCard(full.report, _, user) }
+          full.perfs.toList.map { perfReportCard(full, _) }
         )
       )
 
@@ -85,12 +85,12 @@ final class TutorHome(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi):
       st.data("pov") := game._1.color.name
     )
 
-  private def perfReportCard(report: TutorFullReport, perfReport: TutorPerfReport, user: User)(using
+  private def perfReportCard(report: TutorFullReport, perfReport: TutorPerfReport)(using
       Context
   ) =
     st.article(
       cls := "tutor__perfs__perf tutor-card tutor-card--link",
-      dataHref := routes.Tutor.perf(user.username, perfReport.perf.key)
+      dataHref := report.url.perf(perfReport.perf)
     )(
       div(cls := "tutor-card--perf__top")(
         iconTag(perfReport.perf.icon),
@@ -145,14 +145,14 @@ final class TutorHome(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi):
       li("Compare these insights to other players with the same rating")
     )
 
-    def start(user: User)(using Context) =
+    def start(user: UserId)(using Context) =
       bits.page(menu = emptyFrag, pageSmall = true)(cls := "tutor__empty box"):
         frag(
           boxTop(h1("Lichess Tutor", bits.beta, bits.otherUser(user))),
           bits.mascotSays(
             whatTutorIsAbout
           ),
-          postForm(cls := "tutor__empty__cta", action := routes.Tutor.refresh(user.username)):
+          postForm(cls := "tutor__empty__cta", action := routes.Tutor.compute(user)):
             submitButton(cls := "button button-fat button-no-upper")("Compute my tutor report")
         )
 
@@ -161,7 +161,7 @@ final class TutorHome(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi):
         cls := "tutor__empty tutor__queued box"
       ):
         frag(
-          boxTop(h1("Lichess Tutor", bits.beta, bits.otherUser(user))),
+          boxTop(h1("Lichess Tutor", bits.beta, bits.otherUser(user.id))),
           bits.mascotSays(
             whatTutorIsAbout,
             br,
@@ -185,7 +185,7 @@ final class TutorHome(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi):
     def insufficientGames(user: User)(using Context) =
       bits.page(menu = emptyFrag, pageSmall = true)(cls := "tutor__insufficient box"):
         frag(
-          boxTop(h1(bits.otherUser(user), "Lichess Tutor")),
+          boxTop(h1(bits.otherUser(user.id), "Lichess Tutor")),
           mascotSaysInsufficient
         )
 

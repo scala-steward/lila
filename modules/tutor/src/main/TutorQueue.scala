@@ -18,6 +18,7 @@ final private class TutorQueue(
 )(using Executor, Scheduler):
 
   import TutorQueue.*
+  import TutorBsonHandlers.given
 
   private val workQueue = scalalib.actor.AsyncActorSequencer(
     maxSize = Max(64),
@@ -39,14 +40,16 @@ final private class TutorQueue(
           ~_.flatMap(_.getAsOpt[Double](TutorFullReport.F.millis))
         .map(_.toInt.millis)
 
-  def status(user: User): Fu[Status] = workQueue { fetchStatus(user) }
+  def status(user: UserId): Fu[Status] = workQueue { fetchStatus(user) }
 
-  def enqueue(user: User): Fu[Status] = workQueue:
-    colls.queue:
-      _.insert
-        .one($doc(F.id -> user.id, F.requestedAt -> nowInstant))
-        .recover(lila.db.ignoreDuplicateKey)
-        .void >> fetchStatus(user)
+  def enqueue(config: TutorConfig): Fu[Status] = workQueue:
+    for
+      _ <- colls.queue:
+        _.insert
+          .one($doc(F.id -> config.user, F.config -> config, F.requestedAt -> nowInstant))
+          .recover(lila.db.ignoreDuplicateKey)
+      status <- fetchStatus(config.user)
+    yield status
 
   def next: Fu[List[Next]] =
     colls.queue(_.find($empty).sort($sort.asc(F.requestedAt)).cursor[Next]().list(parallelism.get()))
@@ -69,9 +72,9 @@ final private class TutorQueue(
     pov -> PgnStr(s"$tags\n\n${pov.game.chess.sans.mkString(" ")}")
   }
 
-  private def fetchStatus(user: User): Fu[Status] =
+  private def fetchStatus(user: UserId): Fu[Status] =
     colls.queue:
-      _.primitiveOne[Instant]($id(user.id), F.requestedAt)
+      _.primitiveOne[Instant]($id(user), F.requestedAt)
         .flatMap:
           _.fold(fuccess(NotInQueue)): at =>
             for
@@ -86,12 +89,14 @@ object TutorQueue:
   case class InQueue(position: Int, avgDuration: FiniteDuration) extends Status:
     def eta = avgDuration * position
 
-  case class Next(_id: UserId, startedAt: Option[Instant]):
-    def userId = _id
+  case class Next(config: TutorConfig, startedAt: Option[Instant])
+
   object Next:
+    import TutorBsonHandlers.given
     given BSONDocumentReader[Next] = Macros.reader
 
   object F:
     val id = "_id"
     val requestedAt = "requestedAt"
     val startedAt = "startedAt"
+    val config = "config"

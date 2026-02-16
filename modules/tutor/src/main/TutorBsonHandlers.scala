@@ -1,11 +1,11 @@
 package lila.tutor
 
+import scala.util.Try
 import chess.ByColor
 import reactivemongo.api.bson.*
 
 import lila.db.dsl.{ *, given }
 import lila.insight.InsightPerfStats
-import scala.util.Try
 
 private object TutorBsonHandlers:
 
@@ -15,6 +15,8 @@ private object TutorBsonHandlers:
 
   given BSONHandler[FiniteDuration] = lila.db.dsl.minutesHandler
   given BSONHandler[GoodPercent] = percentAsIntHandler[GoodPercent]
+
+  given BSONHandler[TutorConfig] = Macros.handler
 
   given [A](using handler: BSONHandler[A]): BSONHandler[ByColor[A]] =
     mapHandler[A]

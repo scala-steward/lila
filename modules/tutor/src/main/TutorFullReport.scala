@@ -3,18 +3,14 @@ package lila.tutor
 import lila.rating.PerfType
 import lila.tutor.TutorCompare.AnyComparison
 
-case class TutorReportConfig(
-    user: UserId,
-    dates: TimeInterval
-)
-
 case class TutorFullReport(
-    config: TutorReportConfig,
+    config: TutorConfig,
     at: Instant,
     perfs: List[TutorPerfReport]
 ):
   def apply(perfType: PerfType) = perfs.find(_.perf == perfType)
-  def isFresh = at.isAfter(nowInstant.minusMinutes(TutorFullReport.freshness.toMinutes.toInt))
+
+  export config.{ user, id, url }
 
   lazy val nbGames = perfs.toList.map(_.stats.totalNbGames).sum
   lazy val totalTime: FiniteDuration =
@@ -49,10 +45,8 @@ case class TutorFullReport(
 
 object TutorFullReport:
 
-  val freshness = 1.day
-
   enum Availability:
-    case Available(report: TutorFullReport, fresher: Option[TutorQueue.Status])
+    case Available(report: TutorFullReport)
     case Empty(status: TutorQueue.Status)
     case InsufficientGames
 

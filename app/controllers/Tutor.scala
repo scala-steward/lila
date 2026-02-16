@@ -18,11 +18,17 @@ final class Tutor(env: Env) extends LilaController(env):
     Ok.page(views.tutor.home(av, user))
   }
 
-  def perf(username: UserStr, perf: PerfKey) = TutorPerfPage(username, perf) { _ ?=> user => full => perf =>
-    Ok.page(views.tutor.perf(full.report, perf, user))
+  def report(username: UserStr, range: String, perf: PerfKey) = TutorPerfPage(username, perf) {
+    _ ?=> user => full => perf =>
+      Ok.page(views.tutor.perf(full.report, perf, user))
   }
 
-  def angle(username: UserStr, perf: PerfKey, angle: String) = TutorPerfPage(username, perf) {
+  def perf(username: UserStr, range: String, perf: PerfKey) = TutorPerfPage(username, perf) {
+    _ ?=> user => full => perf =>
+      Ok.page(views.tutor.perf(full.report, perf, user))
+  }
+
+  def angle(username: UserStr, range: String, perf: PerfKey, angle: String) = TutorPerfPage(username, perf) {
     _ ?=> user => full => perf =>
       angle match
         case "skills" => Ok.page(views.tutor.perf.skills(full.report, perf, user))
@@ -33,7 +39,7 @@ final class Tutor(env: Env) extends LilaController(env):
         case _ => notFound
   }
 
-  def opening(username: UserStr, perf: PerfKey, color: Color, opName: String) =
+  def opening(username: UserStr, range: String, perf: PerfKey, color: Color, opName: String) =
     TutorPerfPage(username, perf) { _ ?=> user => full => perf =>
       LilaOpeningFamily
         .find(opName)
@@ -44,8 +50,9 @@ final class Tutor(env: Env) extends LilaController(env):
           }
     }
 
-  def refresh(username: UserStr) = TutorPageAvailability(username) { _ ?=> user => availability =>
-    env.tutor.api.request(user, availability).inject(redirHome(user))
+  def compute(username: UserStr) = TutorPageAvailability(username) { _ ?=> user => availability =>
+    ???
+    // env.tutor.api.request(user, availability).inject(redirHome(user))
   }
 
   private def TutorPageAvailability(

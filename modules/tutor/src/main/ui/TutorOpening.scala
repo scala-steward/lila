@@ -11,9 +11,8 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
   private def openingSelector(
       perfReport: TutorPerfReport,
       report: TutorOpeningFamily,
-      as: Color,
-      user: User
-  ) =
+      as: Color
+  )(using config: TutorConfig) =
     val all: List[(Color, TutorOpeningFamily)] = for
       (color, fams) <- perfReport.openings.map(_.families).zipColor.mapList(identity)
       fam <- fams
@@ -23,8 +22,7 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
       span(s"$as ${report.family.name}"),
       all.map: (color, family) =>
         a(
-          href := routes.Tutor
-            .opening(user.username, perfReport.perf.key, as, family.family.key.value),
+          href := config.url.opening(perfReport.perf, color, family.family),
           cls := (as == color && family.family.key == report.family.key).option("current")
         )(s"$color ${family.family.name}")
     )
@@ -34,25 +32,24 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
       perfReport: TutorPerfReport,
       report: TutorOpeningFamily,
       as: Color,
-      user: User,
       puzzle: Option[Frag]
   )(using Context) =
     bits.page(
       title = s"Lichess Tutor • ${perfReport.perf.trans} • ${as.name} • ${report.family.name.value}",
-      menu = perfUi.menu(user, perfReport, "opening".some)
+      menu = perfUi.menu(perfReport, "opening".some)(using full.config)
     )(cls := "tutor__opening tutor-layout"):
       frag(
         div(cls := "box tutor__first-box")(
           boxTop(
             h1(
               a(
-                href := bits.urlOf(user.username, perfReport.perf.key, "opening".some),
+                href := full.url.angle(perfReport.perf, "opening"),
                 dataIcon := Icon.LessThan,
                 cls := "text"
               ),
               bits.perfSelector(full, perfReport.perf, "opening".some),
-              openingSelector(perfReport, report, as, user),
-              bits.otherUser(user)
+              openingSelector(perfReport, report, as)(using full.config),
+              bits.otherUser(full.user)
             )
           ),
           bits.mascotSays(
@@ -84,7 +81,7 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
                   cls := "button button-no-upper text",
                   dataIcon := Icon.Book,
                   href := s"${routes.UserAnalysis
-                      .pgn(report.family.anyOpening.pgn.value.replace(" ", "_"))}#explorer/${user.username}"
+                      .pgn(report.family.anyOpening.pgn.value.replace(" ", "_"))}#explorer/${full.user}"
                 )("Personal opening explorer"),
                 puzzle
               )
@@ -99,19 +96,22 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
       )
 
   def openings(full: TutorFullReport, report: TutorPerfReport, user: User)(using ctx: Context) =
-    bits.page(menu = perfUi.menu(user, report, "opening".some))(cls := "tutor__openings tutor-layout"):
+    given TutorConfig = full.config
+    bits.page(menu = perfUi.menu(report, "opening".some))(
+      cls := "tutor__openings tutor-layout"
+    ):
       frag(
         div(cls := "tutor__first-box box")(
           boxTop(
             h1(
               a(
-                href := routes.Tutor.perf(user.username, report.perf.key),
+                href := full.config.url.perf(report.perf),
                 dataIcon := Icon.LessThan,
                 cls := "text"
               ),
               bits.perfSelector(full, report.perf, "opening".some),
-              bits.reportSelector(report, "opening", user),
-              bits.otherUser(user)
+              bits.reportSelector(report, "opening"),
+              bits.otherUser(full.user)
             )
           ),
           bits.mascotSays(
@@ -125,8 +125,7 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
               val opening = fam.family.anyOpening
               div(
                 cls := "tutor__openings__opening tutor-card tutor-card--link",
-                dataHref := routes.Tutor
-                  .opening(user.username, report.perf.key, color, fam.family.key.value)
+                dataHref := full.url.opening(report.perf, color, fam.family)
               )(
                 div(cls := "tutor-card__top")(
                   div(cls := "tutor-card__top__board")(

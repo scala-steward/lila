@@ -15,23 +15,20 @@ final class TutorApi(
   import TutorBsonHandlers.given
 
   def availability(user: UserWithPerfs): Fu[TutorFullReport.Availability] =
-    cache
-      .get(user.id)
-      .flatMap:
-        case Some(report) if report.isFresh => fuccess(TutorFullReport.Available(report, none))
-        case Some(report) => queue.status(user).dmap(some).map { TutorFullReport.Available(report, _) }
-        case None =>
-          builder.eligiblePerfKeysOf(user) match
-            case Nil => fuccess(TutorFullReport.InsufficientGames)
-            case _ => queue.status(user).map(TutorFullReport.Empty.apply)
+    findLatest(user.id).flatMap:
+      case Some(report) => fuccess(TutorFullReport.Available(report))
+      case None =>
+        builder.eligiblePerfKeysOf(user) match
+          case Nil => fuccess(TutorFullReport.InsufficientGames)
+          case _ => queue.status(user.id).map(TutorFullReport.Empty(_))
 
-  def request(user: User, availability: TutorFullReport.Availability): Fu[TutorFullReport.Availability] =
-    availability match
-      case TutorFullReport.Empty(TutorQueue.NotInQueue) =>
-        queue.enqueue(user).dmap(TutorFullReport.Empty.apply)
-      case TutorFullReport.Available(report, Some(TutorQueue.NotInQueue)) =>
-        queue.enqueue(user).dmap(some).map { TutorFullReport.Available(report, _) }
-      case availability => fuccess(availability)
+  // def request(user: User, availability: TutorFullReport.Availability): Fu[TutorFullReport.Availability] =
+  //   availability match
+  //     case TutorFullReport.Empty(TutorQueue.NotInQueue) =>
+  //       queue.enqueue(user).dmap(TutorFullReport.Empty.apply)
+  //     case TutorFullReport.Available(report, Some(TutorQueue.NotInQueue)) =>
+  //       queue.enqueue(user).dmap(some).map { TutorFullReport.Available(report, _) }
+  //     case availability => fuccess(availability)
 
   private val initialDelay = if mode.isProd then 1.minute else 5.seconds
   LilaScheduler("TutorApi", _.Every(1.second), _.AtMost(10.seconds), _.Delay(initialDelay))(pollQueue)
@@ -39,35 +36,30 @@ final class TutorApi(
   private def pollQueue = queue.next.flatMap: items =>
     lila.mon.tutor.parallelism.update(items.size)
     items.sequentiallyVoid: next =>
-      next.startedAt.fold(buildThenRemoveFromQueue(next.userId)): started =>
+      next.startedAt.fold(buildThenRemoveFromQueue(next.config)): started =>
         val expired =
           started.isBefore(nowInstant.minusSeconds(builder.maxTime.toSeconds.toInt)) ||
             started.isBefore(Uptime.startedAt)
         expired.so:
           lila.mon.tutor.buildTimeout.increment()
-          queue.remove(next.userId)
+          queue.remove(next.config.user)
 
   // we only wait for queue.start
   // NOT for builder
-  private def buildThenRemoveFromQueue(config: TutorReportConfig) =
+  private def buildThenRemoveFromQueue(config: TutorConfig) =
     val chrono = Chronometer.start
     logger.info(s"Start ${config.user}")
     for _ <- queue.start(config.user)
-    yield builder(config).foreach: built =>
-      logger.info:
-        s"${if built.isDefined then "Complete" else "Fail"} ${config.user} in ${chrono().seconds} seconds"
-      cache.put(
-        userId,
-        built match
-          case Some(report) => fuccess(report.some)
-          case None => findLatest(userId)
-      )
-      queue.remove(userId)
+    yield builder(config).foreach: report =>
+      logger.info(s"${report.id} in ${chrono().seconds} seconds")
+      cache.put(config, fuccess(report.some))
+      queue.remove(config.user)
 
-  private val cache = cacheApi[UserId, Option[TutorFullReport]](256, "tutor.report"):
-    _.expireAfterAccess(if mode.isProd then 2 minutes else 1 second)
-      .maximumSize(1024)
-      .buildAsyncFuture(findLatest)
+  private val cache = cacheApi[TutorConfig, Option[TutorFullReport]](256, "tutor.report"):
+    _.expireAfterAccess(if mode.isProd then 2 minutes else 1 second).buildAsyncFuture(findByConfig)
+
+  private def findByConfig(config: TutorConfig) = colls.report:
+    _.find($id(config)).one[TutorFullReport]
 
   private def findLatest(userId: UserId) = colls.report:
     _.find($doc(TutorFullReport.F.user -> userId))

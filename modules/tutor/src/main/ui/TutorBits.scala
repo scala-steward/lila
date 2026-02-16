@@ -5,7 +5,6 @@ import lila.ui.*
 
 import ScalatagsTemplate.{ *, given }
 import lila.rating.PerfType
-import lila.core.userId.UserName
 
 final class TutorBits(helpers: Helpers)(
     val openingUrl: chess.opening.Opening => Call
@@ -41,18 +40,16 @@ final class TutorBits(helpers: Helpers)(
 
   def beta = strong(cls := "tutor__beta")("BETA")
 
-  def otherUser(user: User)(using ctx: Context) =
-    ctx.isnt(user).option(userSpan(user, withOnline = false, withTitle = false, withFlair = false))
+  def otherUser(user: UserId)(using ctx: Context) =
+    ctx.isnt(user).option(userIdSpanMini(user, withOnline = false))
 
-  def menu(full: TutorFullReport.Available, user: User, report: Option[TutorPerfReport])(using
-      Context
-  ) = frag(
-    a(href := routes.Tutor.user(user.username), cls := report.isEmpty.option("active"))("Tutor"),
-    full.report.perfs.map: p =>
+  def menu(full: TutorFullReport, report: Option[TutorPerfReport])(using Context) = frag(
+    a(href := full.url.root, cls := report.isEmpty.option("active"))("Tutor"),
+    full.perfs.map: p =>
       a(
         cls := List("active" -> report.exists(_.perf === p.perf)),
         dataIcon := p.perf.icon,
-        href := routes.Tutor.perf(user.username, p.perf.key)
+        href := full.url.perf(p.perf)
       )(p.perf.trans)
   )
 
@@ -64,26 +61,22 @@ final class TutorBits(helpers: Helpers)(
       span(cls := "text", dataIcon := current.icon)(current.trans),
       full.perfs.toList.map: r =>
         a(
-          href := urlOf(usernameOrId(full.user), r.perf.key, angle),
+          href := full.url.angle(r.perf, angle),
           cls := List("text" -> true, "current" -> (current == r.perf)),
           dataIcon := r.perf.icon
         )(r.perf.trans)
     )
 
-  def reportSelector(report: TutorPerfReport, current: Angle, user: User) =
+  def reportSelector(report: TutorPerfReport, current: Angle)(using config: TutorConfig) =
     lila.ui.bits.mselect(
       "tutor-report-select",
       span(reportAngles.find(_._1 == current).map(_._2) | current),
       reportAngles.map: (angle, name) =>
         a(
-          href := urlOf(user.username, report.perf.key, angle.some),
+          href := config.url.angle(report.perf, angle),
           cls := (current == angle).option("current")
         )(name)
     )
-
-  def urlOf(user: UserName, perf: PerfType, angle: Option[Angle]) = angle match
-    case None => routes.Tutor.perf(user, perf.key)
-    case Some(a) => routes.Tutor.angle(user, perf.key, a)
 
   val reportAngles: List[(Angle, String)] = List(
     ("skills", "Skills"),
