@@ -68,7 +68,7 @@ $section-margin-more: 5vh;
   &__actions {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(30ch, 1fr));
-    grid-gap: 1vmin;
+    gap: 1vmin;
     margin-bottom: $section-margin;
 
     .button {

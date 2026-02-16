@@ -579,7 +579,7 @@ h1 {
   &__choice {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(20em, 1fr));
-    grid-gap: var(---box-padding);
+    gap: var(---box-padding);
     align-items: center;
 
     h2 {
@@ -694,7 +694,7 @@ h1 {
   &__cards {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    grid-gap: 1em;
+    gap: 1em;
   }
   &__card {
     @extend %box-neat, %flex-column;

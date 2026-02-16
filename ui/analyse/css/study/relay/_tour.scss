@@ -513,7 +513,7 @@ $hover-bg: $m-primary_bg--mix-30;
       @extend %tour-margin-horiz;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      grid-gap: 1em;
+      gap: 1em;
       @media (min-width: at-least($medium)) {
         grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
         font-size: 1.1em;

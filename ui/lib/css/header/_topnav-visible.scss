@@ -52,7 +52,7 @@
       border-radius: 0 3px 3px 3px;
       border-inline-start: 2px solid $c-primary;
       @include if-transp {
-        @include back-blur();
+        @include back-blur;
       }
 
       a {
