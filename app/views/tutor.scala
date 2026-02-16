@@ -4,7 +4,9 @@ import lila.app.UiEnv.{ *, given }
 
 val bits = lila.tutor.ui.TutorBits(helpers)(views.opening.bits.openingUrl)
 val perf = lila.tutor.ui.TutorPerfUi(helpers, bits)
-val home = lila.tutor.ui.TutorHome(helpers, bits, perf)
+val reports = lila.tutor.ui.TutorReportsUi(helpers, bits)
+val report = lila.tutor.ui.TutorReportUi(helpers, bits, perf)
+val home = lila.tutor.ui.TutorHome(helpers, bits)
 val openingUi = lila.tutor.ui.TutorOpening(helpers, bits, perf)
 
 def opening(

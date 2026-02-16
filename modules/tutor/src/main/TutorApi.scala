@@ -13,14 +13,15 @@ final class TutorApi(
 )(using Executor, Scheduler)(using mode: play.api.Mode):
 
   import TutorBsonHandlers.given
+  import TutorFullReport.Availability
 
   def availability(user: UserWithPerfs): Fu[TutorFullReport.Availability] =
     findLatest(user.id).flatMap:
-      case Some(report) => fuccess(TutorFullReport.Available(report))
+      case Some(report) => fuccess(Availability.Available(report))
       case None =>
         builder.eligiblePerfKeysOf(user) match
-          case Nil => fuccess(TutorFullReport.InsufficientGames)
-          case _ => queue.status(user.id).map(TutorFullReport.Empty(_))
+          case Nil => fuccess(Availability.InsufficientGames)
+          case _ => queue.status(user.id).map(Availability.Empty(_))
 
   def get(config: TutorConfig): Fu[Option[TutorFullReport]] = cache.get(config)
 

@@ -39,3 +39,25 @@ object TutorConfig:
 
   private val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
   def format(date: LocalDate) = date.format(dateFormatter)
+
+  object form:
+
+    import play.api.data.Form
+    import play.api.data.Forms.*
+    import lila.common.Form.ISODate
+
+    def dates(user: UserId) = Form:
+      mapping(
+        "from" -> ISODate.mapping.verifying(
+          s"From date must be after ${format(minFrom)}",
+          _.isAfter(minFrom)
+        ),
+        "to" -> ISODate.mapping.verifying(
+          "Date cannot be in the future",
+          _.isBefore(LocalDate.now.plusDays(1))
+        )
+      )((f, t) => TutorConfig(user, f, t))(config => Some(config.from, config.to))
+        .verifying(
+          "From date must be before to date",
+          config => config.from.isBefore(config.to)
+        )

@@ -50,8 +50,6 @@ object TutorFullReport:
     case Empty(status: TutorQueue.Status)
     case InsufficientGames
 
-  export Availability.*
-
   object F:
     val user = "user"
     val at = "at"
