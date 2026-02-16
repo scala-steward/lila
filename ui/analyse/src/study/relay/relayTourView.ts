@@ -1,7 +1,7 @@
 import type AnalyseCtrl from '@/ctrl';
 import RelayCtrl, { type RelayTab } from './relayCtrl';
 import * as licon from 'lib/licon';
-import { bind, dataIcon, onInsert, hl, type LooseVNode, copyMeInput, enter } from 'lib/view';
+import { bind, dataIcon, onInsert, hl, type LooseVNode, copyMeInput } from 'lib/view';
 import { cmnToggleWrap } from 'lib/view/cmn-toggle';
 import type { VNode } from 'snabbdom';
 import { innerHTML, richHTML } from 'lib/richText';
@@ -342,7 +342,7 @@ const roundSelect = (relay: RelayCtrl, study: StudyCtrl) => {
     if (checkbox) checkbox.checked = false;
     relay.roundSelectShow(!checkbox);
   };
-  const extractHrefAndNavigate = (e: PointerEvent | KeyboardEvent, round: RelayRound) => {
+  const extractHrefAndNavigate = (e: PointerEvent, round: RelayRound) => {
     if (e.metaKey) return;
     const href = study.embeddablePath(relay.roundUrlWithHash(round));
     if (href && href.split('#')[0] !== window.location.pathname) {
@@ -396,7 +396,6 @@ const roundSelect = (relay: RelayCtrl, study: StudyCtrl) => {
                 },
                 on: {
                   click: e => extractHrefAndNavigate(e, round),
-                  keydown: e => enter(() => extractHrefAndNavigate(e, round)),
                 },
               },
               [
