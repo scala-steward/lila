@@ -114,7 +114,7 @@ final class PlaybanApi(
       sitting.orElse(sitMoving).getOrElse(good(game, Status.Outoftime, flaggerColor))
 
   private def sittingFeedback(game: Game, flagger: Color, inc: RageSit.Update) = inc match
-    case RageSit.Update.Inc(v) if v <= 0 => feedback.sitting(Pov(game, flagger))
+    case RageSit.Update.Inc(v) if v < 0 => feedback.sitting(Pov(game, flagger))
     case _ => ()
 
   private def propagateSitting(game: Game, userId: UserId): Funit =
