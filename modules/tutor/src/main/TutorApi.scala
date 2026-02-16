@@ -22,6 +22,8 @@ final class TutorApi(
           case Nil => fuccess(TutorFullReport.InsufficientGames)
           case _ => queue.status(user.id).map(TutorFullReport.Empty(_))
 
+  def get(config: TutorConfig): Fu[Option[TutorFullReport]] = cache.get(config)
+
   // def request(user: User, availability: TutorFullReport.Availability): Fu[TutorFullReport.Availability] =
   //   availability match
   //     case TutorFullReport.Empty(TutorQueue.NotInQueue) =>
@@ -59,7 +61,7 @@ final class TutorApi(
     _.expireAfterAccess(if mode.isProd then 2 minutes else 1 second).buildAsyncFuture(findByConfig)
 
   private def findByConfig(config: TutorConfig) = colls.report:
-    _.find($id(config)).one[TutorFullReport]
+    _.find($id(config.id)).one[TutorFullReport]
 
   private def findLatest(userId: UserId) = colls.report:
     _.find($doc(TutorFullReport.F.user -> userId))

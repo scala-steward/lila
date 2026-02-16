@@ -12,7 +12,6 @@ def opening(
     perfReport: lila.tutor.TutorPerfReport,
     report: lila.tutor.TutorOpeningFamily,
     as: Color,
-    user: User,
     puzzle: Option[lila.puzzle.PuzzleOpening.FamilyWithCount]
 )(using Context) =
   val puzzleFrag = puzzle.map: p =>
@@ -21,4 +20,4 @@ def opening(
       dataIcon := Icon.ArcheryTarget,
       href := routes.Puzzle.angleAndColor(p.family.key.value, as.name)
     )("Train with puzzles")
-  openingUi.opening(full, perfReport, report, as, user, puzzleFrag)
+  openingUi.opening(full, perfReport, report, as, puzzleFrag)

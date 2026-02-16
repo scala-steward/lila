@@ -37,5 +37,5 @@ object TutorConfig:
 
   private val minFrom = lila.insight.minDate.date
 
-  private val dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+  private val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
   def format(date: LocalDate) = date.format(dateFormatter)

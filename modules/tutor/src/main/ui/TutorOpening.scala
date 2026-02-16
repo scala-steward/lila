@@ -95,7 +95,7 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
         )
       )
 
-  def openings(full: TutorFullReport, report: TutorPerfReport, user: User)(using ctx: Context) =
+  def openings(full: TutorFullReport, report: TutorPerfReport)(using ctx: Context) =
     given TutorConfig = full.config
     bits.page(menu = perfUi.menu(report, "opening".some))(
       cls := "tutor__openings tutor-layout"
@@ -149,7 +149,7 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
             a(
               cls := "tutor__openings__color__explorer button button-no-upper text",
               dataIcon := Icon.Book,
-              href := s"${routes.UserAnalysis.index}?color=${color.name}#explorer/${user.username}"
+              href := s"${routes.UserAnalysis.index}?color=${color.name}#explorer/${full.user}"
             )("Personal explorer as ", color.name)
           )
         })

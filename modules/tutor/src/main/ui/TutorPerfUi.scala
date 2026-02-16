@@ -9,14 +9,14 @@ import chess.Color
 final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
   import helpers.{ *, given }
 
-  def apply(full: TutorFullReport, report: TutorPerfReport, user: User)(using Context) =
+  def apply(full: TutorFullReport, report: TutorPerfReport)(using Context) =
     given TutorConfig = full.config
     bits.page(menu = menu(report, none))(cls := "tutor__perf tutor-layout"):
       frag(
         div(cls := "box tutor__first-box")(
           boxTop(
             h1(
-              a(href := routes.Tutor.user(user.username), dataIcon := Icon.LessThan, cls := "text"),
+              a(href := full.url.root, dataIcon := Icon.LessThan, cls := "text"),
               "Tutor",
               bits.perfSelector(full, report.perf, none),
               bits.otherUser(full.user)

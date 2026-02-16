@@ -56,7 +56,7 @@ final private class TutorQueue(
   def start(userId: UserId): Funit = colls.queue(_.updateField($id(userId), F.startedAt, nowInstant).void)
   def remove(userId: UserId): Funit = colls.queue(_.delete.one($id(userId)).void)
 
-  def waitingGames(user: User): Fu[List[(Pov, PgnStr)]] = for
+  def waitingGames(user: UserId): Fu[List[(Pov, PgnStr)]] = for
     all <- gameRepo.recentPovsByUserFromSecondary(
       user,
       60,
