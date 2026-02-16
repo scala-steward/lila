@@ -114,7 +114,7 @@ final class PlaybanApi(
       sitting.orElse(sitMoving).getOrElse(good(game, Status.Outoftime, flaggerColor))
 
   private def sittingFeedback(game: Game, flagger: Color, inc: RageSit.Update) = inc match
-    case RageSit.Update.Inc(v) if v < 0 => feedback.sitting(Pov(game, flagger))
+    case RageSit.Update.Inc(v) if v <= 0 => feedback.sitting(Pov(game, flagger))
     case _ => ()
 
   private def propagateSitting(game: Game, userId: UserId): Funit =
@@ -147,10 +147,11 @@ final class PlaybanApi(
                 (c.estimateTotalSeconds / 10).atLeast(30).atMost(3 * 60)
               .exists(_ < nowSeconds - game.movedAt.toSeconds)
               .option:
+                val rageSitUpdate = RageSit.imbalanceInc(game, loser.color)
                 for
-                  _ <- save(Outcome.SitResign, loserId, RageSit.imbalanceInc(game, loser.color), game.source)
+                  _ <- save(Outcome.SitResign, loserId, rageSitUpdate, game.source)
                   _ <- propagateSitting(game, loserId)
-                yield feedback.sitting(Pov(game, loser.color))
+                yield sittingFeedback(game, loser.color, rageSitUpdate)
               .getOrElse:
                 good(game, status, !w)
         )
