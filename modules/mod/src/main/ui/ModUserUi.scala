@@ -77,62 +77,62 @@ final class ModUserUi(helpers: Helpers, modUi: ModUi):
         }
       ),
       div(cls := "btn-rack")(
-        ModUserTableUi.canCloseAlt.option {
+        if ModUserTableUi.canCloseAlt then
           postForm(
             action := routes.Mod.alt(u.username, !u.marks.alt),
             title := "Preemptively close unauthorized alt.",
             cls := "xhr"
           ):
             submitButton(cls := List("btn-rack__btn" -> true, "active" -> u.marks.alt))("Alt")
-        },
-        Granter.opt(_.MarkEngine).option {
+        else u.marks.alt.option { div(cls := "text")("Alt") },
+        if Granter.opt(_.MarkEngine) then
           postForm(
             action := routes.Mod.engine(u.username, !u.marks.engine),
             title := "This user is clearly cheating.",
             cls := "xhr"
           ):
             submitButton(cls := List("btn-rack__btn" -> true, "active" -> u.marks.engine))("Engine")
-        },
-        Granter.opt(_.MarkBooster).option {
+        else u.marks.engine.option { div(cls := "text")("Engine") },
+        if Granter.opt(_.MarkBooster) then
           postForm(
             action := routes.Mod.booster(u.username, !u.marks.boost),
             title := "Marks the user as a booster or sandbagger.",
             cls := "xhr"
           ):
             submitButton(cls := List("btn-rack__btn" -> true, "active" -> u.marks.boost))("Booster")
-        },
-        Granter
-          .opt(_.Shadowban)
-          .option:
-            frag(
-              postForm(
-                action := routes.Mod.troll(u.username, !u.marks.troll),
-                title := "Enable/disable communication features for this user.",
-                cls := "xhr"
-              )(
-                submitButton(cls := List("btn-rack__btn" -> true, "active" -> u.marks.troll))("Shadowban")
-              ),
-              u.marks.troll.option:
-                frag(
-                  postForm(
-                    action := routes.Mod.deletePmsAndChats(u.username),
-                    title := "Delete all PMs and public chat messages",
-                    cls := "xhr"
-                  ):
-                    submitButton(cls := "btn-rack__btn yes-no-confirm")("Clear PMs & chats")
-                  ,
-                  postForm(
-                    action := routes.Mod.isolate(u.username, !u.marks.isolate),
-                    title := "Isolate user by preventing all PMs, follows and challenges",
-                    cls := "xhr"
-                  )(
-                    submitButton(
-                      cls := List("btn-rack__btn yes-no-confirm" -> true, "active" -> u.marks.isolate)
-                    )("Isolate")
-                  )
+        else u.marks.boost.option { div(cls := "text")("Booster") },
+        if Granter
+            .opt(_.Shadowban)
+        then
+          frag(
+            postForm(
+              action := routes.Mod.troll(u.username, !u.marks.troll),
+              title := "Enable/disable communication features for this user.",
+              cls := "xhr"
+            )(
+              submitButton(cls := List("btn-rack__btn" -> true, "active" -> u.marks.troll))("Shadowban")
+            ),
+            u.marks.troll.option:
+              frag(
+                postForm(
+                  action := routes.Mod.deletePmsAndChats(u.username),
+                  title := "Delete all PMs and public chat messages",
+                  cls := "xhr"
+                ):
+                  submitButton(cls := "btn-rack__btn yes-no-confirm")("Clear PMs & chats")
+                ,
+                postForm(
+                  action := routes.Mod.isolate(u.username, !u.marks.isolate),
+                  title := "Isolate user by preventing all PMs, follows and challenges",
+                  cls := "xhr"
+                )(
+                  submitButton(
+                    cls := List("btn-rack__btn yes-no-confirm" -> true, "active" -> u.marks.isolate)
+                  )("Isolate")
                 )
-            )
-        ,
+              )
+          )
+        else u.marks.troll.option { div(cls := "text")("Shadowban") },
         Granter.opt(_.SetKidMode).option {
           postForm(
             action := routes.Mod.kid(u.username, !u.kid.value),
