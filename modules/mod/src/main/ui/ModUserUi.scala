@@ -77,102 +77,121 @@ final class ModUserUi(helpers: Helpers, modUi: ModUi):
         }
       ),
       div(cls := "btn-rack")(
-        if ModUserTableUi.canCloseAlt then
-          postForm(
-            action := routes.Mod.alt(u.username, !u.marks.alt),
-            title := "Preemptively close unauthorized alt.",
-            cls := "xhr"
-          ):
-            submitButton(cls := List("btn-rack__btn" -> true, "active" -> u.marks.alt))("Alt")
-        else u.marks.alt.option { div(cls := "text")("Alt") },
-        if Granter.opt(_.MarkEngine) then
-          postForm(
-            action := routes.Mod.engine(u.username, !u.marks.engine),
-            title := "This user is clearly cheating.",
-            cls := "xhr"
-          ):
-            submitButton(cls := List("btn-rack__btn" -> true, "active" -> u.marks.engine))("Engine")
-        else u.marks.engine.option { div(cls := "text")("Engine") },
-        if Granter.opt(_.MarkBooster) then
-          postForm(
-            action := routes.Mod.booster(u.username, !u.marks.boost),
-            title := "Marks the user as a booster or sandbagger.",
-            cls := "xhr"
-          ):
-            submitButton(cls := List("btn-rack__btn" -> true, "active" -> u.marks.boost))("Booster")
-        else u.marks.boost.option { div(cls := "text")("Booster") },
-        if Granter
-            .opt(_.Shadowban)
-        then
-          frag(
-            postForm(
-              action := routes.Mod.troll(u.username, !u.marks.troll),
-              title := "Enable/disable communication features for this user.",
-              cls := "xhr"
-            )(
-              submitButton(cls := List("btn-rack__btn" -> true, "active" -> u.marks.troll))("Shadowban")
+        postForm(
+          action := routes.Mod.alt(u.username, !u.marks.alt),
+          title := "Preemptively close unauthorized alt.",
+          cls := "xhr"
+        ):
+          submitButton(
+            cls := List(
+              "btn-rack__btn" -> true,
+              "active" -> u.marks.alt
             ),
-            u.marks.troll.option:
-              frag(
-                postForm(
-                  action := routes.Mod.deletePmsAndChats(u.username),
-                  title := "Delete all PMs and public chat messages",
-                  cls := "xhr"
-                ):
-                  submitButton(cls := "btn-rack__btn yes-no-confirm")("Clear PMs & chats")
-                ,
-                postForm(
-                  action := routes.Mod.isolate(u.username, !u.marks.isolate),
-                  title := "Isolate user by preventing all PMs, follows and challenges",
-                  cls := "xhr"
-                )(
-                  submitButton(
-                    cls := List("btn-rack__btn yes-no-confirm" -> true, "active" -> u.marks.isolate)
-                  )("Isolate")
-                )
+            disabled := !ModUserTableUi.canCloseAlt
+          )("Alt")
+        ,
+        postForm(
+          action := routes.Mod.engine(u.username, !u.marks.engine),
+          title := "This user is clearly cheating.",
+          cls := "xhr"
+        ):
+          submitButton(
+            cls := List("btn-rack__btn" -> true, "active" -> u.marks.engine),
+            disabled := !Granter.opt(_.MarkEngine)
+          )("Engine")
+        ,
+        postForm(
+          action := routes.Mod.booster(u.username, !u.marks.boost),
+          title := "Marks the user as a booster or sandbagger.",
+          cls := "xhr"
+        ):
+          submitButton(
+            cls := List("btn-rack__btn" -> true, "active" -> u.marks.boost),
+            disabled := !Granter.opt(_.MarkBooster)
+          )("Booster")
+        ,
+        frag(
+          postForm(
+            action := routes.Mod.troll(u.username, !u.marks.troll),
+            title := "Enable/disable communication features for this user.",
+            cls := "xhr"
+          )(
+            submitButton(
+              cls := List("btn-rack__btn" -> true, "active" -> u.marks.troll),
+              disabled := !Granter.opt(_.Shadowban)
+            )("Shadowban")
+          ),
+          u.marks.troll.option:
+            frag(
+              postForm(
+                action := routes.Mod.deletePmsAndChats(u.username),
+                title := "Delete all PMs and public chat messages",
+                cls := "xhr"
+              ):
+                submitButton(cls := "btn-rack__btn yes-no-confirm", disabled := !Granter.opt(_.Shadowban)):
+                  "Clear PMs & chats"
+              ,
+              postForm(
+                action := routes.Mod.isolate(u.username, !u.marks.isolate),
+                title := "Isolate user by preventing all PMs, follows and challenges",
+                cls := "xhr"
+              )(
+                submitButton(
+                  cls := List("btn-rack__btn yes-no-confirm" -> true, "active" -> u.marks.isolate),
+                  disabled := !Granter.opt(_.Shadowban)
+                )("Isolate")
               )
-          )
-        else u.marks.troll.option { div(cls := "text")("Shadowban") },
-        Granter.opt(_.SetKidMode).option {
-          postForm(
-            action := routes.Mod.kid(u.username, !u.kid.value),
-            title := "Activate kid mode if not already the case",
-            cls := "xhr"
-          ):
-            submitButton(cls := "btn-rack__btn yes-no-confirm", cls := u.kid.yes.option("active"))("Kid")
-        },
-        Granter.opt(_.RemoveRanking).option {
-          postForm(
-            action := routes.Mod.rankban(u.username, !u.marks.rankban),
-            title := "Include/exclude this user from the rankings.",
-            cls := "xhr"
-          ):
-            submitButton(cls := List("btn-rack__btn" -> true, "active" -> u.marks.rankban))("Rankban")
-        },
-        Granter.opt(_.ArenaBan).option {
-          postForm(
-            action := routes.Mod.arenaBan(u.username, !u.marks.arenaBan),
-            title := "Enable/disable this user from joining all arenas.",
-            cls := "xhr"
-          ):
-            submitButton(cls := List("btn-rack__btn" -> true, "active" -> u.marks.arenaBan))("Arena ban")
-        },
-        Granter.opt(_.PrizeBan).option {
-          postForm(
-            action := routes.Mod.prizeban(u.username, !u.marks.prizeban),
-            title := "Enable/disable this user from joining prized tournaments.",
-            cls := "xhr"
-          ):
-            submitButton(cls := List("btn-rack__btn" -> true, "active" -> u.marks.prizeban))("Prizeban")
-        },
-        Granter.opt(_.ReportBan).option {
-          postForm(
-            action := routes.Mod.reportban(u.username, !u.marks.reportban),
-            title := "Enable/disable the report feature for this user.",
-            cls := "xhr"
-          ):
-            submitButton(cls := List("btn-rack__btn" -> true, "active" -> u.marks.reportban))("Reportban")
-        }
+            )
+        ),
+        postForm(
+          action := routes.Mod.kid(u.username, !u.kid.value),
+          title := "Activate kid mode if not already the case",
+          cls := "xhr"
+        ):
+          submitButton(
+            cls := List("btn-rack__btn yes-no-confirm" -> true, "active" -> u.kid.yes),
+            disabled := !Granter.opt(_.SetKidMode)
+          )("Kid")
+        ,
+        postForm(
+          action := routes.Mod.rankban(u.username, !u.marks.rankban),
+          title := "Include/exclude this user from the rankings.",
+          cls := "xhr"
+        ):
+          submitButton(
+            cls := List("btn-rack__btn" -> true, "active" -> u.marks.rankban),
+            disabled := !Granter.opt(_.RemoveRanking)
+          )("Rankban")
+        ,
+        postForm(
+          action := routes.Mod.arenaBan(u.username, !u.marks.arenaBan),
+          title := "Enable/disable this user from joining all arenas.",
+          cls := "xhr"
+        ):
+          submitButton(
+            cls := List("btn-rack__btn" -> true, "active" -> u.marks.arenaBan),
+            disabled := !Granter.opt(_.ArenaBan)
+          )("Arena ban")
+        ,
+        postForm(
+          action := routes.Mod.prizeban(u.username, !u.marks.prizeban),
+          title := "Enable/disable this user from joining prized tournaments.",
+          cls := "xhr"
+        ):
+          submitButton(
+            cls := List("btn-rack__btn" -> true, "active" -> u.marks.prizeban),
+            disabled := !Granter.opt(_.PrizeBan)
+          )("Prizeban")
+        ,
+        postForm(
+          action := routes.Mod.reportban(u.username, !u.marks.reportban),
+          title := "Enable/disable the report feature for this user.",
+          cls := "xhr"
+        ):
+          submitButton(
+            cls := List("btn-rack__btn" -> true, "active" -> u.marks.reportban),
+            disabled := !Granter.opt(_.ReportBan)
+          )("Reportban")
       ),
       Granter
         .opt(_.CloseAccount)
@@ -198,16 +217,18 @@ final class ModUserUi(helpers: Helpers, modUi: ModUi):
               )
           )
         ),
-      div(cls := "btn-rack")(
-        (u.totpSecret.isDefined && Granter.opt(_.DisableTwoFactor)).option {
+      (u.totpSecret.isDefined).option:
+        div(cls := "btn-rack")(
           postForm(
             action := routes.Mod.disableTwoFactor(u.username),
             title := "Disables two-factor authentication for this account.",
             cls := "xhr"
           ):
-            submitButton(cls := "btn-rack__btn yes-no-confirm")("Disable 2FA")
-        }
-      ),
+            submitButton(cls := "btn-rack__btn yes-no-confirm", disabled := !Granter.opt(_.DisableTwoFactor))(
+              "Disable 2FA"
+            )
+        )
+      ,
       Granter
         .opt(_.ModMessage)
         .option {
