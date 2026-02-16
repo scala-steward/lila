@@ -188,6 +188,7 @@
   <string name="drawByMutualAgreement">Remíza po vzájemné dohodě</string>
   <string name="fiftyMovesWithoutProgress">Padesát tahů bez progresu</string>
   <string name="currentGames">Právě probíhající partie</string>
+  <string name="joinedX">Zaregistrován %s</string>
   <plurals name="nbGames">
     <item quantity="one">%s partie</item>
     <item quantity="few">%s partie</item>
@@ -258,7 +259,6 @@
   <string name="changeUsernameNotSame">Můžete změnit pouze velikost písmen. Např. z \"petrnovak\" na \"PetrNovak\".</string>
   <string name="changeUsernameDescription">Změňte své uživatelské jméno. To lze provést pouze jednou, a můžete změnit pouze velikost písmen.</string>
   <string name="signupUsernameHint">Zvolte si vhodné a nezávadné uživatelské jméno. Později ho nelze změnit a účty s nevhodnými uživatelskými jmény budou uzavřeny!</string>
-  <string name="signupEmailHint">Bude použit pouze pro obnovení hesla.</string>
   <string name="password">Heslo</string>
   <string name="changePassword">Změnit heslo</string>
   <string name="changeEmail">Změnit email</string>
@@ -482,6 +482,7 @@
   <string name="leaderboard">Žebříček</string>
   <string name="screenshotCurrentPosition">Screenshot pozice</string>
   <string name="gameAsGIF">Uložit jako GIF</string>
+  <string name="playerNames">Jména hráčů</string>
   <string name="pasteTheFenStringHere">Zde vložte FEN řetězec</string>
   <string name="pasteThePgnStringHere">Zde vložte PGN řetězec</string>
   <string name="orUploadPgnFile">Nebo nahrajte soubor PGN</string>
@@ -787,7 +788,6 @@
   <string name="keyShowOrHideComments">zobrazte/skryjte komentáře</string>
   <string name="keyEnterOrExitVariation">Zobraz variantu</string>
   <string name="keyRequestComputerAnalysis">Vyžádejte si počítačovou analýzu, poučte se ze svých chyb</string>
-  <string name="keyNextLearnFromYourMistakes">Další (poučit se z chyb)</string>
   <string name="keyNextBlunder">Další hrubá chyba</string>
   <string name="keyNextMistake">Další chyba</string>
   <string name="keyNextInaccuracy">Další nepřesnost</string>
@@ -885,6 +885,7 @@
   <string name="size">Velikost</string>
   <string name="opacity">Průhlednost</string>
   <string name="brightness">Jas</string>
+  <string name="contrast">Kontrast</string>
   <string name="hue">Hue</string>
   <string name="boardReset">Vrátit barvy na původní nastavení</string>
   <string name="pieceSet">Vzhled figur</string>
@@ -959,6 +960,7 @@
   <string name="playVariationToCreateConditionalPremoves">Hrajte variantu k vytvoření podmíněných předtahů</string>
   <string name="noConditionalPremoves">Žádné podmíněné předtahy</string>
   <string name="playX">Hrajte %s</string>
+  <string name="challengeX">Vyzvat %s</string>
   <plurals name="andSaveNbPremoveLines">
     <item quantity="one">a uložit %s předtaženou variantu</item>
     <item quantity="few">a uložit %s předtažené varianty</item>
@@ -1096,5 +1098,6 @@ Veškeré provozní náklady, vývoj a obsah jsou financovány výhradně z př�
   <string name="offline" comment="status of a user">offline</string>
   <string name="search">Hledat</string>
   <string name="clearSearch">Vymazat vyhledávání</string>
+  <string name="tags">Štítky</string>
   <string name="enPassant">Braní mimochodem</string>
 </resources>

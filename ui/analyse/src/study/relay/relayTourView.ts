@@ -309,9 +309,6 @@ const tourSelect = (ctx: RelayViewContext, group: RelayGroup) => {
                   current: tour.id === relay.data.tour.id,
                 },
                 attrs: { href: study.embeddablePath(`/broadcast/-/${tour.id}`) },
-                on: {
-                  keydown: enter(target => target.click()),
-                },
               },
               [tour.name, tourStateIcon(tour, false)],
             ),
@@ -533,11 +530,13 @@ const makeTabs = (ctrl: AnalyseCtrl) => {
 
   const makeTab = (key: RelayTab, name: string) =>
     hl(
-      `span.relay-tour__tabs--${key}`,
+      `button.relay-tour__tabs--${key}`,
       {
         class: { active: relay.tab() === key },
         attrs: { role: 'tab' },
-        hook: bind('mousedown', () => relay.openTab(key)),
+        on: {
+          click: () => relay.openTab(key),
+        },
       },
       name,
     );
