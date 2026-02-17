@@ -4,13 +4,11 @@ export default function menuKeyboardInteractions(): void {
   const $nav = $('#topnav');
 
   const handleKeyDown = (ev: KeyboardEvent) => {
-    ev.stopPropagation();
-
     const $target = $(ev.target as HTMLElement | null);
     const $section = $target.parent().is('section') ? $target.parent() : $target.parent().parent();
 
     if (ev.code === 'Tab') {
-      if ($target.is(':last-child')) {
+      if (ev.shiftKey ? $target.is(':first-child') : $target.is(':last-child')) {
         $section.removeClass('active');
         return;
       } else if ($section.hasClass('active')) {
@@ -19,7 +17,8 @@ export default function menuKeyboardInteractions(): void {
     } else if (ev.code === 'Space') {
       $section.toggleClass('active');
       ev.preventDefault();
-    } else {
+      ev.stopPropagation();
+    } else if (!ev.shiftKey) {
       $section.removeClass('active');
     }
   };
