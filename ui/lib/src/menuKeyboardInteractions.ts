@@ -1,4 +1,4 @@
-export default function (): void {
+export default function menuKeyboardInteractions(): void {
   if ('ontouchstart' in window) return;
 
   const $nav = $('#topnav');
