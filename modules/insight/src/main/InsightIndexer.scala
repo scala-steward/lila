@@ -89,6 +89,6 @@ final private class InsightIndexer(
           .mapAsync(16)(toEntry)
           .via(LilaStream.collect)
           .grouped(100.atMost(maxGames.value))
-          .map(storage.bulkInsert)
+          .mapAsync(1)(storage.bulkInsert)
           .run()
           .void
