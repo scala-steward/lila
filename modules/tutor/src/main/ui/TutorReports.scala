@@ -7,10 +7,15 @@ import play.api.data.{ Form, Field }
 import lila.ui.*
 import lila.ui.ScalatagsTemplate.{ *, given }
 
-final class TutorReportsUi(helpers: Helpers, bits: TutorBits):
+final class TutorReportsUi(helpers: Helpers, bits: TutorBits, q: TutorQueueUi):
   import helpers.{ *, given }
 
-  def apply(user: User, form: Form[TutorConfig], previews: List[TutorFullReport.Preview])(using Context) =
+  def apply(
+      user: User,
+      form: Form[TutorConfig],
+      awaiting: Option[TutorQueue.Awaiting],
+      previews: List[TutorFullReport.Preview]
+  )(using Context) =
     bits
       .page(menu = emptyFrag)(cls := "tutor__reports tutor-layout"):
         frag(
@@ -25,14 +30,17 @@ final class TutorReportsUi(helpers: Helpers, bits: TutorBits):
               )
             )
           ),
-          postForm(cls := "form3 tutor__report-form", action := routes.Tutor.compute(user.id)):
-            form3.fieldset("Request a new Tutor report", toggle = true.some)(cls := "box-pad")(
-              form3.split(
-                form3.group(form("from"), "Start date")(datePickr)(cls := "form-third"),
-                form3.group(form("to"), "End date")(datePickr)(cls := "form-third"),
-                form3.submit("Compute my tutor report")
+          awaiting.map: a =>
+            q.waitingGames(a.games),
+          awaiting.isEmpty.option:
+            postForm(cls := "form3 tutor__report-form", action := routes.Tutor.compute(user.id)):
+              form3.fieldset("Request a new Tutor report", toggle = true.some)(cls := "box-pad")(
+                form3.split(
+                  form3.group(form("from"), "Start date")(datePickr)(cls := "form-third"),
+                  form3.group(form("to"), "End date")(datePickr)(cls := "form-third"),
+                  form3.submit("Compute my tutor report")
+                )
               )
-            )
           ,
           div(cls := "box tutor__reports-list")(
             ul(cls := "slist tutor__reports-list__list")(
@@ -46,7 +54,7 @@ final class TutorReportsUi(helpers: Helpers, bits: TutorBits):
             )
           )
         )
-      .css("tutor.form")
+      .css("tutor.reports")
       .js(Esm("bits.flatpickr"))
 
   private def datePickr(field: Field) = form3.flatpickr(

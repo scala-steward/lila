@@ -21,13 +21,13 @@ final class Tutor(env: Env) extends LilaController(env):
         av <- env.tutor.api.availability(withPerfs)
         res <- av match
           case InsufficientGames =>
-            BadRequest.page(views.tutor.home.empty.insufficientGames(username.id))
+            BadRequest.page(views.tutor.home.insufficientGames(username.id))
           case Empty(in: TutorQueue.InQueue) =>
             for
               waitGames <- env.tutor.queue.waitingGames(user.id)
-              page <- renderPage(views.tutor.home.empty.queued(in, withPerfs, waitGames))
+              page <- renderPage(views.tutor.home.queued(in, withPerfs, waitGames))
             yield Accepted(page)
-          case Empty(_) => Accepted.page(views.tutor.home.empty.start(user.id))
+          case Empty(_) => Accepted.page(views.tutor.home.start(user.id))
           case Available(r) => Ok.page(views.tutor.report(r))
       yield res
   }
@@ -38,7 +38,12 @@ final class Tutor(env: Env) extends LilaController(env):
         previews <- env.tutor.api.previews(user.id)
         res <-
           if previews.isEmpty then Redirect(routes.Tutor.user(username)).toFuccess
-          else Ok.page(views.tutor.reports(user, TutorConfig.form.default(user.id), previews))
+          else
+            for
+              awaiting <- env.tutor.queue.awaiting(user.id)
+              form = TutorConfig.form.default(user.id)
+              res <- Ok.page(views.tutor.reports(user, form, awaiting, previews))
+            yield res
       yield res
   }
 
@@ -79,7 +84,8 @@ final class Tutor(env: Env) extends LilaController(env):
         err =>
           for
             previews <- env.tutor.api.previews(user.id)
-            res <- BadRequest.page(views.tutor.reports(user, err, previews))
+            awaiting <- env.tutor.queue.awaiting(user.id)
+            res <- BadRequest.page(views.tutor.reports(user, err, awaiting, previews))
           yield res,
         config =>
           env.tutor.api

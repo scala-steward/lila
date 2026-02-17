@@ -15,13 +15,15 @@ final class TutorApi(
   import TutorBsonHandlers.given
   import TutorFullReport.Availability
 
+  export queue.fetchStatus as queueStatus
+
   def availability(user: UserWithPerfs): Fu[TutorFullReport.Availability] =
     findLatest(user.id).flatMap:
       case Some(report) => fuccess(Availability.Available(report))
       case None =>
         builder.eligiblePerfKeysOf(user) match
           case Nil => fuccess(Availability.InsufficientGames)
-          case _ => queue.status(user.id).map(Availability.Empty(_))
+          case _ => queueStatus(user.id).map(Availability.Empty(_))
 
   private val previewProjection = $doc(
     TutorFullReport.F.config -> true,
@@ -37,16 +39,8 @@ final class TutorApi(
 
   def get(config: TutorConfig): Fu[Option[TutorFullReport]] = cache.get(config)
 
-  // def request(user: User, availability: TutorFullReport.Availability): Fu[TutorFullReport.Availability] =
-  //   availability match
-  //     case TutorFullReport.Empty(TutorQueue.NotInQueue) =>
-  //       queue.enqueue(user).dmap(TutorFullReport.Empty.apply)
-  //     case TutorFullReport.Available(report, Some(TutorQueue.NotInQueue)) =>
-  //       queue.enqueue(user).dmap(some).map { TutorFullReport.Available(report, _) }
-  //     case availability => fuccess(availability)
-
   private val initialDelay = if mode.isProd then 1.minute else 5.seconds
-  LilaScheduler("TutorApi", _.Every(1.second), _.AtMost(10.seconds), _.Delay(initialDelay))(pollQueue)
+  // LilaScheduler("TutorApi", _.Every(1.second), _.AtMost(10.seconds), _.Delay(initialDelay))(pollQueue)
 
   private def pollQueue = queue.next.flatMap: items =>
     lila.mon.tutor.parallelism.update(items.size)

@@ -40,8 +40,6 @@ final private class TutorQueue(
           ~_.flatMap(_.getAsOpt[Double](TutorFullReport.F.millis))
         .map(_.toInt.millis)
 
-  def status(user: UserId): Fu[Status] = workQueue { fetchStatus(user) }
-
   def enqueue(config: TutorConfig): Fu[Status] = workQueue:
     for
       _ <- colls.queue:
@@ -51,8 +49,8 @@ final private class TutorQueue(
       status <- fetchStatus(config.user)
     yield status
 
-  def next: Fu[List[Next]] =
-    colls.queue(_.find($empty).sort($sort.asc(F.requestedAt)).cursor[Next]().list(parallelism.get()))
+  def next: Fu[List[Item]] =
+    colls.queue(_.find($empty).sort($sort.asc(F.requestedAt)).cursor[Item]().list(parallelism.get()))
   def start(userId: UserId): Funit = colls.queue(_.updateField($id(userId), F.startedAt, nowInstant).void)
   def remove(userId: UserId): Funit = colls.queue(_.delete.one($id(userId)).void)
 
@@ -72,28 +70,34 @@ final private class TutorQueue(
     pov -> PgnStr(s"$tags\n\n${pov.game.chess.sans.mkString(" ")}")
   }
 
-  private def fetchStatus(user: UserId): Fu[Status] =
+  def awaiting(user: UserId): Fu[Option[Awaiting]] =
+    fetchStatus(user).flatMap:
+      case q: InQueue => waitingGames(user).map(Awaiting(q, _).some)
+      case _ => fuccess(none)
+
+  def fetchStatus(user: UserId): Fu[Status] =
     colls.queue:
-      _.primitiveOne[Instant]($id(user), F.requestedAt)
+      _.byId[Item]($id(user))
         .flatMap:
-          _.fold(fuccess(NotInQueue)): at =>
+          _.fold(fuccess(NotInQueue)): item =>
             for
-              position <- colls.queue(_.countSel($doc(F.requestedAt.$lte(at))))
+              position <- colls.queue(_.countSel($doc(F.requestedAt.$lte(item.requestedAt))))
               avgDuration <- durationCache.get({})
-            yield InQueue(position, avgDuration)
+            yield InQueue(item, position, avgDuration)
 
 object TutorQueue:
 
+  case class Item(config: TutorConfig, requestedAt: Instant, startedAt: Option[Instant])
+
   sealed trait Status
   case object NotInQueue extends Status
-  case class InQueue(position: Int, avgDuration: FiniteDuration) extends Status:
+  case class InQueue(item: Item, position: Int, avgDuration: FiniteDuration) extends Status:
     def eta = avgDuration * position
 
-  case class Next(config: TutorConfig, startedAt: Option[Instant])
+  case class Awaiting(inQueue: InQueue, games: List[(Pov, PgnStr)])
 
-  object Next:
-    import TutorBsonHandlers.given
-    given BSONDocumentReader[Next] = Macros.reader
+  import TutorBsonHandlers.given
+  private given BSONDocumentReader[Item] = Macros.reader
 
   object F:
     val id = "_id"
