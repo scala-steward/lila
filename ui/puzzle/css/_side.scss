@@ -200,6 +200,10 @@
     padding: 2vmin;
     font-size: 0.9em;
 
+    a:has(h2) {
+      display: block;
+    }
+
     h2 {
       font-size: 1.5em;
       margin-bottom: 0.6rem;

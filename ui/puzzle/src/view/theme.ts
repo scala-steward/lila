@@ -87,11 +87,11 @@ const editor = (ctrl: PuzzleCtrl): VNode[] => {
               allThemes.static.has(key)
                 ? [hl('div.puzzle__themes__lock', hl('i', { attrs: dataIcon(licon.Padlock) }))]
                 : [
-                    hl('span.puzzle__themes__vote.vote-up', {
+                    hl('button.puzzle__themes__vote.vote-up', {
                       class: { active: votedThemes[key] },
                       attrs: { 'data-theme': key },
                     }),
-                    hl('span.puzzle__themes__vote.vote-down', {
+                    hl('button.puzzle__themes__vote.vote-down', {
                       class: { active: votedThemes[key] === false },
                       attrs: { 'data-theme': key },
                     }),
