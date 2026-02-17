@@ -11,5 +11,5 @@ export function renderPager(ctrl: SwissCtrl, pag: Pager): MaybeVNodes {
 }
 
 export function players(ctrl: SwissCtrl): Pager {
-  return pagerData(ctrl) as Pager;
+  return pagerData(ctrl);
 }

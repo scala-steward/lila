@@ -11,5 +11,5 @@ export function renderPager(ctrl: TournamentController, pag: Pagination): MaybeV
 }
 
 export function players(ctrl: TournamentController): Pagination {
-  return pagerData(ctrl) as Pagination;
+  return pagerData(ctrl);
 }

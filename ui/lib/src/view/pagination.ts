@@ -4,20 +4,20 @@ import { bind, type MaybeVNodes } from './snabbdom';
 
 export const maxPerPage = 10;
 
-export interface PagerData {
+export interface PagerData<A> {
   from: number;
   to: number;
-  currentPageResults: unknown;
+  currentPageResults: A[];
   nbResults: number;
   nbPages: number;
 }
 
-export interface PaginatedCtrl {
+export interface PaginatedCtrl<A> {
   page: number;
   searching: boolean;
   redraw: () => void;
   data: { nbPlayers: number; me?: { rank: number } };
-  pages: Record<number, unknown>;
+  pages: Record<number, A[]>;
   toggleFocusOnMe(): void;
   userSetPage(page: number): void;
   userPrevPage(): void;
@@ -38,7 +38,7 @@ function navButton(
   });
 }
 
-function scrollToMeButton(ctrl: PaginatedCtrl): VNode | undefined {
+function scrollToMeButton(ctrl: PaginatedCtrl<unknown>): VNode | undefined {
   return ctrl.data.me && myPage(ctrl) !== ctrl.page
     ? h('button.fbt', {
         attrs: { 'data-icon': licon.Target, title: 'Scroll to your player' },
@@ -47,9 +47,9 @@ function scrollToMeButton(ctrl: PaginatedCtrl): VNode | undefined {
     : undefined;
 }
 
-export function renderPager(
-  ctrl: PaginatedCtrl,
-  pag: PagerData,
+export function renderPager<A>(
+  ctrl: PaginatedCtrl<A>,
+  pag: PagerData<A>,
   searchButton: VNode,
   searchInput: VNode,
 ): MaybeVNodes {
@@ -90,7 +90,7 @@ export function renderPager(
     : [];
 }
 
-export function pagerData(ctrl: PaginatedCtrl): PagerData {
+export function pagerData<A>(ctrl: PaginatedCtrl<A>): PagerData<A> {
   const page = ctrl.page,
     nbResults = ctrl.data.nbPlayers,
     from = (page - 1) * maxPerPage,
@@ -104,6 +104,6 @@ export function pagerData(ctrl: PaginatedCtrl): PagerData {
   };
 }
 
-export function myPage(ctrl: PaginatedCtrl): number | undefined {
+export function myPage(ctrl: PaginatedCtrl<unknown>): number | undefined {
   return ctrl.data.me ? Math.floor((ctrl.data.me.rank - 1) / 10) + 1 : undefined;
 }
