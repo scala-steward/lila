@@ -47,14 +47,9 @@ function scrollToMeButton(ctrl: PaginatedCtrl<unknown>): VNode | undefined {
     : undefined;
 }
 
-export function renderPager<A>(
-  ctrl: PaginatedCtrl<A>,
-  pag: PagerData<A>,
-  searchButton: VNode,
-  searchInput: VNode,
-): MaybeVNodes {
-  const enabled = !!pag.currentPageResults,
-    page = ctrl.page;
+export function renderPager<A>(ctrl: PaginatedCtrl<A>, searchButton: VNode, searchInput: VNode): MaybeVNodes {
+  const pag = pagerData(ctrl);
+  const enabled = !!pag.currentPageResults;
   return pag.nbPages > -1
     ? [
         searchButton,
@@ -65,23 +60,23 @@ export function renderPager<A>(
                 'First',
                 licon.JumpFirst,
                 () => ctrl.userSetPage(1),
-                enabled && page > 1,
+                enabled && ctrl.page > 1,
                 ctrl.redraw,
               ),
-              navButton('Prev', licon.JumpPrev, ctrl.userPrevPage, enabled && page > 1, ctrl.redraw),
+              navButton('Prev', licon.JumpPrev, ctrl.userPrevPage, enabled && ctrl.page > 1, ctrl.redraw),
               h('span.page', (pag.nbResults ? pag.from + 1 : 0) + '-' + pag.to + ' / ' + pag.nbResults),
               navButton(
                 'Next',
                 licon.JumpNext,
                 ctrl.userNextPage,
-                enabled && page < pag.nbPages,
+                enabled && ctrl.page < pag.nbPages,
                 ctrl.redraw,
               ),
               navButton(
                 'Last',
                 licon.JumpLast,
                 ctrl.userLastPage,
-                enabled && page < pag.nbPages,
+                enabled && ctrl.page < pag.nbPages,
                 ctrl.redraw,
               ),
               scrollToMeButton(ctrl),
