@@ -19,8 +19,8 @@ type State = {
 export default function (): void {
   if ('ontouchstart' in window) return;
 
-  const interval = 200,
-    sensitivity = 8;
+  const interval = 200;
+  const sensitivity = 8;
 
   // current X and Y position of mouse, updated during mousemove tracking (shared across instances)
   let cX: number, cY: number;
@@ -39,8 +39,8 @@ export default function (): void {
   let state: State = {};
 
   $('#topnav.hover').each(function (this: HTMLElement) {
-    const $el = $(this).removeClass('hover'),
-      handler = () => $el.toggleClass('hover');
+    const $el = $(this).removeClass('hover');
+    const handler = () => $el.toggleClass('hover');
 
     // compares current and previous mouse positions
     const compare = () => {
@@ -65,7 +65,10 @@ export default function (): void {
     // A private function for handling mouse 'hovering'
     const handleHover = function (ev: MouseEvent) {
       // clear any existing timeout
-      if (state.timeoutId) state.timeoutId = clearTimeout(state.timeoutId);
+      if (state.timeoutId) {
+        clearTimeout(state.timeoutId);
+        delete state.timeoutId;
+      }
 
       // namespaced event used to register and unregister mousemove tracking
       const mousemove = (state.event = 'mousemove');
@@ -93,6 +96,37 @@ export default function (): void {
       }
     };
 
-    $el.on('mouseover', handleHover).on('mouseleave', handleHover);
+    const handleKeyDown = (ev: KeyboardEvent) => {
+      ev.stopPropagation();
+
+      const target = ev.target as HTMLElement | null;
+      const $parent = $(target).parent().is('section') ? $(target).parent() : $(target).parent().parent();
+
+      const cleanupKeyboardSelection = () => {
+        state = {};
+        $el.removeClass('hover');
+        $parent.removeClass('active');
+      };
+
+      if (ev.code === 'Tab') {
+        if ($(target).is(':last-child')) {
+          cleanupKeyboardSelection();
+          return;
+        } else if ($parent.hasClass('active')) {
+          return;
+        }
+      }
+
+      if (ev.code === 'Space') {
+        state.isActive = true;
+        state.event = 'keydown';
+        $parent.toggleClass('active');
+        handler();
+      } else {
+        cleanupKeyboardSelection();
+      }
+    };
+
+    $el.on('mouseover', handleHover).on('mouseleave', handleHover).on('keydown', handleKeyDown);
   });
 }

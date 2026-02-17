@@ -34,6 +34,10 @@
         padding: 0 0.7rem;
         text-transform: uppercase;
         border-inline-start: 2px solid transparent;
+
+        &:focus-visible {
+          outline-offset: -2px;
+        }
       }
 
       .home {
@@ -75,6 +79,10 @@
         &:last-child {
           border-radius: 0 0 3px 1px;
         }
+
+        &:focus-visible {
+          outline-offset: -2px;
+        }
       }
     }
 
@@ -84,7 +92,8 @@
     }
 
     &.hover section:hover,
-    section:active {
+    section:active,
+    section.active {
       > a {
         height: var(---nav-section-hover);
         background: $c-bg-header-dropdown;
