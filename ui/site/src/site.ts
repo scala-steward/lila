@@ -10,6 +10,7 @@ import sound from './sound';
 import { api } from 'lib/api';
 import { loadPolyfills } from './polyfill';
 import { addWindowHandlers } from './domHandlers';
+import menuKeyboardInteractions from 'lib/menuKeyboardInteractions';
 
 const site = window.site;
 // site.load is initialized in site.inline.ts (body script)
@@ -31,4 +32,5 @@ site.sound = sound;
 (window as any).lichess = api;
 loadPolyfills();
 addWindowHandlers();
+menuKeyboardInteractions();
 site.load.then(boot);

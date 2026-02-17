@@ -96,37 +96,6 @@ export default function (): void {
       }
     };
 
-    const handleKeyDown = (ev: KeyboardEvent) => {
-      ev.stopPropagation();
-
-      const target = ev.target as HTMLElement | null;
-      const $parent = $(target).parent().is('section') ? $(target).parent() : $(target).parent().parent();
-
-      const cleanupKeyboardSelection = () => {
-        state = {};
-        $el.removeClass('hover');
-        $parent.removeClass('active');
-      };
-
-      if (ev.code === 'Tab') {
-        if ($(target).is(':last-child')) {
-          cleanupKeyboardSelection();
-          return;
-        } else if ($parent.hasClass('active')) {
-          return;
-        }
-      }
-
-      if (ev.code === 'Space') {
-        state.isActive = true;
-        state.event = 'keydown';
-        $parent.toggleClass('active');
-        handler();
-      } else {
-        cleanupKeyboardSelection();
-      }
-    };
-
-    $el.on('mouseover', handleHover).on('mouseleave', handleHover).on('keydown', handleKeyDown);
+    $el.on('mouseover', handleHover).on('mouseleave', handleHover);
   });
 }
