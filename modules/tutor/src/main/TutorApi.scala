@@ -23,6 +23,18 @@ final class TutorApi(
           case Nil => fuccess(Availability.InsufficientGames)
           case _ => queue.status(user.id).map(Availability.Empty(_))
 
+  private val previewProjection = $doc(
+    TutorFullReport.F.config -> true,
+    TutorFullReport.F.at -> true,
+    s"${TutorFullReport.F.perfs}.perf" -> true,
+    s"${TutorFullReport.F.perfs}.stats" -> true
+  )
+  def previews(userId: UserId): Fu[List[TutorFullReport.Preview]] = colls.report:
+    _.find($doc(TutorFullReport.F.user -> userId), previewProjection.some)
+      .sort($sort.desc(TutorFullReport.F.at))
+      .cursor[TutorFullReport.Preview]()
+      .list(16)
+
   def get(config: TutorConfig): Fu[Option[TutorFullReport]] = cache.get(config)
 
   // def request(user: User, availability: TutorFullReport.Availability): Fu[TutorFullReport.Availability] =

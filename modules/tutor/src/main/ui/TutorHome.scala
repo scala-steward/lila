@@ -43,14 +43,18 @@ final class TutorHome(helpers: Helpers, bits: TutorBits):
     )
 
     def start(user: UserId)(using Context) =
+      val form = TutorConfig.form.default(user)
       bits.page(menu = emptyFrag, pageSmall = true)(cls := "tutor__empty box"):
         frag(
           boxTop(h1("Lichess Tutor", bits.beta, bits.otherUser(user))),
           bits.mascotSays(
             whatTutorIsAbout
           ),
-          postForm(cls := "tutor__empty__cta", action := routes.Tutor.compute(user)):
+          postForm(cls := "tutor__empty__cta", action := routes.Tutor.compute(user))(
+            form3.hidden(form("from")),
+            form3.hidden(form("to")),
             submitButton(cls := "button button-fat button-no-upper")("Compute my tutor report")
+          )
         )
 
     def queued(in: TutorQueue.InQueue, user: UserWithPerfs, waitGames: List[(Pov, PgnStr)])(using Context) =

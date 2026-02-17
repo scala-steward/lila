@@ -74,3 +74,7 @@ private object TutorBsonHandlers:
 
   given BSONDocumentHandler[TutorPerfReport] = Macros.handler
   given BSONDocumentHandler[TutorFullReport] = Macros.handler
+
+  given BSONDocumentHandler[TutorFullReport.Preview] =
+    given BSONDocumentHandler[TutorPerfReport.Preview] = Macros.handler
+    Macros.handler

@@ -45,14 +45,16 @@ case class TutorFullReport(
 
 object TutorFullReport:
 
+  case class Preview(config: TutorConfig, at: Instant, perfs: List[TutorPerfReport.Preview])
+
   enum Availability:
     case Available(report: TutorFullReport)
     case Empty(status: TutorQueue.Status)
     case InsufficientGames
 
   object F:
-    val user = "user"
+    val config = "config"
+    val user = s"$config.user"
     val at = "at"
     val millis = "millis"
     val perfs = "perfs"
-    val dates = "dates"

@@ -16,6 +16,7 @@ db.tutor_report.find({ config: { $exists: 0 } }).forEach(old => {
       to: maxDate,
     },
   };
+  delete report.user;
   db.tutor_report.insertOne(report);
   db.tutor_report.deleteOne({ _id: old._id });
 });

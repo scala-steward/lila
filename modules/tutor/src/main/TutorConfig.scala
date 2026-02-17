@@ -50,7 +50,7 @@ object TutorConfig:
       mapping(
         "from" -> ISODate.mapping.verifying(
           s"From date must be after ${format(minFrom)}",
-          _.isAfter(minFrom)
+          _.isAfter(minFrom.minusDays(1))
         ),
         "to" -> ISODate.mapping.verifying(
           "Date cannot be in the future",
@@ -61,3 +61,5 @@ object TutorConfig:
           "From date must be before to date",
           config => config.from.isBefore(config.to)
         )
+
+    def default(user: UserId) = dates(user).fill(TutorConfig.full(user))

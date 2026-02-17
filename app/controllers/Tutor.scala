@@ -34,8 +34,12 @@ final class Tutor(env: Env) extends LilaController(env):
 
   def reports(username: UserStr) = Auth { _ ?=> _ ?=>
     WithUser(username): user =>
-      for page <- renderPage(views.tutor.reports(user, TutorConfig.form.dates(user.id), Nil))
-      yield Ok(page)
+      for
+        previews <- env.tutor.api.previews(user.id)
+        res <-
+          if previews.isEmpty then Redirect(routes.Tutor.user(username)).toFuccess
+          else Ok.page(views.tutor.reports(user, TutorConfig.form.dates(user.id), previews))
+      yield res
   }
 
   def report(username: UserStr, range: String) = TutorReport(username, range) { _ ?=> full =>
