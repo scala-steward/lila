@@ -1,5 +1,5 @@
 import * as licon from 'lib/licon';
-import { type VNode, type MaybeVNode, bind, dataIcon, hl } from 'lib/view';
+import { type VNode, type MaybeVNode, bind, dataIcon, hl, type VNodeData } from 'lib/view';
 import type { ThemeKey, RoundThemes } from '../interfaces';
 import { renderColorForm } from './side';
 import type PuzzleCtrl from '../ctrl';
@@ -11,21 +11,18 @@ export default function theme(ctrl: PuzzleCtrl): MaybeVNode {
     angle = data.angle;
   const showEditor = ctrl.mode === 'view' && !ctrl.autoNexting();
   if (data.replay) return showEditor ? hl('div.puzzle__side__theme', editor(ctrl)) : null;
-  const puzzleMenu = (v: VNode): VNode =>
+  const backToTheme = (data: VNodeData, content: string[]): VNode =>
     hl(
-      'a',
-      { attrs: { href: ctrl.routerWithLang(`/training/${angle.opening ? 'openings' : 'themes'}`) } },
-      v,
+      'a.puzzle__side__theme__back',
+      { attrs: { href: ctrl.routerWithLang(`/training/${angle.opening ? 'openings' : 'themes'}`) }, ...data },
+      content,
     );
   return ctrl.streak
     ? null
     : ctrl.isDaily
-      ? hl(
-          'div.puzzle__side__theme.puzzle__side__theme--daily',
-          puzzleMenu(hl('h2', i18n.puzzle.dailyPuzzle)),
-        )
+      ? hl('div.puzzle__side__theme.puzzle__side__theme--daily', backToTheme({}, [i18n.puzzle.dailyPuzzle]))
       : hl('div.puzzle__side__theme', [
-          puzzleMenu(hl('h2', { class: { long: angle.name.length > 20 } }, ['« ', angle.name])),
+          backToTheme({ class: { long: angle.name.length > 20 } }, ['« ', angle.name]),
           angle.opening
             ? hl('a', { attrs: { href: `/opening/${angle.opening.key}` } }, [
                 'Learn more about ',
