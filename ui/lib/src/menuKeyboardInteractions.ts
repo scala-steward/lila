@@ -16,9 +16,7 @@ export default function (): void {
       } else if ($section.hasClass('active')) {
         return;
       }
-    }
-
-    if (ev.code === 'Space') {
+    } else if (ev.code === 'Space') {
       $section.toggleClass('active');
       ev.preventDefault();
     } else {
@@ -37,6 +35,7 @@ export default function (): void {
 
   const handleSwitchToMouse = () => {
     $nav.find('section.active').removeClass('active');
+    (document.activeElement as HTMLElement | null)?.blur();
   };
 
   $nav.on('keydown', handleKeyDown).on('focusout', handleFocusOut).on('mouseover', handleSwitchToMouse);
