@@ -1,7 +1,8 @@
 package lila.tutor
 package ui
 
-import play.api.data.Form
+import java.time.LocalDate
+import play.api.data.{ Form, Field }
 
 import lila.ui.*
 import lila.ui.ScalatagsTemplate.{ *, given }
@@ -24,26 +25,34 @@ final class TutorReportsUi(helpers: Helpers, bits: TutorBits):
               )
             )
           ),
-          postForm(cls := "form3", action := routes.Tutor.compute(user.id))(
+          postForm(cls := "form3 tutor__report-form", action := routes.Tutor.compute(user.id)):
             form3.fieldset("Request a new Tutor report", toggle = true.some)(cls := "box-pad")(
               form3.split(
-                form3.group(
-                  form("from"),
-                  "Start date",
-                  half = true
-                )(form3.flatpickr(_, local = true, minDate = None))
+                form3.group(form("from"), "Start date")(datePickr)(cls := "form-third"),
+                form3.group(form("to"), "End date")(datePickr)(cls := "form-third"),
+                form3.submit("Compute my tutor report")
               )
-            ),
-            div(cls := "tutor__reports-list")(
-              ul(cls := "tutor__reports-list__list")(
-                previews.map: preview =>
-                  li(cls := "tutor__reports-list__item")(
-                    a(href := preview.config.url.root)(
-                      momentFromNow(preview.at)
-                    )
+            )
+          ,
+          div(cls := "box tutor__reports-list")(
+            ul(cls := "slist tutor__reports-list__list")(
+              previews.map: preview =>
+                li(cls := "tutor__reports-list__item")(
+                  a(href := preview.config.url.root)(
+                    momentFromNow(preview.at),
+                    preview.toString
                   )
-              )
+                )
             )
           )
         )
-      .css("bits.form3")
+      .css("tutor.form")
+      .js(Esm("bits.flatpickr"))
+
+  private def datePickr(field: Field) = form3.flatpickr(
+    field,
+    withTime = false,
+    local = true,
+    minDate = TutorConfig.format(TutorConfig.minFrom).some,
+    maxDate = TutorConfig.format(LocalDate.now).some
+  )

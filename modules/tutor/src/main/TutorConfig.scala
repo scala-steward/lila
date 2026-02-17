@@ -35,7 +35,7 @@ object TutorConfig:
   private def parseDate(str: String): Option[LocalDate] =
     scala.util.Try(LocalDate.parse(str, dateFormatter)).toOption
 
-  private val minFrom = lila.insight.minDate.date
+  val minFrom = lila.insight.minDate.date
 
   private val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
   def format(date: LocalDate) = date.format(dateFormatter)
@@ -62,4 +62,7 @@ object TutorConfig:
           config => config.from.isBefore(config.to)
         )
 
-    def default(user: UserId) = dates(user).fill(TutorConfig.full(user))
+    def full(user: UserId) = dates(user).fill(TutorConfig.full(user))
+
+    def default(user: UserId) =
+      dates(user).fill(TutorConfig(user, LocalDate.now.minusMonths(6), LocalDate.now))

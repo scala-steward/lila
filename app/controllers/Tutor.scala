@@ -38,7 +38,7 @@ final class Tutor(env: Env) extends LilaController(env):
         previews <- env.tutor.api.previews(user.id)
         res <-
           if previews.isEmpty then Redirect(routes.Tutor.user(username)).toFuccess
-          else Ok.page(views.tutor.reports(user, TutorConfig.form.dates(user.id), previews))
+          else Ok.page(views.tutor.reports(user, TutorConfig.form.default(user.id), previews))
       yield res
   }
 
@@ -76,7 +76,11 @@ final class Tutor(env: Env) extends LilaController(env):
   def compute(username: UserStr) = AuthBody { _ ?=> _ ?=>
     WithUser(username): user =>
       bindForm(TutorConfig.form.dates(user.id))(
-        err => BadRequest.page(views.tutor.reports(user, err, Nil)),
+        err =>
+          for
+            previews <- env.tutor.api.previews(user.id)
+            res <- BadRequest.page(views.tutor.reports(user, err, previews))
+          yield res,
         config =>
           env.tutor.api
             .get(config)
