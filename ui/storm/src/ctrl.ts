@@ -16,6 +16,7 @@ import type { StormOpts, StormVm, StormRecap, StormPrefs, StormData } from './in
 import { storage } from 'lib/storage';
 import { pubsub } from 'lib/pubsub';
 import type { WithGround } from 'lib/game/ground';
+import { toggleZenMode } from 'lib/view/zen';
 
 export default class StormCtrl implements PuzCtrl {
   private data: StormData;
@@ -63,13 +64,7 @@ export default class StormCtrl implements PuzCtrl {
         this.redraw();
       }
     }, config.timeToStart + 1000);
-    pubsub.on('zen', () => {
-      const zen = $('body').toggleClass('zen').hasClass('zen');
-      window.dispatchEvent(new Event('resize'));
-      if (!$('body').hasClass('zen-auto')) {
-        xhr.setZen(zen);
-      }
-    });
+    pubsub.on('zen', toggleZenMode);
     $('#zentog').on('click', this.toggleZen);
     this.run.current.playSound();
   }

@@ -16,8 +16,6 @@
   white-space: nowrap;
   line-height: 26px;
   text-decoration: none;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
   border-radius: 2px;
   background-color: $c-bg-box;
 }
@@ -46,11 +44,11 @@
   right: 0;
   width: 20px;
   height: 25px;
-  background: url(../images/icons/multiple-select.png) left top no-repeat;
+  background: url('../images/icons/multiple-select.png') left top no-repeat;
 }
 
 .ms-choice > div.open {
-  background: url(../images/icons/multiple-select.png) right top no-repeat;
+  background: url('../images/icons/multiple-select.png') right top no-repeat;
 }
 
 .ms-drop {
@@ -98,7 +96,7 @@
   border: $border;
   border-radius: 0;
   box-shadow: none;
-  background: url(../images/icons/multiple-select.png) no-repeat 100% -22px;
+  background: url('../images/icons/multiple-select.png') no-repeat 100% -22px;
 }
 
 .ms-drop ul {

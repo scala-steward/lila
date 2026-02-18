@@ -26,7 +26,7 @@
     display: block;
     width: 200px;
     height: 200px;
-    background: url(../images/learn/brutal-helm.svg);
+    background: url('../images/learn/brutal-helm.svg');
     margin: auto;
     opacity: 0.8;
   }
@@ -62,7 +62,7 @@
     }
 
     to {
-      transform: translateX(0px);
+      transform: translateX(0);
     }
   }
 
@@ -70,7 +70,7 @@
     height: 100%;
     background: #1566b2;
     border-radius: 0 5px 5px 0;
-    background-image: url(../images/grain.png);
+    background-image: url('../images/grain.png');
     transform: translateX(-100px);
     animation:
       animatedBackground 50s linear infinite,

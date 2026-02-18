@@ -6,7 +6,7 @@
   @include transition;
 
   @media (hover: hover) {
-    &:hover:not(.disabled):not([disabled]) {
+    &:hover:not(.disabled, [disabled]) {
       background: $m-secondary_bg--mix-75;
       color: #fff;
     }

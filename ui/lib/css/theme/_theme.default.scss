@@ -98,7 +98,6 @@ $patron-colors: $patron-colors-dark;
   --c-secondary: #{$c-secondary};
   --c-secondary-dim: #{_dim($c-secondary, 20%)};
   --c-secondary-dimmer: #{_dim($c-secondary, 40%)};
-  --c-good: #{$c-secondary};
   --c-accent: #{$c-accent};
   --c-link: #{$c-primary};
   --c-link-dim: var(--c-primary-dim);

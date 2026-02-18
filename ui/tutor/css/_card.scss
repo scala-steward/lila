@@ -3,7 +3,7 @@
     @extend %box-padding-horiz;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-    grid-gap: $block-gap;
+    gap: $block-gap;
     margin: var(---box-padding) 0;
     &--triple {
       grid-template-columns: 1fr;
