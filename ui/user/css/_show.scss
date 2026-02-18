@@ -97,13 +97,11 @@
           }
           a,
           button {
-            @extend %flex-center-nowrap;
+            @extend %flex-center-nowrap, %break-word;
             width: 20em;
             padding: 0.6rem 1rem;
             line-height: normal;
             white-space: normal;
-            word-break: break-word;
-            overflow-wrap: break-word;
             text-align: start;
             color: $c-header-dropdown;
             &::before {

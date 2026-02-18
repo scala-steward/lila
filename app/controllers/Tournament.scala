@@ -8,7 +8,7 @@ import lila.common.HTTPRequest
 import lila.common.Json.given
 import scalalib.data.Preload
 import lila.gathering.Condition.GetMyTeamIds
-import lila.tournament.{ MyInfo, Tournament as Tour, TournamentForm, PlayerInfoExt }
+import lila.tournament.{ MyInfo, Tournament as Tour, TournamentForm }
 
 final class Tournament(env: Env, apiC: => Api)(using akka.stream.Materializer) extends LilaController(env):
 

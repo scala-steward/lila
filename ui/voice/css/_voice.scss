@@ -76,7 +76,7 @@ button#microphone-button {
   }
 
   &.listening {
-    animation: pulseListening 2s;
+    animation: pulse-listening 2s;
     animation-iteration-count: infinite;
     color: $c-primary;
 
@@ -89,7 +89,7 @@ button#microphone-button {
     color: $c-bad;
   }
 
-  @keyframes pulseListening {
+  @keyframes pulse-listening {
     0% {
       border-color: transparent;
     }
