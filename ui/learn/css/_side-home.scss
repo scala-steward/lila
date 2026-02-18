@@ -46,7 +46,7 @@
     overflow: hidden;
   }
 
-  @keyframes animatedBackground {
+  @keyframes animated-background {
     from {
       background-position: 0 0;
     }
@@ -56,7 +56,7 @@
     }
   }
 
-  @keyframes animatedBar {
+  @keyframes animated-bar {
     from {
       transform: translateX(-100px);
     }
@@ -73,8 +73,8 @@
     background-image: url('../images/grain.png');
     transform: translateX(-100px);
     animation:
-      animatedBackground 50s linear infinite,
-      animatedBar 1s forwards;
+      animated-background 50s linear infinite,
+      animated-bar 1s forwards;
   }
 
   .progress .text {

@@ -192,7 +192,9 @@ export default async function (
           displayColors: false,
           callbacks: {
             title: items =>
-              labels[items[0].dataset.label === 'bar' ? items[0].parsed.x * 2 : items[0].parsed.x],
+              items[0].parsed.x
+                ? labels[items[0].dataset.label === 'bar' ? items[0].parsed.x * 2 : items[0].parsed.x]
+                : '',
             label: () => '',
           },
         },

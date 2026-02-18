@@ -217,8 +217,8 @@ importers:
         specifier: workspace:*
         version: link:../bits
       chart.js:
-        specifier: 4.4.3
-        version: 4.4.3
+        specifier: 4.5.1
+        version: 4.5.1
       editor:
         specifier: workspace:*
         version: link:../editor
@@ -250,17 +250,17 @@ importers:
   ui/chart:
     dependencies:
       chart.js:
-        specifier: 4.4.8
-        version: 4.4.8
+        specifier: 4.5.1
+        version: 4.5.1
       chartjs-adapter-dayjs-4:
         specifier: ^1.0.4
-        version: 1.0.4(chart.js@4.4.8)(dayjs@1.11.19)
+        version: 1.0.4(chart.js@4.5.1)(dayjs@1.11.19)
       chartjs-plugin-datalabels:
         specifier: ^2.2.0
-        version: 2.2.0(chart.js@4.4.8)
+        version: 2.2.0(chart.js@4.5.1)
       chartjs-plugin-zoom:
         specifier: ^2.2.0
-        version: 2.2.0(chart.js@4.4.8)
+        version: 2.2.0(chart.js@4.5.1)
       dayjs:
         specifier: ^1.11.19
         version: 1.11.19
@@ -342,11 +342,11 @@ importers:
         specifier: workspace:^
         version: link:../chart
       chart.js:
-        specifier: 4.4.8
-        version: 4.4.8
+        specifier: 4.5.1
+        version: 4.5.1
       chartjs-plugin-datalabels:
         specifier: ^2.2.0
-        version: 2.2.0(chart.js@4.4.8)
+        version: 2.2.0(chart.js@4.5.1)
       lib:
         specifier: workspace:*
         version: link:../lib
@@ -456,11 +456,11 @@ importers:
         specifier: ^3.1.9
         version: 3.1.9
       chart.js:
-        specifier: 4.4.8
-        version: 4.4.8
+        specifier: 4.5.1
+        version: 4.5.1
       chartjs-adapter-dayjs-4:
         specifier: ^1.0.4
-        version: 1.0.4(chart.js@4.4.8)(dayjs@1.11.19)
+        version: 1.0.4(chart.js@4.5.1)(dayjs@1.11.19)
       dayjs:
         specifier: ^1.11.19
         version: 1.11.19
@@ -477,8 +477,8 @@ importers:
         specifier: ^0.3.1
         version: 0.3.1
       chart.js:
-        specifier: 4.4.8
-        version: 4.4.8
+        specifier: 4.5.1
+        version: 4.5.1
       keyboardMove:
         specifier: workspace:*
         version: link:../keyboardMove
@@ -1196,14 +1196,6 @@ packages:
 
   canvas-confetti@1.9.4:
     resolution: {integrity: sha512-yxQbJkAVrFXWNbTUjPqjF7G+g6pDotOUHGbkZq2NELZUMDpiJ85rIEazVb8GTaAptNW2miJAXbs1BtioA251Pw==}
-
-  chart.js@4.4.3:
-    resolution: {integrity: sha512-qK1gkGSRYcJzqrrzdR6a+I0vQ4/R+SoODXyAjscQ/4mzuNzySaMCd+hyVxitSY1+L2fjPD1Gbn+ibNqRmwQeLw==}
-    engines: {pnpm: '>=8'}
-
-  chart.js@4.4.8:
-    resolution: {integrity: sha512-IkGZlVpXP+83QpMm4uxEiGqSI7jFizwVtF3+n5Pc3k7sMO+tkd0qxh2OzLhenM0K80xtmAONWGBn082EiBQSDA==}
-    engines: {pnpm: '>=8'}
 
   chart.js@4.5.1:
     resolution: {integrity: sha512-GIjfiT9dbmHRiYi6Nl2yFCq7kkwdkp1W/lp2J99rX0yo9tgJGn3lKQATztIjb5tVtevcBtIdICNWqlq5+E8/Pw==}
@@ -2751,36 +2743,23 @@ snapshots:
 
   canvas-confetti@1.9.4: {}
 
-  chart.js@4.4.3:
-    dependencies:
-      '@kurkle/color': 0.3.4
-
-  chart.js@4.4.8:
-    dependencies:
-      '@kurkle/color': 0.3.4
-
   chart.js@4.5.1:
     dependencies:
       '@kurkle/color': 0.3.4
-
-  chartjs-adapter-dayjs-4@1.0.4(chart.js@4.4.8)(dayjs@1.11.19):
-    dependencies:
-      chart.js: 4.4.8
-      dayjs: 1.11.19
 
   chartjs-adapter-dayjs-4@1.0.4(chart.js@4.5.1)(dayjs@1.11.19):
     dependencies:
       chart.js: 4.5.1
       dayjs: 1.11.19
 
-  chartjs-plugin-datalabels@2.2.0(chart.js@4.4.8):
+  chartjs-plugin-datalabels@2.2.0(chart.js@4.5.1):
     dependencies:
-      chart.js: 4.4.8
+      chart.js: 4.5.1
 
-  chartjs-plugin-zoom@2.2.0(chart.js@4.4.8):
+  chartjs-plugin-zoom@2.2.0(chart.js@4.5.1):
     dependencies:
       '@types/hammerjs': 2.0.46
-      chart.js: 4.4.8
+      chart.js: 4.5.1
       hammerjs: 2.0.8
 
   cheerio-select@2.1.0:

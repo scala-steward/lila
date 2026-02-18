@@ -355,7 +355,7 @@
   position: relative;
   vertical-align: initial;
   box-sizing: border-box;
-  appearance: menulist;
+  appearance: auto;
   width: auto;
 }
 .flatpickr-current-month .flatpickr-monthDropdown-months:focus,
@@ -572,10 +572,6 @@ span.flatpickr-weekday {
   border: none;
 }
 .flatpickr-innerContainer {
-  display: block;
-  display: -webkit-box;
-  display: flex;
-  display: flexbox;
   display: flex;
   box-sizing: border-box;
   overflow: hidden;
@@ -654,7 +650,6 @@ span.flatpickr-weekday {
   font-weight: bold;
   width: 2%;
   user-select: none;
-  -ms-flex-item-align: center;
   align-self: center;
 }
 .flatpickr-time .flatpickr-am-pm {
@@ -673,17 +668,7 @@ span.flatpickr-weekday {
 .flatpickr-input[readonly] {
   cursor: pointer;
 }
-@keyframes fpFadeInDown {
-  from {
-    opacity: 0;
-    transform: translate3d(0, -20px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-@keyframes fpFadeInDown {
+@keyframes fp-fade-in-down {
   from {
     opacity: 0;
     transform: translate3d(0, -20px, 0);

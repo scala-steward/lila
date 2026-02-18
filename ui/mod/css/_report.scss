@@ -139,11 +139,11 @@ $c-report-high-over: white;
   }
 
   .user_marks i {
-    @include user_marks;
+    @include user-marks;
   }
 
   .marked-by-me {
-    @include user_marks;
+    @include user-marks;
     background: $m-brag_bg--mix-60;
   }
 
