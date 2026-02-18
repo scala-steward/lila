@@ -3717,14 +3717,8 @@ interface I18n {
     keyGoToStartOrEnd: string;
     /** move backward/forward */
     keyMoveBackwardOrForward: string;
-    /** Next blunder */
-    keyNextBlunder: string;
     /** Next branch */
     keyNextBranch: string;
-    /** Next inaccuracy */
-    keyNextInaccuracy: string;
-    /** Next mistake */
-    keyNextMistake: string;
     /** Previous branch */
     keyPreviousBranch: string;
     /** Request computer analysis, Learn from your mistakes */
