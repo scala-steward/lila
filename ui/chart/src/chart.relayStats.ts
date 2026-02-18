@@ -190,7 +190,7 @@ const makeChart = ($el: Cash, data: RoundStats) => {
           caretPadding: 5,
           usePointStyle: true,
           callbacks: {
-            title: items => (items.length ? dateFormat()(items[0].parsed.x) : ''),
+            title: items => (items.length && items[0].parsed.x ? dateFormat()(items[0].parsed.x) : ''),
           },
         },
         title: {
@@ -226,10 +226,11 @@ const fillData = (viewers: RoundStats['viewers']) => {
     .slice(0, viewers.length - 2)
     .reverse()
     .forEach(([behind, v]) => {
-      const minuteGap = points.find(({ x }) => x - behind <= 60);
-      if (!minuteGap) {
-        for (let i = behind; i < points[points.length - 1].x; i += 60) points.push({ x: i, y: v });
+      const minuteGap = points.find(({ x }) => x && x - behind <= 60);
+      const lastDate = points[points.length - 1].x;
+      if (!minuteGap && lastDate) {
+        for (let i = behind; i < lastDate; i += 60) points.push({ x: i, y: v });
       } else points.push({ x: behind, y: v });
     });
-  return points.map(p => ({ x: p.x * 1000, y: p.y })).reverse();
+  return points.map(p => ({ x: p.x ? p.x * 1000 : null, y: p.y })).reverse();
 };
