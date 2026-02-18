@@ -7,7 +7,7 @@ $section-margin-more: 5vh;
   overflow: hidden;
 
   h1 {
-    @extend %break-word-hard, %zalgoverflow, %flex-center;
+    @extend %break-word, %zalgoverflow, %flex-center;
 
     unicode-bidi: plaintext;
 

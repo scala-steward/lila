@@ -85,7 +85,6 @@
     padding-block: 3vh;
   }
   p {
-    overflow-wrap: break-word;
-    word-break: break-word;
+    @extend %break-word;
   }
 }
