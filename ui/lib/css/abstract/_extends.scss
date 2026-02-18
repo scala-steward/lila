@@ -1,13 +1,13 @@
 %base-font-fallback {
-  font-family: 'Noto Sans', Sans-Serif;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 %base-font {
-  font-family: 'Noto Sans', Sans-Serif;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 %roboto {
-  font-family: Roboto, Sans-Serif;
+  font-family: Roboto, sans-serif;
   font-weight: 300;
 }
 
@@ -208,15 +208,12 @@
 
 %break-word {
   overflow-wrap: break-word;
-  word-break: break-word;
+  word-break: normal;
 }
 
 %break-word-hard {
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
   word-break: break-all;
-
-  /* support: firefox */
-  word-break: break-word;
 }
 
 %break-nope {

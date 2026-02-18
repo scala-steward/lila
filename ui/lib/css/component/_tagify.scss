@@ -63,12 +63,8 @@
   --loader-size: 0.8em;
 
   @mixin firefox {
-    @at-root {
-      @document url-prefix() {
-        & {
-          @content;
-        }
-      }
+    @supports (-moz-appearance: none) {
+      @content;
     }
   }
 
