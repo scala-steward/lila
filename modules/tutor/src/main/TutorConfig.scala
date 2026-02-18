@@ -1,15 +1,16 @@
 package lila.tutor
 
-import java.time.LocalDate
+import java.time.{ LocalDate, LocalTime }
 import java.time.format.DateTimeFormatter
 import play.api.mvc.Call
 import lila.common.LilaOpeningFamily
 
-case class TutorConfig(user: UserId, from: LocalDate, to: LocalDate):
+case class TutorConfig(user: UserId, from: Instant, to: Instant):
 
-  val rangeStr = s"${TutorConfig.format(from)}_${TutorConfig.format(to)}"
-
+  val rangeStr = s"${TutorConfig.format(from.date)}_${TutorConfig.format(to.date)}"
   val id = s"$user:$rangeStr"
+
+  def period = (from, to)
 
   object url:
     def root = routes.Tutor.report(user, rangeStr)
@@ -21,19 +22,20 @@ case class TutorConfig(user: UserId, from: LocalDate, to: LocalDate):
 
 object TutorConfig:
 
-  def full(user: UserId) = TutorConfig(user, minFrom, LocalDate.now)
-
   def parse(user: UserId, urlFragment: String): Option[TutorConfig] =
     urlFragment.split("_") match
       case Array(fromStr, toStr) =>
         for
           from <- parseDate(fromStr)
           to <- parseDate(toStr)
-        yield TutorConfig(user, from, to)
+        yield TutorConfig(user, fromDate(from), toDate(to))
       case _ => none
 
   private def parseDate(str: String): Option[LocalDate] =
     scala.util.Try(LocalDate.parse(str, dateFormatter)).toOption
+
+  private def fromDate(date: LocalDate) = date.atStartOfDay.instant
+  private def toDate(date: LocalDate) = date.atTime(LocalTime.MAX).instant
 
   val minFrom = lila.insight.minDate.date
 
@@ -46,7 +48,12 @@ object TutorConfig:
     import play.api.data.Forms.*
     import lila.common.Form.ISODate
 
-    def dates(user: UserId) = Form:
+    case class LocalDates(from: LocalDate, to: LocalDate):
+      def config(user: UserId) = TutorConfig(user, fromDate(from), toDate(to))
+
+    def from(config: TutorConfig) = LocalDates(config.from.date, config.to.date)
+
+    def dates = Form:
       mapping(
         "from" -> ISODate.mapping.verifying(
           s"From date must be after ${format(minFrom)}",
@@ -56,13 +63,12 @@ object TutorConfig:
           "Date cannot be in the future",
           _.isBefore(LocalDate.now.plusDays(1))
         )
-      )((f, t) => TutorConfig(user, f, t))(config => Some(config.from, config.to))
+      )(LocalDates.apply)(lila.common.extensions.unapply)
         .verifying(
           "From date must be before to date",
           config => config.from.isBefore(config.to)
         )
 
-    def full(user: UserId) = dates(user).fill(TutorConfig.full(user))
+    def full = dates.fill(LocalDates(minFrom, LocalDate.now))
 
-    def default(user: UserId) =
-      dates(user).fill(TutorConfig(user, LocalDate.now.minusMonths(6), LocalDate.now))
+    def default = dates.fill(LocalDates(LocalDate.now.minusMonths(6), LocalDate.now))

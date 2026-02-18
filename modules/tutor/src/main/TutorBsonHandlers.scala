@@ -13,17 +13,16 @@ private object TutorBsonHandlers:
   export lila.insight.BSONHandlers.given
   import lila.rating.BSONHandlers.perfTypeIdHandler
 
-  given BSONHandler[FiniteDuration] = lila.db.dsl.minutesHandler
+  given BSONHandler[FiniteDuration] = minutesHandler
   given BSONHandler[GoodPercent] = percentAsIntHandler[GoodPercent]
 
   given BSONHandler[TutorConfig] = Macros.handler
 
   given [A](using handler: BSONHandler[A]): BSONHandler[ByColor[A]] =
-    mapHandler[A]
-      .as[ByColor[A]](
-        doc => ByColor(doc("w"), doc("b")),
-        map => Map("w" -> map.white, "b" -> map.black)
-      )
+    mapHandler[A].as[ByColor[A]](
+      doc => ByColor(doc("w"), doc("b")),
+      map => Map("w" -> map.white, "b" -> map.black)
+    )
 
   given [A](using handler: BSONHandler[A], ordering: Ordering[A]): BSONHandler[TutorBothOption[A]] =
     quickHandler[TutorBothOption[A]](

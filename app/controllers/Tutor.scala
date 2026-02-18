@@ -5,7 +5,7 @@ import play.api.mvc.*
 import lila.app.{ *, given }
 import lila.common.LilaOpeningFamily
 import lila.rating.PerfType
-import lila.tutor.{ TutorFullReport, TutorPerfReport, TutorQueue, TutorConfig }
+import lila.tutor.{ TutorFullReport, TutorPerfReport, TutorQueue, TutorConfig, TutorAvailability }
 
 final class Tutor(env: Env) extends LilaController(env):
 
@@ -15,20 +15,13 @@ final class Tutor(env: Env) extends LilaController(env):
 
   def user(username: UserStr) = Auth { _ ?=> _ ?=>
     WithUser(username): user =>
-      import TutorFullReport.Availability.*
       for
         withPerfs <- env.user.api.withPerfs(user)
         av <- env.tutor.api.availability(withPerfs)
         res <- av match
-          case InsufficientGames =>
+          case TutorAvailability.InsufficientGames =>
             BadRequest.page(views.tutor.home.insufficientGames(username.id))
-          case Empty(in: TutorQueue.InQueue) =>
-            for
-              waitGames <- env.tutor.queue.waitingGames(user.id)
-              page <- renderPage(views.tutor.home.queued(in, withPerfs, waitGames))
-            yield Accepted(page)
-          case Empty(_) => Accepted.page(views.tutor.home.start(user.id))
-          case Available(r) => Ok.page(views.tutor.report(r))
+          case TutorAvailability.Available(home) => Ok.page(views.tutor.home(home))
       yield res
   }
 
@@ -41,7 +34,7 @@ final class Tutor(env: Env) extends LilaController(env):
           else
             for
               awaiting <- env.tutor.queue.awaiting(user.id)
-              form = TutorConfig.form.default(user.id)
+              form = TutorConfig.form.default
               res <- Ok.page(views.tutor.reports(user, form, awaiting, previews))
             yield res
       yield res
@@ -80,21 +73,22 @@ final class Tutor(env: Env) extends LilaController(env):
 
   def compute(username: UserStr) = AuthBody { _ ?=> _ ?=>
     WithUser(username): user =>
-      bindForm(TutorConfig.form.dates(user.id))(
+      bindForm(TutorConfig.form.dates)(
         err =>
           for
             previews <- env.tutor.api.previews(user.id)
             awaiting <- env.tutor.queue.awaiting(user.id)
             res <- BadRequest.page(views.tutor.reports(user, err, awaiting, previews))
           yield res,
-        config =>
+        dates =>
+          val config = dates.config(user.id)
           env.tutor.api
             .get(config)
             .flatMap:
               case Some(report) => Redirect(report.url.root).toFuccess
               case None =>
                 for _ <- env.tutor.queue.enqueue(config)
-                yield Redirect(routes.Tutor.reports(user.username))
+                yield Redirect(routes.Tutor.user(user.username))
       )
   }
 

@@ -47,11 +47,6 @@ object TutorFullReport:
 
   case class Preview(config: TutorConfig, at: Instant, perfs: List[TutorPerfReport.Preview])
 
-  enum Availability:
-    case Available(report: TutorFullReport)
-    case Empty(status: TutorQueue.Status)
-    case InsufficientGames
-
   object F:
     val config = "config"
     val user = s"$config.user"

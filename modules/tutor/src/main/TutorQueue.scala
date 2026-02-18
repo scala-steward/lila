@@ -77,24 +77,23 @@ final private class TutorQueue(
 
   def fetchStatus(user: UserId): Fu[Status] =
     colls.queue:
-      _.byId[Item]($id(user))
-        .flatMap:
-          _.fold(fuccess(NotInQueue)): item =>
-            for
-              position <- colls.queue(_.countSel($doc(F.requestedAt.$lte(item.requestedAt))))
-              avgDuration <- durationCache.get({})
-            yield InQueue(item, position, avgDuration)
+      _.byId[Item](user).flatMap:
+        _.fold(fuccess(NotInQueue)): item =>
+          for
+            position <- colls.queue(_.countSel($doc(F.requestedAt.$lte(item.requestedAt))))
+            avgDuration <- durationCache.get({})
+          yield InQueue(item, position, avgDuration)
 
 object TutorQueue:
 
-  case class Item(config: TutorConfig, requestedAt: Instant, startedAt: Option[Instant])
+  case class Item(config: TutorConfig, requestedAt: Instant, startedAt: Option[Instant] = none)
 
   sealed trait Status
   case object NotInQueue extends Status
   case class InQueue(item: Item, position: Int, avgDuration: FiniteDuration) extends Status:
     def eta = avgDuration * position
 
-  case class Awaiting(inQueue: InQueue, games: List[(Pov, PgnStr)])
+  case class Awaiting(q: InQueue, games: List[(Pov, PgnStr)])
 
   import TutorBsonHandlers.given
   private given BSONDocumentReader[Item] = Macros.reader

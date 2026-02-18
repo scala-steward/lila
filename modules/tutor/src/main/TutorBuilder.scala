@@ -41,7 +41,12 @@ final private class TutorBuilder(
 
   private def produce(user: UserWithPerfs, config: TutorConfig): Fu[TutorFullReport] = for
     _ <- insightApi.indexAll(user, force = false).monSuccess(_.tutor.buildSegment("insight-index"))
-    perfStats <- perfStatsApi(user, eligiblePerfKeysOf(user).map(PerfType(_)), fishnet.maxGamesToConsider)
+    perfStats <- perfStatsApi(
+      user,
+      config.period,
+      eligiblePerfKeysOf(user).map(PerfType(_)),
+      fishnet.maxGamesToConsider
+    )
       .monSuccess(_.tutor.buildSegment("perf-stats"))
     peerMatches <- findPeerMatches(perfStats.view.mapValues(_.stats.rating).toMap)
       .monSuccess(_.tutor.buildSegment("peer-matches"))
@@ -55,7 +60,8 @@ final private class TutorBuilder(
 
   private[tutor] def eligiblePerfKeysOf(user: UserWithPerfs): List[PerfKey] =
     lila.rating.PerfType.standardWithUltra.filter: pt =>
-      user.perfs(pt).latest.exists(_.isAfter(nowInstant.minusMonths(12)))
+      val perf = user.perfs(pt)
+      perf.nb >= 30 && perf.latest.exists(_.isAfter(lila.insight.minDate))
 
   private def findPeerMatches(
       perfs: Map[PerfType, lila.insight.MeanRating]
