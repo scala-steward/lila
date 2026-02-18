@@ -1,9 +1,12 @@
 .tutor {
-  &__waiting-games {
+  &__waiting {
+    overflow: hidden;
+  }
+  &__waiting__games {
     @media (prefers-reduced-motion: reduce) {
       display: none;
     }
-    margin: 3em 0;
+    margin-bottom: 3em;
     min-height: 255px;
 
     position: relative;

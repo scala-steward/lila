@@ -3,35 +3,24 @@ package ui
 
 import chess.format.pgn.PgnStr
 
-import lila.core.perf.UserWithPerfs
 import lila.ui.*
-import lila.ui.ScalatagsTemplate.{ *, given }
+import lila.ui.ScalatagsTemplate.*
 
-final class TutorQueueUi(helpers: Helpers, bits: TutorBits):
+final class TutorQueueUi(helpers: Helpers):
   import helpers.{ *, given }
 
-  def awaitingBox(a: TutorQueue.Awaiting)(using Context) =
-    frag(
-      boxTop(h1("Lichess Tutor", bits.beta, bits.otherUser(a.q.item.config.user))),
-      bits.mascotSays(
-        whatTutorIsAbout,
-        br,
+  def waitingZone(a: TutorQueue.Awaiting)(using Context) =
+    div(cls := "box tutor__waiting")(
+      div(cls := "box-pad")(
         p(strong(cls := "tutor__intro")("Here's the plan:")),
         examinationMethod,
-        p(
-          (a.q.position > 10).option:
-            frag("There are ", (a.q.position - 1), " players in the queue before you.", br)
-          ,
-          "Your report should be ready in about ",
-          showMinutes(a.q.eta.toMinutes.toInt.atLeast(1)),
-          "."
-        )
+        p(eta(a))
       ),
-      div(cls := "tutor__waiting-games"):
-        div(cls := "tutor__waiting-games__carousel"):
+      div(cls := "tutor__waiting__games"):
+        div(cls := "tutor__waiting__games__carousel"):
           a.games.map: (pov, pgn) =>
             div(
-              cls := "tutor__waiting-game lpv lpv--todo lpv--moves-false lpv--controls-false",
+              cls := "tutor__waiting-game is2d lpv lpv--todo lpv--moves-false lpv--controls-false",
               st.data("pgn") := pgn.value,
               st.data("pov") := pov.color.name
             )
@@ -53,3 +42,13 @@ final class TutorQueueUi(helpers: Helpers, bits: TutorBits):
     li("Build detailed insight reports for each of your games"),
     li("Compare these insights to other players with the same rating")
   )
+
+  private def eta(a: TutorQueue.Awaiting)(using Translate) =
+    frag(
+      (a.q.position > 10).option:
+        frag("There are ", (a.q.position - 1), " players in the queue before you.", br)
+      ,
+      "Your report should be ready in about ",
+      showMinutes(a.q.eta.toMinutes.toInt.atLeast(1)),
+      "."
+    )
