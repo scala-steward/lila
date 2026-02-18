@@ -52,6 +52,7 @@ import { plyToTurn } from 'lib/game/chess';
 import { type SocketSendOpts } from 'lib/socket';
 import type { NodeCrazy } from 'lib/tree/types';
 import Server from './server';
+import { toggleZenMode } from 'lib/view/zen';
 
 type GoneBerserk = Partial<ByColor<boolean>>;
 
@@ -144,13 +145,7 @@ export default class RoundController implements MoveRootCtrl {
       this.redraw();
     });
 
-    pubsub.on('zen', () => {
-      const zen = $('body').toggleClass('zen').hasClass('zen');
-      window.dispatchEvent(new Event('resize'));
-      if (!$('body').hasClass('zen-auto')) {
-        xhr.setZen(zen);
-      }
-    });
+    pubsub.on('zen', toggleZenMode);
 
     if (!this.opts.noab && this.isPlaying()) ab.init(this);
   }
