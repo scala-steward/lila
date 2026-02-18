@@ -154,12 +154,14 @@ export class EditDialog {
   }
 
   private async save() {
-    const behaviorScroll = this.view.querySelector('.behavior')!.scrollTop;
-    const filtersScroll = this.view.querySelector('.filters')!.scrollTop;
+    const behaviorEl = this.view.querySelector('.behavior')!;
+    const filtersEl = this.view.querySelector('.filters')!;
+    const behaviorScroll = behaviorEl.scrollTop;
+    const filtersScroll = filtersEl.scrollTop;
     await env.bot.storeBot(deadStrip(this.editing()));
     this.update();
-    this.view.querySelector('.behavior')!.scrollTop = behaviorScroll ?? 0;
-    this.view.querySelector('.filters')!.scrollTop = filtersScroll ?? 0;
+    behaviorEl.scrollTop = behaviorScroll ?? 0;
+    filtersEl.scrollTop = filtersScroll ?? 0;
   }
 
   private selectBot(uid: string | null = this.uid): void {
