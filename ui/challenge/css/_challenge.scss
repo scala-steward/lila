@@ -41,6 +41,7 @@
     }
 
     &:hover .buttons,
+    &:focus-within .buttons,
     .blind-mode & .buttons {
       display: flex;
     }
