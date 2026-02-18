@@ -34,7 +34,7 @@ export default function (ctrl: TournamentController): VNode {
       ? Math.round(data.pairings.reduce((a, b) => a + b.op.rating, 0) / pairingsLen)
       : undefined;
   return hl(tag, { hook: { insert: setup, postpatch: (_, vnode) => setup(vnode) } }, [
-    hl('a.close', {
+    hl('button.close', {
       attrs: dataIcon(licon.X),
       hook: bind('click', () => ctrl.showPlayerInfo(data.player), ctrl.redraw),
     }),
