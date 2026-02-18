@@ -786,9 +786,9 @@ export default function (token: string): void {
       ttsSay(padBeforeNumbers(lastMove.move));
     }
     if (lastMove.player === 'white') {
-      console.log('<span class="dgt-white-move">' + moveText + ' by White' + '</span>');
+      console.log(`<span class="dgt-white-move">${moveText} by White</span>`);
     } else {
-      console.log('<span class="dgt-black-move">' + moveText + ' by Black' + '</span>');
+      console.log(`<span class="dgt-black-move">${moveText} by Black</span>`);
     }
     //TODO
     //Give feedback on running out of time
