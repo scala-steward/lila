@@ -1,5 +1,6 @@
 import { h, type VNode } from 'snabbdom';
 import * as licon from '../licon';
+import { storage } from '../storage';
 import { bind, type MaybeVNodes } from './snabbdom';
 
 export const maxPerPage = 10;
@@ -101,4 +102,16 @@ export function pagerData<A>(ctrl: PaginatedCtrl<A>): PagerData<A> {
 
 export function myPage(ctrl: PaginatedCtrl<unknown>): number | undefined {
   return ctrl.data.me ? Math.floor((ctrl.data.me.rank - 1) / 10) + 1 : undefined;
+}
+
+const lastRedirectStorage = storage.make('last-redirect');
+
+export function redirectFirst(gameId: string, rightNow?: boolean): void {
+  const delay = rightNow || document.hasFocus() ? 10 : 1000 + Math.random() * 500;
+  setTimeout(() => {
+    if (lastRedirectStorage.get() !== gameId) {
+      lastRedirectStorage.set(gameId);
+      site.redirect('/' + gameId, true);
+    }
+  }, delay);
 }

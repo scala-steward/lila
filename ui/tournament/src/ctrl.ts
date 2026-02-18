@@ -10,11 +10,11 @@ import type {
   Standing,
   Player,
 } from './interfaces';
-import { storage, storedMapAsProp } from 'lib/storage';
+import { storedMapAsProp } from 'lib/storage';
 import { pubsub } from 'lib/pubsub';
 import { alerts, prompt } from 'lib/view';
 import type { Prop } from 'lib';
-import { maxPerPage, myPage, pagerData } from 'lib/view/pagination';
+import { maxPerPage, myPage, pagerData, redirectFirst } from 'lib/view/pagination';
 
 interface CtrlTeamInfo {
   requested?: string;
@@ -38,8 +38,6 @@ export default class TournamentController {
   redraw: () => void;
   nbWatchers = 0;
   collapsedDescription: Prop<boolean>;
-
-  private lastStorage = storage.make('last-redirect');
 
   constructor(opts: TournamentOpts, redraw: () => void) {
     this.opts = opts;
@@ -106,18 +104,8 @@ export default class TournamentController {
 
   private redirectToMyGame() {
     const gameId = this.myGameId();
-    if (gameId) this.redirectFirst(gameId);
+    if (gameId) redirectFirst(gameId);
   }
-
-  redirectFirst = (gameId: string, rightNow?: boolean) => {
-    const delay = rightNow || document.hasFocus() ? 10 : 1000 + Math.random() * 500;
-    setTimeout(() => {
-      if (this.lastStorage.get() !== gameId) {
-        this.lastStorage.set(gameId);
-        site.redirect('/' + gameId, true);
-      }
-    }, delay);
-  };
 
   pager = () => pagerData(this);
 
