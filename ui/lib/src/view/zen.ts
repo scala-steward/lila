@@ -14,7 +14,7 @@ export function toggleZenMode({ unconditional }: { unconditional?: boolean } = {
   const $body = $('body');
   const zen = $body.toggleClass('zen').hasClass('zen');
   window.dispatchEvent(new Event('resize'));
-  if (unconditional || $body.hasClass('zen-auto')) {
+  if (unconditional || !$body.hasClass('zen-auto')) {
     setZen(zen);
   }
 }
