@@ -98,8 +98,8 @@ export default function (ctrl: PuzzleCtrl): VNode {
         replay(ctrl),
         puzzleBox(ctrl),
         ctrl.streak ? streakBox(ctrl) : userBox(ctrl),
-        config(ctrl),
         theme(ctrl),
+        config(ctrl),
       ]),
       hl(
         'div.puzzle__board.main-board' + (ctrl.blindfold() ? '.blindfold' : ''),
