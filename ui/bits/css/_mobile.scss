@@ -26,7 +26,7 @@
       padding-inline-start: 2em;
     }
 
-    li:before {
+    li::before {
       vertical-align: middle;
       content: '\2713';
       display: inline-block;

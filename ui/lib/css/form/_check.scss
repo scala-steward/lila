@@ -51,7 +51,7 @@
   @extend %visually-hidden;
   position: absolute;
   &:disabled + .form-check__label {
-    opacity: 60%;
+    opacity: 0.6;
     cursor: not-allowed !important;
   }
   &:not(:disabled):focus-visible + .form-check__label {

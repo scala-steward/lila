@@ -13,7 +13,7 @@
       }
       &__openings {
         display: grid;
-        grid-gap: 2vmin;
+        gap: 2vmin;
       }
       &__explorer {
         margin-top: $block-gap;

@@ -32,11 +32,11 @@ dialog .help {
   }
 
   .kbd-mod {
-    font-family: 'roboto';
+    font-family: roboto;
     margin-inline: 0.4em 0.2em;
     font-size: 0.9em;
     font-weight: bold;
-    color: $c-font-dimmer; //opacity: 0.7;
+    color: $c-font-dimmer; // opacity: 0.7;
   }
 
   .keys {
@@ -45,7 +45,7 @@ dialog .help {
     white-space: nowrap;
   }
 
-  .desc:first-letter {
+  .desc::first-letter {
     text-transform: uppercase;
   }
 }

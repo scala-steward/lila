@@ -64,7 +64,7 @@
 
   @mixin firefox {
     @at-root {
-      @-moz-document url-prefix() {
+      @document url-prefix() {
         & {
           @content;
         }
@@ -80,7 +80,7 @@
       transform: none;
     } @else {
       opacity: 0;
-      transform: translatex(6px);
+      transform: translateX(6px);
     }
   }
 

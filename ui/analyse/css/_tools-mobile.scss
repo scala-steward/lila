@@ -46,7 +46,7 @@
     .scrub-help {
       margin-inline: 3px;
       align-self: center;
-      font-family: 'lichess';
+      font-family: lichess;
       font-size: 1.1em;
       color: $c-border;
     }
@@ -98,7 +98,7 @@
     [data-mode]::before,
     [data-mode]::after {
       font-size: 1.3em;
-      font-family: 'lichess';
+      font-family: lichess;
     }
     [data-mode='practice']::before {
       content: $licon-Bullseye;
