@@ -525,7 +525,8 @@ Hanna Marie ; Kozul, Zdenko"""),
                 Visibility.public.key -> "Public",
                 Visibility.unlisted.key -> "Unlisted (from URL only)",
                 Visibility.`private`.key -> "Private (invited members only)"
-              )
+              ),
+              disabled = form("tier").value.isDefined && !Granter.opt(_.Relay)
             )
           )
         ),
