@@ -473,7 +473,7 @@ Hanna Marie ; Kozul, Zdenko"""),
           )
         )
 
-    def edit(form: Form[RelayTourForm.Data], nav: FormNavigation)(using Context, Me) =
+    def edit(form: Form[RelayTourForm.Data], nav: FormNavigation)(using ctx: Context, me: Me) =
       page(nav.tour.name.value, menu = Right(nav)).markdownTextarea:
         frag(
           boxTop(h1(a(href := routes.RelayTour.show(nav.tour.slug, nav.tour.id))(nav.tour.name))),
@@ -487,7 +487,8 @@ Hanna Marie ; Kozul, Zdenko"""),
             )
           ),
           div(cls := "relay-form__actions")(
-            (!form("tier").value.isDefined).option:
+            (!form("tier").value.isDefined && (Granter.opt(_.StudyAdmin) || ctx.me
+              .exists(m => nav.tour.isOwnedBy(m.userId)))).option:
               postForm(action := routes.RelayTour.delete(nav.tour.id))(
                 submitButton(
                   cls := "button button-red button-empty yes-no-confirm"
