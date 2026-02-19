@@ -52,7 +52,7 @@ final class RelayFormUi(helpers: Helpers, ui: RelayUi, pageMenu: RelayMenuUi):
               else Icon.DiscOutline
             )
           )(r.name.translate),
-        (Granter.opt(_.StudyAdmin) || ctx.me.exists(m => nav.tour.isOwnedBy(m.userId))).option(
+        (Granter.opt(_.StudyAdmin) || ctx.me.exists(nav.tour.isOwnedBy)).option(
           a(
             href := routes.RelayRound.create(nav.tour.id),
             cls := List(
@@ -145,9 +145,7 @@ final class RelayFormUi(helpers: Helpers, ui: RelayUi, pageMenu: RelayMenuUi):
                 em(trb.deleteAllGamesOfThisRound())
               )
             ),
-            (Granter.opt(_.StudyAdmin) || ctx.me.exists(m =>
-              nav.tour.isOwnedBy(m.userId)
-            ) /* note: Sometimes tour owner is not the same as round owner */ ).option:
+            (Granter.opt(_.StudyAdmin) || ctx.me.exists(nav.tour.isOwnedBy)).option:
               postForm(action := routes.Study.delete(r.studyId))(
                 submitButton(
                   cls := "button button-red button-empty yes-no-confirm"
@@ -487,8 +485,7 @@ Hanna Marie ; Kozul, Zdenko"""),
             )
           ),
           div(cls := "relay-form__actions")(
-            (!nav.tour.official && (Granter.opt(_.StudyAdmin) || ctx.me
-              .exists(m => nav.tour.isOwnedBy(m.userId)))).option:
+            (!nav.tour.official && (Granter.opt(_.StudyAdmin) || nav.tour.isOwnedBy(me))).option:
               postForm(action := routes.RelayTour.delete(nav.tour.id))(
                 submitButton(
                   cls := "button button-red button-empty yes-no-confirm"
