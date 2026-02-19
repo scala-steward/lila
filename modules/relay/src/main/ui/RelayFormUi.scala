@@ -147,7 +147,7 @@ final class RelayFormUi(helpers: Helpers, ui: RelayUi, pageMenu: RelayMenuUi):
             ),
             (Granter.opt(_.StudyAdmin) || ctx.me.exists(m =>
               nav.tour.isOwnedBy(m.userId)
-            ) /*note: Sometimes tour owner not same in round */ ).option:
+            ) /* note: Sometimes tour owner is not the same as round owner */ ).option:
               postForm(action := routes.Study.delete(r.studyId))(
                 submitButton(
                   cls := "button button-red button-empty yes-no-confirm"
