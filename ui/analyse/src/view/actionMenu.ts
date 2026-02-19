@@ -124,13 +124,13 @@ export function view(ctrl: AnalyseCtrl): VNode {
         hl(
           'a',
           { hook: bind('click', () => ctrl.togglePractice()), attrs: dataIcon(licon.Bullseye) },
-          'Practice with computer',
+          i18n.site.practiceWithComputer,
         ),
       canRetro &&
         hl(
           'a',
           { hook: bind('click', ctrl.toggleRetro, ctrl.redraw), attrs: dataIcon(licon.GraduateCap) },
-          'Learn from your mistakes',
+          i18n.site.learnFromYourMistakes,
         ),
       canContinue &&
         hl(
@@ -163,8 +163,8 @@ export function view(ctrl: AnalyseCtrl): VNode {
     displayColumns() > 1 && hl('h2', i18n.site.computerAnalysis),
     cmnToggleWrap({
       id: 'all',
-      name: 'Show fishnet analysis',
-      title: 'Show fishnet analysis (Hotkey: z)',
+      name: i18n.site.computerAnalysis,
+      title: i18n.site.computerAnalysis + ' [z]',
       checked: ctrl.showFishnetAnalysis(),
       change: ctrl.toggleFishnetAnalysis,
       redraw: ctrl.redraw,
@@ -215,7 +215,7 @@ export function view(ctrl: AnalyseCtrl): VNode {
     !ctrl.ongoing &&
       cmnToggleWrap({
         id: 'move-annotation',
-        name: 'Annotations on board',
+        name: i18n.site.moveAnnotations,
         title: 'Display analysis symbols on the board',
         checked: ctrl.possiblyShowMoveAnnotationsOnBoard(),
         change: ctrl.togglePossiblyShowMoveAnnotationsOnBoard,
