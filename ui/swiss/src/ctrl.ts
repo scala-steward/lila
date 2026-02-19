@@ -2,8 +2,7 @@ import { makeSocket, type SwissSocket } from './socket';
 import xhr from './xhr';
 import { throttlePromiseDelay } from 'lib/async';
 import type { SwissData, SwissOpts, Pages, Standing, Player } from './interfaces';
-import { storage } from 'lib/storage';
-import { maxPerPage, myPage, pagerData } from 'lib/view/pagination';
+import { maxPerPage, myPage, pagerData, redirectFirst } from 'lib/view/pagination';
 
 export default class SwissCtrl {
   data: SwissData;
@@ -16,8 +15,6 @@ export default class SwissCtrl {
   playerInfoId?: string;
   disableClicks = true;
   searching = false;
-
-  private lastStorage = storage.make('last-redirect');
 
   constructor(
     readonly opts: SwissOpts,
@@ -58,18 +55,8 @@ export default class SwissCtrl {
 
   private redirectToMyGame() {
     const gameId = this.myGameId();
-    if (gameId) this.redirectFirst(gameId);
+    if (gameId) redirectFirst(gameId);
   }
-
-  redirectFirst = (gameId: string, rightNow?: boolean) => {
-    const delay = rightNow || document.hasFocus() ? 10 : 1000 + Math.random() * 500;
-    setTimeout(() => {
-      if (this.lastStorage.get() !== gameId) {
-        this.lastStorage.set(gameId);
-        site.redirect('/' + gameId, true);
-      }
-    }, delay);
-  };
 
   scrollToMe = () => this.setPage(myPage(this));
 
