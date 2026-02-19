@@ -100,7 +100,7 @@ export default function (element: HTMLElement, ctrl: AnalyseCtrl) {
     if ((panel === 'computer-analysis' || ctrl.opts.hunter) && $('#acpl-chart-container').length)
       setTimeout(startAdvantageChart, 200);
   };
-  $menu.on('mousedown', 'span', function (this: HTMLElement) {
+  $menu.on('click', 'button', function (this: HTMLElement) {
     const panel = this.dataset.panel!;
     store.set(panel);
     setPanel(panel);
