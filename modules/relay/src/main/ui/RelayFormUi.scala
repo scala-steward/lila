@@ -484,12 +484,12 @@ Hanna Marie ; Kozul, Zdenko"""),
             )
           ),
           div(cls := "relay-form__actions")(
-            postForm(action := routes.RelayTour.delete(nav.tour.id))(
-              submitButton(
-                cls := "button button-red button-empty yes-no-confirm",
-                disabled := form("tier").value.isDefined
-              )(strong(trb.deleteTournament()), em(trb.definitivelyDeleteTournament()))
-            ),
+            (!form("tier").value.isDefined).option:
+              postForm(action := routes.RelayTour.delete(nav.tour.id))(
+                submitButton(
+                  cls := "button button-red button-empty yes-no-confirm",
+                )(strong(trb.deleteTournament()), em(trb.definitivelyDeleteTournament()))
+              ),
             Granter
               .opt(_.Relay)
               .option(
