@@ -15,7 +15,7 @@ $col2-panel-height: 240px;
     justify-content: center;
     align-items: flex-start;
 
-    > span {
+    > button {
       @extend %roboto, %box-radius-top, %page-text, %ellipsis;
 
       flex: 1 1 0;
