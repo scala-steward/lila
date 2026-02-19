@@ -487,7 +487,7 @@ Hanna Marie ; Kozul, Zdenko"""),
             )
           ),
           div(cls := "relay-form__actions")(
-            (!form("tier").value.isDefined && (Granter.opt(_.StudyAdmin) || ctx.me
+            (!nav.tour.official && (Granter.opt(_.StudyAdmin) || ctx.me
               .exists(m => nav.tour.isOwnedBy(m.userId)))).option:
               postForm(action := routes.RelayTour.delete(nav.tour.id))(
                 submitButton(
