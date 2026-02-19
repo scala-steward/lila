@@ -26,7 +26,7 @@ const removeContributing = (html: string) =>
 const readMore = (title: string) =>
   `<p><a target="_blank" href="${wikiBooksUrl}/wiki/${title}">Read more on WikiBooks</a></p>`;
 
-export const transformWikiHtml = (html: string, title: string) =>
+export const transformWikiHtml = (html: string, title: string): string =>
   removeH1(
     removeEmptyParagraph(
       removeTheoryTableSection(
