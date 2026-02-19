@@ -28,7 +28,7 @@ final class RelayFormUi(helpers: Helpers, ui: RelayUi, pageMenu: RelayMenuUi):
   import helpers.{ *, given }
   import trans.{ broadcast as trb, site as trs }
 
-  private def navigationMenu(nav: FormNavigation)(using Context) =
+  private def navigationMenu(nav: FormNavigation)(using ctx: Context) =
     def tourAndRounds(shortName: Option[RelayTour.Name]) = frag(
       a(
         href := routes.RelayTour.edit(nav.tour.id),
@@ -52,15 +52,17 @@ final class RelayFormUi(helpers: Helpers, ui: RelayUi, pageMenu: RelayMenuUi):
               else Icon.DiscOutline
             )
           )(r.name.translate),
-        a(
-          href := routes.RelayRound.create(nav.tour.id),
-          cls := List(
-            "subnav__subitem text" -> true,
-            "active" -> nav.newRound,
-            "button" -> (nav.rounds.isEmpty && !nav.newRound)
-          ),
-          dataIcon := Icon.PlusButton
-        )(trb.addRound())
+        (Granter.opt(_.StudyAdmin) || ctx.me.exists(m => nav.tour.isOwnedBy(m.userId))).option(
+          a(
+            href := routes.RelayRound.create(nav.tour.id),
+            cls := List(
+              "subnav__subitem text" -> true,
+              "active" -> nav.newRound,
+              "button" -> (nav.rounds.isEmpty && !nav.newRound)
+            ),
+            dataIcon := Icon.PlusButton
+          )(trb.addRound())
+        )
       )
     )
     lila.ui.bits.pageMenuSubnav(
