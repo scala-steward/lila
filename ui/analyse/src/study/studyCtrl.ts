@@ -361,7 +361,7 @@ export default class StudyCtrl {
     this.data.description = s.description;
     this.chapterDesc.set(this.data.chapter.description);
     this.studyDesc.set(this.data.description);
-    document.title = this.data.name;
+    document.title = this.relay?.fullRoundName() ?? this.data.name;
     this.members.dict(s.members);
     if (s.chapters) this.chapters.loadFromServer(s.chapters);
     this.ctrl.flipped = this.chapterFlipMapProp(this.data.chapter.id);
