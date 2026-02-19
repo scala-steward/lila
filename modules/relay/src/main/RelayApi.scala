@@ -256,9 +256,9 @@ final class RelayApi(
   private def updateGrouping(tour: RelayTour, data: RelayGroupData)(using me: Me): Funit =
     for
       isOwner <- fuccess(Granter(_.StudyAdmin)) >>| tourRepo.isOwnerOfAll(me.userId, data.tourIds)
-      tours <- tourRepo.byIds(data.tourIds)
-      hasOfficial = tours.exists(_.official)
-      _ <- (isOwner && (!hasOfficial || Granter(_.Relay))).so(groupRepo.update(tour.id, data))
+      hasOfficial <- tourRepo.hasOfficial(data.tourIds)
+      canGroup = isOwner && (!hasOfficial || Granter(_.Relay))
+      _ <- canGroup.so(groupRepo.update(tour.id, data))
     yield ()
 
   def create(data: RelayRoundForm.Data, tour: RelayTour)(using me: Me): Fu[RelayRound.WithTourAndStudy] = for
