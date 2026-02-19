@@ -430,7 +430,8 @@ final class RelayApi(
       ownerIds = NonEmptyList.one(me.userId),
       createdAt = nowInstant,
       syncedAt = none,
-      visibility = if from.official then lila.core.study.Visibility.`private` else from.visibility
+      visibility = if from.official then lila.core.study.Visibility.`private` else from.visibility,
+      spotlight = from.spotlight.map(_.copy(enabled = false))
     )
     for
       _ <- tourRepo.coll.insert.one(tour)
