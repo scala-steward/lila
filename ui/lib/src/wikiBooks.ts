@@ -13,10 +13,7 @@ const removeAllBlacksMovesSection = (html: string) =>
   );
 
 const removeAllPossibleRepliesSection = (html: string) =>
-  html.replace(
-    /<h3 data-mw-anchor="All_possible_replies">All possible replies<\/h3>.*?(?=<h[1-6]|$)/gs,
-    '',
-  );
+  html.replace(/<h3 data-mw-anchor="All_possible_replies">All possible replies<\/h3>.*?(?=<h[1-6]|$)/gs, '');
 
 const removeExternalLinksSection = (html: string) =>
   html.replace(/<h2 data-mw-anchor="External_links">External links<\/h2>.*?(?=<h[1-6]|$)/gs, '');
