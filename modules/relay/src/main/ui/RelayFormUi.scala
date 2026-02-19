@@ -531,7 +531,7 @@ Hanna Marie ; Kozul, Zdenko"""),
                 Visibility.unlisted.key -> "Unlisted (from URL only)",
                 Visibility.`private`.key -> "Private (invited members only)"
               ),
-              disabled = form("tier").value.isDefined && !Granter.opt(_.Relay)
+              disabled = tg.flatMap(_.tour.tier).isDefined && !Granter(_.Relay)
             )
           )
         ),
@@ -708,9 +708,9 @@ Team Dogs ; Scooby Doo"""),
             )
           )
         ,
-        tg.isDefined.option:
+        tg.map: t =>
           form3.fieldset("Grouping", toggle = false.some):
-            grouping(form)
+            grouping(form, t.tour)
         ,
         if Granter.opt(_.Relay) then
           frag(
@@ -833,7 +833,7 @@ Team Dogs ; Scooby Doo"""),
         )
       )
 
-  private def grouping(form: Form[RelayTourForm.Data])(using Context) =
+  private def grouping(form: Form[RelayTourForm.Data], tour: RelayTour)(using Context) =
     div(cls := "relay-form__grouping")(
       form3.group(
         form("grouping.info"),
@@ -857,7 +857,7 @@ https://lichess.org/broadcast/dutch-championships-2025--open--quarterfinals/Zi12
           rows := 5,
           spellcheck := "false",
           cls := "monospace",
-          (form("tier").value.isDefined && !Granter.opt(_.Relay)).option(disabled)
+          (tour.tier.isDefined && !Granter.opt(_.Relay)).option(disabled)
         )
       ),
       form3.group(
