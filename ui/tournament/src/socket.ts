@@ -1,5 +1,5 @@
 import type TournamentController from './ctrl';
-import { redirectFirst } from 'lib/view/pagination';
+import { redirectFirst } from 'lib/tournament';
 
 export interface TournamentSocket {
   send: SocketSend;

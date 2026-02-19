@@ -14,7 +14,8 @@ import { storedMapAsProp } from 'lib/storage';
 import { pubsub } from 'lib/pubsub';
 import { alerts, prompt } from 'lib/view';
 import type { Prop } from 'lib';
-import { maxPerPage, myPage, pagerData, redirectFirst } from 'lib/view/pagination';
+import { maxPerPage, myPage, pagerData } from 'lib/view/pagination';
+import { redirectFirst } from 'lib/tournament';
 
 interface CtrlTeamInfo {
   requested?: string;
