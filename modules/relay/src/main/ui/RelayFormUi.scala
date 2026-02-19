@@ -145,12 +145,14 @@ final class RelayFormUi(helpers: Helpers, ui: RelayUi, pageMenu: RelayMenuUi):
                 em(trb.deleteAllGamesOfThisRound())
               )
             ),
-            (Granter.opt(_.StudyAdmin) || ctx.me.exists(m => nav.tour.isOwnedBy(m.userId)) /*note: Sometimes tour owner not same in round */).option:
+            (Granter.opt(_.StudyAdmin) || ctx.me.exists(m =>
+              nav.tour.isOwnedBy(m.userId)
+            ) /*note: Sometimes tour owner not same in round */ ).option:
               postForm(action := routes.Study.delete(r.studyId))(
                 submitButton(
                   cls := "button button-red button-empty yes-no-confirm"
                 )(strong(trb.deleteRound()), em(trb.definitivelyDeleteRound()))
-            )
+              )
           )
         )
 
@@ -488,9 +490,10 @@ Hanna Marie ; Kozul, Zdenko"""),
             (!form("tier").value.isDefined).option:
               postForm(action := routes.RelayTour.delete(nav.tour.id))(
                 submitButton(
-                  cls := "button button-red button-empty yes-no-confirm",
+                  cls := "button button-red button-empty yes-no-confirm"
                 )(strong(trb.deleteTournament()), em(trb.definitivelyDeleteTournament()))
-              ),
+              )
+            ,
             Granter
               .opt(_.Relay)
               .option(
