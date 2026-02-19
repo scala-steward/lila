@@ -847,7 +847,7 @@ https://lichess.org/broadcast/dutch-championships-2025--women--first-stage/PGFBk
 https://lichess.org/broadcast/dutch-championships-2025--open--quarterfinals/Zi12QchK
 """)
         ).some
-      )(form3.textarea(_)(rows := 5, spellcheck := "false", cls := "monospace")),
+      )(form3.textarea(_)(rows := 5, spellcheck := "false", cls := "monospace", (form("tier").value.isDefined && !Granter.opt(_.Relay)).option(disabled))),
       form3.group(
         form("grouping.scoreGroups"),
         "Optional: Divide the group into score groups",
