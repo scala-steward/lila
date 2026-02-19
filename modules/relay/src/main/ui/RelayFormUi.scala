@@ -122,7 +122,7 @@ final class RelayFormUi(helpers: Helpers, ui: RelayUi, pageMenu: RelayMenuUi):
         r: RelayRound,
         form: Form[RelayRoundForm.Data],
         nav: FormNavigation
-    )(using Context) =
+    )(using ctx: Context) =
       page(r.name.translate, nav):
         val rt = r.withTour(nav.tour)
         frag(
@@ -145,10 +145,11 @@ final class RelayFormUi(helpers: Helpers, ui: RelayUi, pageMenu: RelayMenuUi):
                 em(trb.deleteAllGamesOfThisRound())
               )
             ),
-            postForm(action := routes.Study.delete(r.studyId))(
-              submitButton(
-                cls := "button button-red button-empty yes-no-confirm"
-              )(strong(trb.deleteRound()), em(trb.definitivelyDeleteRound()))
+            (Granter.opt(_.StudyAdmin) || ctx.me.exists(m => nav.tour.isOwnedBy(m.userId)) /*note: Sometimes tour owner not same in round */).option:
+              postForm(action := routes.Study.delete(r.studyId))(
+                submitButton(
+                  cls := "button button-red button-empty yes-no-confirm"
+                )(strong(trb.deleteRound()), em(trb.definitivelyDeleteRound()))
             )
           )
         )
