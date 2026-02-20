@@ -162,6 +162,7 @@ export function repeater(f: () => void, additionalStopCond?: () => boolean): voi
   document.addEventListener('pointerup', () => clearTimeout(timeout), { once: true });
 }
 
+// Prevents the clicked element from acquiring focus on primary mouse clicks.
 export function blurIfPrimaryClick(e: Event, el?: EventTarget | null): void {
   if (e instanceof MouseEvent && e.detail !== 0 && e.button === 0) {
     const target = el ?? e.currentTarget;
