@@ -16,11 +16,8 @@ export class TreeView {
   private autoScrollRequest: 'instant' | 'smooth' | false = false;
 
   hidden = true;
-  modePreference = storedProp<'column' | 'inline'>(
-    'treeView',
-    'column',
-    str => (str === 'column' ? 'column' : 'inline'),
-    v => v,
+  modePreference = storedProp<'column' | 'inline'>('treeView', 'column', str =>
+    str === 'column' ? 'column' : 'inline',
   );
   mode: 'column' | 'inline';
 

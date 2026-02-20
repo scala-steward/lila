@@ -42,12 +42,7 @@ export class StudyChapterNewForm {
     if (!val) this.dialog?.close();
   });
   initial = toggle(false);
-  tab = storedProp<ChapterTab>(
-    'analyse.study.form.tab',
-    'init',
-    str => str as ChapterTab,
-    v => v,
-  );
+  tab = storedProp<ChapterTab>('analyse.study.form.tab', 'init', str => str as ChapterTab);
   editor: LichessEditor | null = null;
   editorFen: Prop<FEN | null> = prop(null);
   isDefaultName = toggle(true);
