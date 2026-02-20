@@ -67,12 +67,7 @@ export class ExplorerConfigCtrl {
     const prevData = previous?.data;
     this.data = {
       open: prevData?.open || prop(false),
-      db: storedProp<ExplorerDb>(
-        'explorer.db2.' + variant,
-        this.allDbs[0],
-        str => str as ExplorerDb,
-        v => v,
-      ),
+      db: storedProp<ExplorerDb>('explorer.db2.' + variant, this.allDbs[0], str => str as ExplorerDb),
       rating: storedJsonProp('analyse.explorer.rating', () => allRatings.slice(1)),
       speed: storedJsonProp<ExplorerSpeed[]>('explorer.speed', () => allSpeeds.slice(1)),
       mode: storedJsonProp<ExplorerMode[]>('explorer.mode', () => allModes),

@@ -18,7 +18,7 @@
     "@lichess-org/chessground": "^10.0.2",
     "@lichess-org/pgn-viewer": "^2.5.9",
     "@types/lichess": "workspace:*",
-    "@types/node": "^24.10.0",
+    "@types/node": "^24.10.13",
     "ab": "github:lichess-org/ab-stub",
     "chessops": "^0.15",
     "jsdom": "^27.1.0",
