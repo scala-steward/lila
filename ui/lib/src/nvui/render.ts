@@ -2,7 +2,7 @@ import { h, type VNode, type VNodeChildren } from 'snabbdom';
 import { type Pieces, files } from '@lichess-org/chessground/types';
 import { COLORS, RANK_NAMES, ROLES, type FileName } from 'chessops/types';
 import { charToRole, roleToChar } from 'chessops/util';
-import { plyToTurn } from '../game/chess';
+import { plyToTurn, sanToWords } from '@/game';
 import type { MoveStyle, PieceStyle, PositionStyle, PrefixStyle, BoardStyle } from './setting';
 import type { CrazyPocket, NodeCrazy, TreeComment, TreeNode, TreePath } from '@/tree/types';
 
@@ -33,7 +33,7 @@ export const renderSan = (san: San | undefined, uci: Uci | undefined, style: Mov
       ? (uci ?? '')
       : style === 'san'
         ? san
-        : transSanToWords(san)
+        : sanToWords(san)
             .split(' ')
             .map(f =>
               files.includes(f.toLowerCase() as FileName)
@@ -284,25 +284,6 @@ const augmentLichessComment = (comment: TreeComment, style: MoveStyle): string =
         (_, san) => `Best move was ${renderSan(san, undefined, style)}`,
       )
     : comment.text;
-
-const transSanToWords = (san: string): string =>
-  san
-    .split('')
-    .map(c => {
-      if (c === 'x') return i18n.nvui.sanTakes;
-      if (c === '+') return i18n.nvui.sanCheck;
-      if (c === '#') return i18n.nvui.sanCheckmate;
-      if (c === '=') return i18n.nvui.sanPromotesTo;
-      if (c === '@') return i18n.nvui.sanDroppedOn;
-      const code = c.charCodeAt(0);
-      if (code > 48 && code < 58) return c; // 1-8
-      if (code > 96 && code < 105) return c.toUpperCase(); // a-h
-      const role = charToRole(c);
-      return role ? transRole(role) : c;
-    })
-    .join(' ')
-    .replace('O - O - O', i18n.nvui.sanLongCastling)
-    .replace('O - O', i18n.nvui.sanShortCastling);
 
 const transRole = (role: Role): string =>
   (i18n.nvui[role as keyof typeof i18n.nvui] as string) || (role as string);
