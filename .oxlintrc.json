@@ -4,7 +4,7 @@
   "env": {
     "builtin": true
   },
-  "ignorePatterns": ["**/bin/", "**/dist/", "**/public"],
+  "ignorePatterns": ["**/dist/", "**/public"],
   "rules": {
     "no-var": "warn",
     "no-constant-condition": [
@@ -210,5 +210,13 @@
     "typescript/require-array-sort-compare": "off",
     "typescript/restrict-template-expressions": "off",
     "typescript/unbound-method": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["bin/**"],
+      "rules": {
+        "no-unused-vars": "off"
+      }
+    }
+  ]
 }
