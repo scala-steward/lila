@@ -15,7 +15,8 @@ export function initModule(
     fireworks: true,
   },
 ): void {
-  const canvas = document.querySelector('canvas#confetti') as HTMLCanvasElement;
+  const canvas = document.querySelector<HTMLCanvasElement>('canvas#confetti');
+  if (!canvas) return;
 
   const party = confetti.create(canvas, {
     disableForReducedMotion: true,
