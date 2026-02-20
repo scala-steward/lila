@@ -10,7 +10,7 @@ export function initModule(selector: string = '.infinite-scroll'): void {
 
 function register(el: HTMLElement, selector: string, backoff = 500) {
   const nav = el.querySelector<HTMLAnchorElement>('.pager'),
-    next = nav?.querySelector<HTMLAnchorElement>('.pager a'),
+    next = nav?.querySelector<HTMLAnchorElement>('a'),
     nextUrl = next?.href;
 
   if (nav && nextUrl)
