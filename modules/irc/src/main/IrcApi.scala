@@ -209,11 +209,14 @@ final class IrcApi(
       buffer.head.date
         .isBefore(nowInstant.minusHours(24))
         .so:
-          val firsts = scalalib.HeapSort.topN(buffer, 10).map(_.username).map(userAt).mkString(", ")
+          val firsts = scalalib.HeapSort
+            .topN(buffer.filter(_.username.value.nonEmpty), 10)
+            .map("@" + _.username)
+            .mkString(", ")
           val amountSum = buffer.map(_.cents).sum
           val patrons =
-            if firsts.lengthIs > 10
-            then s"$firsts and, like, ${firsts.length - 10} others,"
+            if buffer.lengthIs > 10
+            then s"$firsts and, like, ${buffer.length - 10} others,"
             else firsts
           displayMessage:
             s"$patrons donated ${amount(amountSum)}. Monthly progress: ${buffer.last.percent}%"
@@ -222,10 +225,6 @@ final class IrcApi(
 
     private def displayMessage(text: String) =
       zulip(_.general, "lila")(markdown.linkifyUsers(text))
-
-    private def userAt(name: UserName) =
-      if name == UserName("Anonymous") then name
-      else s"@$name"
 
     private def amount(cents: Int) = s"$$${BigDecimal(cents.toLong, 2)}"
 
