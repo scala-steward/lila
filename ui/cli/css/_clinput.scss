@@ -24,12 +24,8 @@
     outline: none;
   }
 
-  a {
-    @include transition(color);
-  }
-
   &:has(input:focus) {
-    a {
+    > a {
       color: $c-primary;
     }
   }

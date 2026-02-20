@@ -10,7 +10,6 @@
 }
 
 body:has(.base-view.setup-view) {
-  -webkit-user-select: none !important;
   user-select: none !important;
 }
 
@@ -114,13 +113,13 @@ body:has(.base-view.setup-view) {
       }
 
       &.white i {
-        background-image: url(../images/buttons/play-as-white.svg);
+        background-image: url('../images/buttons/play-as-white.svg');
       }
       &.black i {
-        background-image: url(../images/buttons/play-as-black.svg);
+        background-image: url('../images/buttons/play-as-black.svg');
       }
       &.random i {
-        background-image: url(../images/buttons/play-as-random.svg);
+        background-image: url('../images/buttons/play-as-random.svg');
       }
     }
   }

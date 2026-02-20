@@ -137,7 +137,7 @@ $disclosure-btn-size: calc(15px + var(---button-size-pointer-adjust, 0px));
   }
 
   inline lines {
-    margin-inline-start: 0px;
+    margin-inline-start: 0;
   }
 }
 
@@ -244,7 +244,6 @@ $disclosure-btn-size: calc(15px + var(---button-size-pointer-adjust, 0px));
   align-self: center;
   width: $disclosure-btn-size;
   height: $disclosure-btn-size;
-  -webkit-mask: url('/assets/images/buttons/plus-button-mask.webp') 0 0 / contain no-repeat;
   mask: url('/assets/images/buttons/plus-button-mask.webp') 0 0 / contain no-repeat;
 
   + san::before,
@@ -255,7 +254,6 @@ $disclosure-btn-size: calc(15px + var(---button-size-pointer-adjust, 0px));
 }
 
 .tview2 .disclosure.expanded {
-  -webkit-mask: url('/assets/images/buttons/minus-button-mask.webp') 0 0 / contain no-repeat;
   mask: url('/assets/images/buttons/minus-button-mask.webp') 0 0 / contain no-repeat;
 
   + san::before,
@@ -335,7 +333,7 @@ $disclosure-btn-size: calc(15px + var(---button-size-pointer-adjust, 0px));
 
   comment {
     display: inline;
-    word-wrap: break-word;
+    overflow-wrap: break-word;
     padding: 0 5px 0 3px;
     vertical-align: 7px;
   }
@@ -386,7 +384,7 @@ $disclosure-btn-size: calc(15px + var(---button-size-pointer-adjust, 0px));
   }
   comment {
     vertical-align: 45%;
-    word-wrap: break-word;
+    overflow-wrap: break-word;
     margin: 0 0.2em 0 0.1em;
     font-size: 0.9em;
   }

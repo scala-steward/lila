@@ -13,7 +13,6 @@ import {
 import { numberRow } from 'lib/view/util';
 import type SwissCtrl from '../ctrl';
 import type { SwissData } from '../interfaces';
-import * as search from '../search';
 import header from './header';
 import standing from './standing';
 import * as boards from './boards';
@@ -24,7 +23,7 @@ import { use24h } from 'lib/i18n';
 import { once } from 'lib/storage';
 import { watchers } from 'lib/view/watchers';
 import standaloneChat from 'lib/chat/standalone';
-import { renderPager } from 'lib/view/pagination';
+import { renderPager, searchButton, searchInput } from 'lib/view/pagination';
 
 export default function (ctrl: SwissCtrl) {
   const d = ctrl.data;
@@ -88,7 +87,7 @@ function finished(ctrl: SwissCtrl): LooseVNodes {
 
 function controls(ctrl: SwissCtrl): VNode {
   return hl('div.swiss__controls', [
-    hl('div.pager', renderPager(ctrl, search.button(ctrl), search.input(ctrl))),
+    hl('div.pager', renderPager(ctrl, searchButton(ctrl), searchInput(ctrl, { swiss: ctrl.data.id }))),
     joinButton(ctrl),
   ]);
 }

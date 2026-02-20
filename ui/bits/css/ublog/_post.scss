@@ -98,10 +98,10 @@
     width: 100%;
     height: auto;
     &-credit {
+      @extend %break-word;
       font-size: 0.9em;
       color: $c-font-dim;
       text-align: right;
-      word-break: break-word;
     }
   }
   &__intro {

@@ -44,7 +44,7 @@
       background-color: $c-bg-zebra2;
     }
     50% {
-      background-color: #cc333388;
+      background-color: #c338;
     }
     100% {
       background-color: $c-bg-zebra2;
@@ -76,7 +76,7 @@ button#microphone-button {
   }
 
   &.listening {
-    animation: pulseListening 2s;
+    animation: pulse-listening 2s;
     animation-iteration-count: infinite;
     color: $c-primary;
 
@@ -89,7 +89,7 @@ button#microphone-button {
     color: $c-bad;
   }
 
-  @keyframes pulseListening {
+  @keyframes pulse-listening {
     0% {
       border-color: transparent;
     }

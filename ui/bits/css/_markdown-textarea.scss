@@ -20,7 +20,7 @@
   }
   .header-tab {
     all: unset;
-    font-family: 'Roboto', Sans-Serif;
+    font-family: Roboto, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -73,8 +73,7 @@
     height: 24px;
     background-color: $c-font-dimmer;
     cursor: pointer;
-    -webkit-mask: url(../images/buttons/add-photo-outline-material.svg) 0 0 / contain no-repeat;
-    mask: url(../images/buttons/add-photo-outline-material.svg) 0 0 / contain no-repeat;
+    mask: url('../images/buttons/add-photo-outline-material.svg') 0 0 / contain no-repeat;
   }
   .upload-image.disabled {
     background-color: $c-border;

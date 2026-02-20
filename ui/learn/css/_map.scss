@@ -20,7 +20,7 @@
 
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(var(---min-width), 1fr));
-    grid-gap: 1em;
+    gap: 1em;
     margin: 0.8em 0 3em 0;
   }
 
@@ -112,7 +112,7 @@
     font-size: 15px;
     font-weight: bold;
     text-align: center;
-    text-shadow: rgba(255, 255, 255, 0.5) 0px 1px 0px;
+    text-shadow: rgba(255, 255, 255, 0.5) 0 1px 0;
     transform: rotate(45deg);
     @include if-rtl {
       transform: rotate(-45deg);
@@ -123,7 +123,7 @@
     top: 15px;
     width: 120px;
     color: #6a6340;
-    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
 
     i {
       color: $c-brag;
@@ -139,8 +139,8 @@
       animation-delay: 0.4s;
     }
 
-    &:before,
-    &:after {
+    &::before,
+    &::after {
       content: '';
       border-left: 3px solid transparent;
       border-right: 3px solid transparent;
@@ -148,11 +148,11 @@
       bottom: -3px;
     }
 
-    &:before {
+    &::before {
       @include inline-start(0);
     }
 
-    &:after {
+    &::after {
       @include inline-end(0);
     }
 
@@ -160,8 +160,8 @@
       background-color: #bfdc7a;
     }
 
-    &.done:before,
-    &.done:after {
+    &.done::before,
+    &.done::after {
       border-top: 3px solid #6e8900;
     }
 
@@ -169,8 +169,8 @@
       background-color: #b3e5fc;
     }
 
-    &.ongoing:before,
-    &.ongoing:after {
+    &.ongoing::before,
+    &.ongoing::after {
       border-top: 3px solid #536dfe;
     }
   }

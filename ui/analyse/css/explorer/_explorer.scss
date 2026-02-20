@@ -168,7 +168,7 @@
 
     &:first-child,
     /* draw radius when white is at 0% */
-    &[style='width: 0%'] + span:not(:last-child):not([style*='width: 100%']) {
+    &[style='width: 0%'] + span:not(:last-child, [style*='width: 100%']) {
       @extend %box-radius-inline-start-only;
     }
 

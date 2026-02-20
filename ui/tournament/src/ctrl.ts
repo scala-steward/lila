@@ -10,11 +10,12 @@ import type {
   Standing,
   Player,
 } from './interfaces';
-import { storage, storedMapAsProp } from 'lib/storage';
+import { storedMapAsProp } from 'lib/storage';
 import { pubsub } from 'lib/pubsub';
 import { alerts, prompt } from 'lib/view';
 import type { Prop } from 'lib';
 import { maxPerPage, myPage, pagerData } from 'lib/view/pagination';
+import { redirectFirst } from 'lib/tournament';
 
 interface CtrlTeamInfo {
   requested?: string;
@@ -39,8 +40,6 @@ export default class TournamentController {
   nbWatchers = 0;
   collapsedDescription: Prop<boolean>;
 
-  private lastStorage = storage.make('last-redirect');
-
   constructor(opts: TournamentOpts, redraw: () => void) {
     this.opts = opts;
     this.data = opts.data;
@@ -56,7 +55,10 @@ export default class TournamentController {
     );
     setTimeout(() => (this.disableClicks = false), 1500);
     this.loadPage(this.data.standing);
-    this.scrollToMe();
+    const playerInfo = opts.data.playerInfo;
+    if (playerInfo) {
+      this.playerInfo = { id: playerInfo.player.id, player: playerInfo.player, data: playerInfo };
+    } else this.scrollToMe();
     sound.end(this.data);
     sound.countDown(this.data);
     this.setupBattle();
@@ -103,18 +105,8 @@ export default class TournamentController {
 
   private redirectToMyGame() {
     const gameId = this.myGameId();
-    if (gameId) this.redirectFirst(gameId);
+    if (gameId) redirectFirst(gameId);
   }
-
-  redirectFirst = (gameId: string, rightNow?: boolean) => {
-    const delay = rightNow || document.hasFocus() ? 10 : 1000 + Math.random() * 500;
-    setTimeout(() => {
-      if (this.lastStorage.get() !== gameId) {
-        this.lastStorage.set(gameId);
-        site.redirect('/' + gameId, true);
-      }
-    }, delay);
-  };
 
   pager = () => pagerData(this);
 

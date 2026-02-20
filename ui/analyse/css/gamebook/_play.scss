@@ -1,7 +1,7 @@
 @import 'common';
 
-@keyframes rubberBand {
-  from {
+@keyframes rubber-band {
+  0% {
     transform: scale3d(1, 1, 1);
   }
 
@@ -150,7 +150,7 @@
       }
 
       &.com span {
-        animation: rubberBand 7s infinite;
+        animation: rubber-band 7s infinite;
       }
     }
 

@@ -1,6 +1,5 @@
 import { sparkline } from '@fnando/sparkline';
 import { text as xhrText, form as xhrForm } from 'lib/xhr';
-import { throttlePromiseDelay } from 'lib/async';
 import { type Prop, myUserId, withEffect } from 'lib';
 import { makeVoice, type VoiceCtrl } from 'voice';
 import { storedBooleanProp, storedProp } from 'lib/storage';
@@ -16,6 +15,7 @@ import type {
 import { pubsub } from 'lib/pubsub';
 import type { ColorChoice } from 'lib/setup/color';
 import { COLORS } from 'chessops';
+import { toggleZenMode } from 'lib/view/zen';
 
 const orientationFromColorChoice = (colorChoice: ColorChoice): Color =>
   (colorChoice === 'random' ? COLORS[Math.round(Math.random())] : colorChoice) as Color;
@@ -78,20 +78,7 @@ export default class CoordinateTrainerCtrl {
     readonly config: CoordinateTrainerConfig,
     readonly redraw: Redraw,
   ) {
-    const setZen = throttlePromiseDelay(
-      () => 1000,
-      zen =>
-        xhrText('/pref/zen', {
-          method: 'post',
-          body: xhrForm({ zen: zen ? 1 : 0 }),
-        }),
-    );
-
-    pubsub.on('zen', () => {
-      const zen = $('body').toggleClass('zen').hasClass('zen');
-      window.dispatchEvent(new Event('resize'));
-      setZen(zen);
-    });
+    pubsub.on('zen', () => toggleZenMode({ unconditional: true }));
 
     $('#zentog').on('click', () => pubsub.emit('zen'));
     site.mousetrap.bind('z', () => pubsub.emit('zen'));

@@ -87,7 +87,7 @@ final class ModUserUi(helpers: Helpers, modUi: ModUi):
               "btn-rack__btn" -> true,
               "active" -> u.marks.alt
             ),
-            disabled := !ModUserTableUi.canCloseAlt
+            ModUserTableUi.canCloseAlt.not.option(disabled)
           )("Alt")
         ,
         postForm(
@@ -97,7 +97,7 @@ final class ModUserUi(helpers: Helpers, modUi: ModUi):
         ):
           submitButton(
             cls := List("btn-rack__btn" -> true, "active" -> u.marks.engine),
-            disabled := !Granter.opt(_.MarkEngine)
+            Granter.opt(_.MarkEngine).not.option(disabled)
           )("Engine")
         ,
         postForm(
@@ -107,7 +107,7 @@ final class ModUserUi(helpers: Helpers, modUi: ModUi):
         ):
           submitButton(
             cls := List("btn-rack__btn" -> true, "active" -> u.marks.boost),
-            disabled := !Granter.opt(_.MarkBooster)
+            Granter.opt(_.MarkBooster).not.option(disabled)
           )("Booster")
         ,
         frag(
@@ -118,7 +118,7 @@ final class ModUserUi(helpers: Helpers, modUi: ModUi):
           )(
             submitButton(
               cls := List("btn-rack__btn" -> true, "active" -> u.marks.troll),
-              disabled := !Granter.opt(_.Shadowban)
+              Granter.opt(_.Shadowban).not.option(disabled)
             )("Shadowban")
           ),
           u.marks.troll.option:
@@ -128,7 +128,10 @@ final class ModUserUi(helpers: Helpers, modUi: ModUi):
                 title := "Delete all PMs and public chat messages",
                 cls := "xhr"
               ):
-                submitButton(cls := "btn-rack__btn yes-no-confirm", disabled := !Granter.opt(_.Shadowban)):
+                submitButton(
+                  cls := "btn-rack__btn yes-no-confirm",
+                  Granter.opt(_.Shadowban).not.option(disabled)
+                ):
                   "Clear PMs & chats"
               ,
               postForm(
@@ -138,7 +141,7 @@ final class ModUserUi(helpers: Helpers, modUi: ModUi):
               )(
                 submitButton(
                   cls := List("btn-rack__btn yes-no-confirm" -> true, "active" -> u.marks.isolate),
-                  disabled := !Granter.opt(_.Shadowban)
+                  Granter.opt(_.Shadowban).not.option(disabled)
                 )("Isolate")
               )
             )
@@ -150,7 +153,7 @@ final class ModUserUi(helpers: Helpers, modUi: ModUi):
         ):
           submitButton(
             cls := List("btn-rack__btn yes-no-confirm" -> true, "active" -> u.kid.yes),
-            disabled := !Granter.opt(_.SetKidMode)
+            Granter.opt(_.SetKidMode).not.option(disabled)
           )("Kid")
         ,
         postForm(
@@ -160,7 +163,7 @@ final class ModUserUi(helpers: Helpers, modUi: ModUi):
         ):
           submitButton(
             cls := List("btn-rack__btn" -> true, "active" -> u.marks.rankban),
-            disabled := !Granter.opt(_.RemoveRanking)
+            Granter.opt(_.RemoveRanking).not.option(disabled)
           )("Rankban")
         ,
         postForm(
@@ -170,7 +173,7 @@ final class ModUserUi(helpers: Helpers, modUi: ModUi):
         ):
           submitButton(
             cls := List("btn-rack__btn" -> true, "active" -> u.marks.arenaBan),
-            disabled := !Granter.opt(_.ArenaBan)
+            Granter.opt(_.ArenaBan).not.option(disabled)
           )("Arena ban")
         ,
         postForm(
@@ -180,7 +183,7 @@ final class ModUserUi(helpers: Helpers, modUi: ModUi):
         ):
           submitButton(
             cls := List("btn-rack__btn" -> true, "active" -> u.marks.prizeban),
-            disabled := !Granter.opt(_.PrizeBan)
+            Granter.opt(_.PrizeBan).not.option(disabled)
           )("Prizeban")
         ,
         postForm(
@@ -190,7 +193,7 @@ final class ModUserUi(helpers: Helpers, modUi: ModUi):
         ):
           submitButton(
             cls := List("btn-rack__btn" -> true, "active" -> u.marks.reportban),
-            disabled := !Granter.opt(_.ReportBan)
+            Granter.opt(_.ReportBan).not.option(disabled)
           )("Reportban")
       ),
       Granter
@@ -224,7 +227,10 @@ final class ModUserUi(helpers: Helpers, modUi: ModUi):
             title := "Disables two-factor authentication for this account.",
             cls := "xhr"
           ):
-            submitButton(cls := "btn-rack__btn yes-no-confirm", disabled := !Granter.opt(_.DisableTwoFactor))(
+            submitButton(
+              cls := "btn-rack__btn yes-no-confirm",
+              Granter.opt(_.DisableTwoFactor).not.option(disabled)
+            )(
               "Disable 2FA"
             )
         )
