@@ -73,7 +73,7 @@ final class StreamerBits(helpers: Helpers)(picfitUrl: lila.memo.PicfitUrl):
                 )
               )
           ),
-          (hasStream && s.stream.isEmpty && (isMe || isMod)).option(
+          (hasStream && s.stream.isEmpty).option(
             form(
               action := routes.Streamer.checkOnline(s.streamer.userId).url,
               method := "post"
