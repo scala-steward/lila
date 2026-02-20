@@ -5,6 +5,7 @@ import reactivemongo.api.bson.Macros.Annotations.Key
 import lila.core.id.AppealId
 import lila.core.user.UserMark
 import lila.ui.Icon
+import lila.core.perm.Granter
 
 case class Appeal(
     @Key("_id") id: AppealId,
@@ -71,6 +72,7 @@ object Appeal:
 
   val maxLength = 1100
   val maxLengthClient = 1000
+  def maxLengthForMe(using Option[Me]) = if Granter.opt(_.Appeals) then 10_000 else maxLengthClient
 
   import play.api.data.*
   import play.api.data.Forms.*

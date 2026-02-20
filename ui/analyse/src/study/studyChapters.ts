@@ -1,4 +1,4 @@
-import { defined, prop, type Prop, scrollToInnerSelector } from 'lib';
+import { blurIfPrimaryClick, defined, prop, type Prop, scrollToInnerSelector } from 'lib';
 import * as licon from 'lib/licon';
 import { type VNode, bind, dataIcon, iconTag, hl, alert } from 'lib/view';
 import type AnalyseCtrl from '../ctrl';
@@ -185,6 +185,7 @@ export function view(ctrl: StudyCtrl): VNode {
                 const chapter = ctrl.chapters.list.get(id);
                 if (chapter) ctrl.chapters.editForm.toggle(chapter);
               } else ctrl.setChapter(id);
+              blurIfPrimaryClick(e, target.closest('button'));
             });
             vnode.data!.li = {};
             ctrl.chapters.scroller.request('instant');

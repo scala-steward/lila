@@ -63,6 +63,10 @@ final class UserActionMenu(helpers: Helpers):
             .option(
               MenuItem(trans.site.listBlockedPlayers.txt(), Icon.NotAllowed, routes.Relation.blocks().url)
             ),
+          ctx.me
+            .ifTrue(Granter.opt(_.LichessTeam))
+            .map: me =>
+              MenuItem("My permissions", Icon.Logo, routes.Mod.permissions(me.username).url),
           canImpersonate.option(
             MenuItem(
               "Impersonate",

@@ -7,10 +7,9 @@ import { player as renderPlayer } from './util';
 import { teamName } from './battle';
 import type { PodiumPlayer, StandingPlayer } from '../interfaces';
 import { joinWithdraw } from './button';
-import * as search from '../search';
 import { userLink } from 'lib/view/userLink';
 import { defined } from 'lib';
-import { renderPager } from 'lib/view/pagination';
+import { renderPager, searchButton, searchInput } from 'lib/view/pagination';
 
 const renderScoreString = (scoreString: string, streakable: boolean) => {
   const values = scoreString.split('').map(s => parseInt(s));
@@ -110,7 +109,7 @@ export function podium(ctrl: TournamentController) {
 
 export function controls(ctrl: TournamentController): VNode {
   return h('div.tour__controls', [
-    h('div.pager', renderPager(ctrl, search.button(ctrl), search.input(ctrl))),
+    h('div.pager', renderPager(ctrl, searchButton(ctrl), searchInput(ctrl, { tour: ctrl.data.id }))),
     joinWithdraw(ctrl),
   ]);
 }

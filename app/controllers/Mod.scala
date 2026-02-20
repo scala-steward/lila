@@ -469,9 +469,11 @@ final class Mod(
       env.chat.api.userChat.userModInfo(username).map2(env.chat.json.userModInfo)
   }
 
-  def permissions(username: UserStr) = Secure(_.ChangePermission) { _ ?=> _ ?=>
-    FoundPage(env.user.repo.byId(username)):
-      views.mod.permissions(_)
+  def permissions(username: UserStr) = Secure(_.LichessTeam) { _ ?=> me ?=>
+    Found(env.user.repo.byId(username)): user =>
+      if user.is(me) || isGranted(_.ChangePermission)
+      then Ok.page(views.mod.permissions(user))
+      else notFound
   }
 
   def savePermissions(username: UserStr) = SecureBody(_.ChangePermission) { ctx ?=> me ?=>

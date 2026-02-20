@@ -217,12 +217,12 @@ interface ToolButtonOpts {
 
 function toolButton(opts: ToolButtonOpts): VNode {
   return hl(
-    'span.' + opts.tab,
+    'button.' + opts.tab,
     {
       attrs: { role: 'tab', title: opts.hint },
       class: { active: opts.tab === opts.ctrl.vm.toolTab() },
       hook: bind(
-        'mousedown',
+        'click',
         () => {
           if (opts.onClick) opts.onClick();
           opts.ctrl.vm.toolTab(opts.tab);

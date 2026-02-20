@@ -4,7 +4,7 @@ import { povChances } from '../winningChances';
 import * as licon from '@/licon';
 import { stepwiseScroll, type VNode, type LooseVNodes, bind, hl } from '@/view';
 import { cmnToggle } from '@/view/cmn-toggle';
-import { defined, notNull, requestIdleCallback } from '@/index';
+import { blurIfPrimaryClick, defined, notNull, requestIdleCallback } from '@/index';
 import { type CevalHandler, type NodeEvals, CevalState } from '../types';
 import type { Position } from 'chessops/chess';
 import { lichessRules } from 'chessops/compat';
@@ -87,7 +87,10 @@ const threatButton = (ctrl: CevalHandler): VNode | null =>
     : hl('button.show-threat', {
         class: { active: ctrl.threatMode(), hidden: !!ctrl.getNode().check() },
         attrs: { 'data-icon': licon.Target, title: i18n.site.showThreat + ' (x)' },
-        hook: bind('click', () => ctrl.toggleThreatMode()),
+        hook: bind('click', e => {
+          ctrl.toggleThreatMode();
+          blurIfPrimaryClick(e);
+        }),
       });
 
 function engineName(ctrl: CevalCtrl): VNode[] {
