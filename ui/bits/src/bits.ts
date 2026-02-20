@@ -63,7 +63,7 @@ function appeal() {
 }
 
 function autoForm({ selector, ops }: { selector: string; ops: string }) {
-  const el = document.querySelector(selector) as HTMLElement;
+  const el = document.querySelector<HTMLElement>(selector);
   const oplist = ops.split(' ');
   if (!el || oplist.length === 0) return;
   if (oplist.includes('focus')) el.focus();

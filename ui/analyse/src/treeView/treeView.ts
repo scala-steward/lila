@@ -13,7 +13,7 @@ import type { TreePath } from 'lib/tree/types';
 
 export class TreeView {
   constructor(readonly ctrl: AnalyseCtrl) {}
-  private autoScrollRequest: 'instant' | 'smooth' | false = false;
+  private autoScrollRequest: ScrollBehavior | false = false;
 
   hidden = true;
   modePreference = storedProp<'column' | 'inline'>(
@@ -33,7 +33,7 @@ export class TreeView {
     return this.mode === 'column' ? renderColumnView(this.ctrl, concealOf) : renderInlineView(this.ctrl);
   }
 
-  requestAutoScroll(request: 'instant' | 'smooth' | false) {
+  requestAutoScroll(request: ScrollBehavior | false) {
     this.autoScrollRequest = request;
   }
 
@@ -82,7 +82,7 @@ function eventPath(e: MouseEvent): TreePath | null {
   );
 }
 
-const autoScroll = throttle(200, (behavior: 'instant' | 'smooth' = 'instant') => {
+const autoScroll = throttle(200, (behavior: ScrollBehavior = 'instant') => {
   const scrollView = document.querySelector<HTMLElement>('.analyse__moves')!;
   const moveEl = scrollView.querySelector<HTMLElement>('.active');
   if (!moveEl) return scrollView.scrollTo({ top: 0, behavior });

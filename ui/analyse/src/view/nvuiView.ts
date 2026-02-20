@@ -166,11 +166,12 @@ export function renderNvui(ctx: AnalyseNvuiContext): VNode {
               });
             });
             root.find('.copy-fen').on('click', function (this: HTMLElement) {
-              const inputFen = document.querySelector('.analyse__underboard__fen input') as HTMLInputElement;
-              const fen = inputFen.value;
-              navigator.clipboard.writeText(fen).then(() => {
-                notify.set(i18n.nvui.copiedToClipboard('FEN'));
-              });
+              const fen = document.querySelector<HTMLInputElement>('.analyse__underboard__fen input')?.value;
+              if (fen) {
+                navigator.clipboard.writeText(fen).then(() => {
+                  notify.set(i18n.nvui.copiedToClipboard('FEN'));
+                });
+              }
             });
           },
         },
@@ -346,7 +347,7 @@ function onSubmit(ctx: AnalyseNvuiContext, $input: Cash) {
     if (command && !command.invalid?.(ctrl)) command.cb(ctx, input);
     else {
       const move = inputToMove(input, ctrl.node.fen, ctrl.chessground);
-      const isDrop = (u: undefined | string | DropMove) => !!(u && typeof u !== 'string');
+      const isDrop = (u?: string | DropMove) => !!(u && typeof u !== 'string');
       const isInvalidDrop = (d: DropMove) =>
         !ctrl.crazyValid(d.role, d.key) || ctrl.chessground.state.pieces.has(d.key);
       const isInvalidCrazy = isDrop(move) && isInvalidDrop(move);
