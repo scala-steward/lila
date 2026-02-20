@@ -16,7 +16,7 @@ final class TutorReportsUi(helpers: Helpers, bits: TutorBits, q: TutorQueueUi):
         form3.split(
           form3.group(form("from"), "Start date")(datePickr)(cls := "form-third"),
           form3.group(form("to"), "End date")(datePickr)(cls := "form-third"),
-          form3.submit("Compute my tutor report")
+          form3.submit("Compute my tutor report", icon = none)
         )
       )
 

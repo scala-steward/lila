@@ -7,24 +7,24 @@ import lila.ui.*
 import lila.ui.ScalatagsTemplate.*
 
 final class TutorQueueUi(helpers: Helpers):
-  import helpers.{ *, given }
+  import helpers.*
 
-  def waitingZone(a: TutorQueue.Awaiting)(using Context) =
-    div(cls := "box tutor__waiting")(
-      div(cls := "box-pad")(
-        p(strong(cls := "tutor__intro")("Here's the plan:")),
-        examinationMethod,
-        p(eta(a))
-      ),
-      div(cls := "tutor__waiting__games"):
-        div(cls := "tutor__waiting__games__carousel"):
-          a.games.map: (pov, pgn) =>
-            div(
-              cls := "tutor__waiting-game is2d lpv lpv--todo lpv--moves-false lpv--controls-false",
-              st.data("pgn") := pgn.value,
-              st.data("pov") := pov.color.name
-            )
+  def waitingText(a: TutorQueue.Awaiting)(using Translate) =
+    frag(
+      p(strong(cls := "tutor__intro")("Here's the plan:")),
+      examinationMethod,
+      p(eta(a))
     )
+
+  def waitingGames(a: TutorQueue.Awaiting) =
+    div(cls := "tutor__waiting__games"):
+      div(cls := "tutor__waiting__games__carousel"):
+        a.games.map: (pov, pgn) =>
+          div(
+            cls := "tutor__waiting-game is2d lpv lpv--todo lpv--moves-false lpv--controls-false",
+            st.data("pgn") := pgn.value,
+            st.data("pov") := pov.color.name
+          )
 
   def whatTutorIsAbout = frag(
     h2("What are your strengths and weaknesses?"),

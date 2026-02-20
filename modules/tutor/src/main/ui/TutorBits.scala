@@ -13,7 +13,7 @@ final class TutorBits(helpers: Helpers)(
 
   def page(menu: Frag, title: String = "Lichess Tutor", pageSmall: Boolean = false)(mods: AttrPair*): Page =
     Page(title)
-      .css("tutor")
+      .css("tutor.report")
       .js(Esm("tutor"))
       .csp(_.withInlineIconFont)
       .wrap: body =>

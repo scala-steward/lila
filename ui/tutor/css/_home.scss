@@ -3,6 +3,13 @@
     @extend %flex-column;
     gap: $block-gap;
     overflow: hidden;
+
+    .box {
+      @extend %box-neat-force;
+    }
+    &__first-wait .tutor__waiting__games {
+      padding-top: 0;
+    }
   }
   &__beta {
     color: $c-brag;
@@ -10,7 +17,9 @@
   }
   &__first-report {
     text-align: center;
-    margin: 5vh 0;
+    button {
+      margin: 5vh 0;
+    }
   }
   ol {
     margin-bottom: 1em;
