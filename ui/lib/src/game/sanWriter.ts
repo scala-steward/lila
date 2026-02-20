@@ -165,7 +165,7 @@ export function sanToUci(san: string, legalSans: SanToUci): Uci | undefined {
   return;
 }
 
-const sanToWords = (san: string): string =>
+export const sanToWords = (san: string): string =>
   san
     .split('')
     .map(c => {
