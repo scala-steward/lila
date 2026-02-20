@@ -36,7 +36,7 @@ final class TutorApi(
 
   def get(config: TutorConfig): Fu[Option[TutorFullReport]] = cache.get(config)
 
-  private val initialDelay = if mode.isProd then 1.minute else 1.hour
+  private val initialDelay = if mode.isProd then 1.minute else 1.second
   LilaScheduler("TutorQueue", _.Every(1.second), _.AtMost(10.seconds), _.Delay(initialDelay))(pollQueue)
 
   private def pollQueue = queue.next.flatMap: items =>

@@ -22,15 +22,13 @@ final class TutorReportsUi(helpers: Helpers, bits: TutorBits, q: TutorQueueUi):
 
   def list(previews: List[TutorFullReport.Preview])(using Context) =
     div(cls := "box tutor__reports-list")(
-      ul(cls := "slist tutor__reports-list__list")(
-        previews.map: preview =>
-          li(cls := "tutor__reports-list__item")(
-            a(href := preview.config.url.root)(
-              momentFromNow(preview.at),
-              preview.toString
-            )
-          )
-      )
+      previews.map(preview)
+    )
+
+  private def preview(p: TutorFullReport.Preview)(using Context) =
+    a(href := p.config.url.root)(
+      momentFromNow(p.at),
+      p.toString
     )
 
   private def datePickr(field: Field) = form3.flatpickr(

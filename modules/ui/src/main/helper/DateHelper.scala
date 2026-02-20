@@ -31,8 +31,9 @@ trait DateHelper:
   def showInstant(instant: Instant)(using t: Translate): String =
     dateTimeFormatter(using t.lang).print(instant)
 
-  def showDate(instant: Instant)(using t: Translate): String =
-    val date = instant.date
+  def showDate(instant: Instant)(using Translate): String = showDate(instant.date)
+
+  def showDate(date: LocalDate)(using t: Translate): String =
     given lang: Lang = t.lang
     val dateString = dateFormatter.print(date)
     if lang.language == "ar" then dateString.replaceAll("\u200f", "") else dateString
