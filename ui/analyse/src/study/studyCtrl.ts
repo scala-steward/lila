@@ -326,7 +326,7 @@ export default class StudyCtrl {
     pubsub.emit('chat.writeable', this.data.features.chat);
     // official broadcasts cannot have local mods
     pubsub.emit('chat.permissions', { local: canContribute && !this.relay?.isOfficial() });
-    pubsub.emit('voiceChat.toggle', this.data.features.chat && !!this.members.myMember());
+    pubsub.emit('voiceChat.toggle', this.data.features.chat && !!this.members.myMember() && !this.relay);
     if (!this.data.chapter.features.explorer) this.ctrl.explorer.disable();
     this.ctrl.explorer.allowed(this.data.chapter.features.explorer);
   };
@@ -361,7 +361,7 @@ export default class StudyCtrl {
     this.data.description = s.description;
     this.chapterDesc.set(this.data.chapter.description);
     this.studyDesc.set(this.data.description);
-    document.title = this.data.name;
+    document.title = this.relay?.fullRoundName() ?? this.data.name;
     this.members.dict(s.members);
     if (s.chapters) this.chapters.loadFromServer(s.chapters);
     this.ctrl.flipped = this.chapterFlipMapProp(this.data.chapter.id);
