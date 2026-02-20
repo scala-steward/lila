@@ -353,7 +353,7 @@ ${this.isChooser || !env.canPost ? ' disabled' : ''} spellcheck="false"></input>
       preview: (key: string) => {
         const soundEl = document.createElement('span');
         const audioEl = frag<HTMLAudioElement>(`<audio src="${env.bot.getSoundUrl(key)}"></audio>`);
-        const buttonEl = frag<Node>(
+        const buttonEl = frag(
           `<button class="button button-empty preview-sound" data-icon="${licon.PlayTriangle}" data-play="${key}">0.00s</button>`,
         );
         buttonEl.addEventListener('click', e => {

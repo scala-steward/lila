@@ -247,7 +247,7 @@ function thanksReport() {
   const $button = $('button.report-block');
   $button.one('click', function () {
     $button.find('span').text('Blocking...');
-    fetch($button.data('action')!, { method: 'post' }).then(async res =>
+    fetch($button.data('action'), { method: 'post' }).then(async res =>
       $button.find('span').text(res.ok ? 'Blocked!' : 'Block error'),
     );
   });

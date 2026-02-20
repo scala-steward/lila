@@ -50,7 +50,7 @@ export default function setupModal(ctrl: LobbyController): VNode[] | null {
         dlg.show();
       },
     }),
-  ].filter(v => v !== null) as VNode[];
+  ].filter(v => v !== null);
 }
 
 const views = {

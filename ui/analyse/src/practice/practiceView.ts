@@ -126,7 +126,7 @@ export default function (root: AnalyseCtrl): VNode | undefined {
                   [
                     hl(
                       'span.verdict',
-                      comment.verdict === 'goodMove' ? i18n.study.goodMove : i18n.site[comment!.verdict],
+                      comment.verdict === 'goodMove' ? i18n.study.goodMove : i18n.site[comment.verdict],
                     ),
                     ' ',
                   ] as MaybeVNodes

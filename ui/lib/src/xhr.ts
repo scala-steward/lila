@@ -93,7 +93,7 @@ export const formToXhr = (el: HTMLFormElement, submitter?: HTMLButtonElement): P
         method: el.method,
         body,
       })
-    : Promise.reject(`Form has no action: ${el}`);
+    : Promise.reject(new Error(`Form has no action: ${el}`));
 };
 
 export type ProcessLine<T> = (line: T) => void;

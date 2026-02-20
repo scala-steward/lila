@@ -30,10 +30,10 @@ async function handleNotificationClick(e: NotificationEvent) {
   const notifications = await sw.registration.getNotifications();
   notifications.forEach(notification => notification.close());
 
-  const windowClients = (await sw.clients.matchAll({
+  const windowClients = await sw.clients.matchAll({
     type: 'window',
     includeUncontrolled: true,
-  })) as ReadonlyArray<WindowClient>;
+  });
 
   // determine url
   const data = e.notification.data.userData;

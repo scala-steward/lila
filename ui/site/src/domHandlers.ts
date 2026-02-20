@@ -30,7 +30,7 @@ export function addDomHandlers() {
         setTimeout(() => $(this).attr('data-icon', licon.Clipboard).addClass('button-metal'), 1000);
       };
       const fetchContent = $(this).parent().hasClass('fetch-content');
-      $(this.parentElement!.firstElementChild!).each(function (this: any) {
+      $(this.parentElement!.firstElementChild).each(function (this: any) {
         try {
           if (fetchContent) writeTextClipboard(this.href, showCheckmark);
           else navigator.clipboard.writeText(this.value || this.href).then(showCheckmark);

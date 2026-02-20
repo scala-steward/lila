@@ -48,7 +48,7 @@ site.load.then(() => {
   }
 
   function scrollTo(selector: string) {
-    const target = document.querySelector(selector) as HTMLElement | null;
+    const target = document.querySelector<HTMLElement>(selector);
     if (target) {
       const offset = $('#inquiry').length ? -50 : 50;
       window.scrollTo(0, target.offsetTop + offset);

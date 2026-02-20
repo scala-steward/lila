@@ -96,11 +96,11 @@ export class PushCtrl {
             if (xhr.status === 200) resolve(JSON.parse(xhr.responseText));
             else {
               console.error('upload failed');
-              reject(`${xhr.status} ${xhr.statusText}`);
+              reject(new Error(`${xhr.status} ${xhr.statusText}`));
             }
           };
 
-          xhr.onerror = () => reject('network error');
+          xhr.onerror = () => reject(new Error('network error'));
           xhr.send(formData);
         })
         .catch(x => {

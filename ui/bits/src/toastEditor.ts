@@ -69,7 +69,7 @@ function initProseMirror(view: EditorViewType, rewire: () => void) {
   if (!view) return;
 
   const old = view.state.schema;
-  const imageSpec = old.nodes['image']!.spec;
+  const imageSpec = old.nodes['image'].spec;
   // can't import the ProseMirror javascript because toastui bundles it,
   // so put on the gloves, reach in, and grab some constructors
   const Schema = (old as any).constructor as new (cfg: { nodes: any; marks: any }) => SchemaType;
