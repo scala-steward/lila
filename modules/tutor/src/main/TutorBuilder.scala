@@ -12,6 +12,7 @@ import lila.insight.{
   Question
 }
 import lila.rating.PerfType
+import lila.common.LilaFuture
 
 final private class TutorBuilder(
     colls: TutorColls,
@@ -21,7 +22,7 @@ final private class TutorBuilder(
     fishnet: TutorFishnet,
     messenger: lila.core.msg.MsgApi,
     routeUrl: lila.core.config.RouteUrl
-)(using Executor):
+)(using Executor, Scheduler):
 
   import TutorBsonHandlers.given
   private given InsightApi = insightApi
@@ -55,6 +56,7 @@ final private class TutorBuilder(
       .toList
       .sortBy(-_.perfStats.totalNbGames)
     _ <- fishnet.ensureSomeAnalysis(perfStats).monSuccess(_.tutor.buildSegment("fishnet-analysis"))
+    _ <- LilaFuture.sleep(1.second) // ensure fishnet analyses are indexed before asking questions
     perfs <- (tutorUsers.toNel.so(TutorPerfReport.compute)).monSuccess(_.tutor.buildSegment("perf-reports"))
   yield TutorFullReport(config, nowInstant, perfs)
 
