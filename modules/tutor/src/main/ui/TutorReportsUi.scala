@@ -7,12 +7,12 @@ import play.api.data.{ Form, Field }
 import lila.ui.*
 import lila.ui.ScalatagsTemplate.{ *, given }
 
-final class TutorReportsUi(helpers: Helpers, bits: TutorBits, q: TutorQueueUi):
+final class TutorReportsUi(helpers: Helpers):
   import helpers.{ *, given }
 
   def newForm(user: UserId, form: Form[?])(using Context) =
     postForm(cls := "form3 tutor__report-form", action := routes.Tutor.compute(user.id)):
-      form3.fieldset("Request a new Tutor report", toggle = true.some)(cls := "box-pad")(
+      form3.fieldset("Request a new Tutor report", toggle = false.some)(cls := "box-pad")(
         form3.split(
           form3.group(form("from"), "Start date")(datePickr)(cls := "form-third"),
           form3.group(form("to"), "End date")(datePickr)(cls := "form-third"),
