@@ -114,12 +114,9 @@ export interface TablebaseMoveStats extends MoveStats {
   category: TablebaseCategory;
 }
 
-export function isOpening(m: ExplorerData): m is OpeningData {
-  return !!m.isOpening;
-}
-export function isTablebase(m: ExplorerData): m is TablebaseData {
-  return !!m.tablebase;
-}
+export const isOpening = (m: ExplorerData): m is OpeningData => !!m.isOpening;
+
+export const isTablebase = (m: ExplorerData): m is TablebaseData => !!m.tablebase;
 
 export interface SimpleTablebaseHit {
   fen: FEN;

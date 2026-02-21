@@ -81,7 +81,7 @@ export function stopTask(keys?: TaskKey | TaskKey[]) {
 
 export async function runTask(key: TaskKey): Promise<any> {
   const t = tasks.get(key);
-  if (!t || !t.status) return;
+  if (!t?.status) return;
   clearTimeout(t.debounce.timer);
   return execute(t, true);
 }
@@ -91,9 +91,7 @@ export function taskOk(ctx?: Context): boolean {
   return all.filter(w => !w.monitorOnly).length > 0 && all.every(w => w.status === 'ok');
 }
 
-export function tasksIdle(): boolean {
-  return activeTaskCount === 0;
-}
+export const tasksIdle = (): boolean => activeTaskCount === 0;
 
 async function execute(t: Task, firstRun = false): Promise<void> {
   const makeRelative = (files: AbsPath[]) => (t.root ? files.map(f => relative(t.root!, f)) : files);

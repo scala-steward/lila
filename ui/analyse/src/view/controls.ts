@@ -80,8 +80,8 @@ export function renderControls(ctrl: AnalyseCtrl) {
   );
 }
 
-function renderPracticeTab(ctrl: AnalyseCtrl): LooseVNode {
-  return hl('button.fbt', {
+const renderPracticeTab = (ctrl: AnalyseCtrl): LooseVNode =>
+  hl('button.fbt', {
     attrs: {
       title: i18n.site.practiceWithComputer,
       'data-act': 'engine-mode',
@@ -93,7 +93,6 @@ function renderPracticeTab(ctrl: AnalyseCtrl): LooseVNode {
       latent: !!ctrl.practice && !!ctrl.activeControlBarTool(),
     },
   });
-}
 
 function renderMobileCevalTab(ctrl: AnalyseCtrl): LooseVNode {
   const engineMode = ctrl.activeControlMode() || 'ceval',
@@ -177,9 +176,7 @@ function scrubControl(ctrl: AnalyseCtrl, dx: number | 'pointerup') {
 const jumpButton = (icon: string, effect: string, enabled: boolean): VNode =>
   hl('button.fbt.move', { attrs: { disabled: !enabled, 'data-act': effect, 'data-icon': icon } });
 
-function isMobileUi() {
-  return displayColumns() === 1 && isTouchDevice();
-}
+const isMobileUi = (): boolean => displayColumns() === 1 && isTouchDevice();
 
 function scrubHelp(ctrl: AnalyseCtrl) {
   domDialog({

@@ -141,9 +141,7 @@ export const env = new (class {
   }
 })();
 
-export function trimLines(s: string): string[] {
-  return s.split(/[\n\r\f]+/).filter(x => x.trim());
-}
+export const trimLines = (s: string): string[] => s.split(/[\n\r\f]+/).filter(x => x.trim());
 
 export type Context = 'sass' | 'tsc' | 'esbuild' | 'sync' | 'hash' | 'i18n' | 'web';
 

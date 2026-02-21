@@ -73,11 +73,8 @@ export class TreeView {
   }
 }
 
-function eventPath(e: MouseEvent): TreePath | null {
-  return (
-    (e.target as HTMLElement).getAttribute('p') || (e.target as HTMLElement).parentElement!.getAttribute('p')
-  );
-}
+const eventPath = (e: MouseEvent): TreePath | null =>
+  (e.target as HTMLElement).getAttribute('p') || (e.target as HTMLElement).parentElement!.getAttribute('p');
 
 const autoScroll = throttle(200, (behavior: ScrollBehavior = 'instant') => {
   const scrollView = document.querySelector<HTMLElement>('.analyse__moves')!;
