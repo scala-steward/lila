@@ -14,7 +14,7 @@ export function storedProp<V>(
   defaultValue: V,
   fromStr: (str: string) => V,
   toStr: (v: V) => string = (v: V) => {
-    if (v && typeof v.toString === 'function') {
+    if (v !== undefined && v !== null && typeof v.toString === 'function') {
       return v.toString();
     }
     throw new Error(`storedProp: value ${typeof v} has no toString method, provide a custom stringifier`);
