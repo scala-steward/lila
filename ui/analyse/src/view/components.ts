@@ -144,8 +144,8 @@ export function renderTools({ ctrl, deps, concealOf, allowVideo }: ViewContext, 
   ]);
 }
 
-export function renderBoard({ ctrl, study, playerBars, playerStrips }: ViewContext) {
-  return hl(
+export const renderBoard = ({ ctrl, study, playerBars, playerStrips }: ViewContext): VNode =>
+  hl(
     addChapterId(study, 'div.analyse__board.main-board'),
     {
       hook:
@@ -179,10 +179,9 @@ export function renderBoard({ ctrl, study, playerBars, playerStrips }: ViewConte
       ctrl.promotion.view(ctrl.data.game.variant.key === 'antichess'),
     ],
   );
-}
 
-export function renderUnderboard({ ctrl, deps, study }: ViewContext) {
-  return hl(
+export const renderUnderboard = ({ ctrl, deps, study }: ViewContext): VNode =>
+  hl(
     'div.analyse__underboard',
     {
       hook:
@@ -190,7 +189,6 @@ export function renderUnderboard({ ctrl, deps, study }: ViewContext) {
     },
     study ? deps?.studyView.underboard(ctrl) : [renderInputs(ctrl)],
   );
-}
 
 export function renderInputs(ctrl: AnalyseCtrl): VNode | undefined {
   if (ctrl.ongoing || !ctrl.data.userAnalysis) return;
@@ -360,8 +358,8 @@ function makeConcealOf(ctrl: AnalyseCtrl): ConcealOf | undefined {
       : null;
   if (conceal)
     return (isMainline: boolean) => (path: TreePath, node: TreeNode) => {
-      if (!conceal || (isMainline && conceal.ply >= node.ply)) return null;
-      if (treePath.contains(ctrl.path, path)) return null;
+      if (!conceal || (isMainline && conceal.ply >= node.ply) || treePath.contains(ctrl.path, path))
+        return null;
       return conceal.owner ? 'conceal' : 'hide';
     };
   return undefined;

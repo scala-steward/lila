@@ -141,23 +141,21 @@ export class ExplorerConfigCtrl {
     (this.data.db() !== 'player' || this.data.mode().length === allModes.length);
 }
 
-export function view(ctrl: ExplorerConfigCtrl): VNode[] {
-  return [
-    ctrl.data.db() === 'masters'
-      ? masterDb(ctrl)
-      : ctrl.data.db() === 'lichess'
-        ? lichessDb(ctrl)
-        : playerDb(ctrl),
+export const view = (ctrl: ExplorerConfigCtrl): VNode[] => [
+  ctrl.data.db() === 'masters'
+    ? masterDb(ctrl)
+    : ctrl.data.db() === 'lichess'
+      ? lichessDb(ctrl)
+      : playerDb(ctrl),
+  h(
+    'section.save',
     h(
-      'section.save',
-      h(
-        'button.button.button-green.text',
-        { attrs: dataIcon(licon.Checkmark), hook: bind('click', ctrl.toggleOpen) },
-        i18n.site.allSet,
-      ),
+      'button.button.button-green.text',
+      { attrs: dataIcon(licon.Checkmark), hook: bind('click', ctrl.toggleOpen) },
+      i18n.site.allSet,
     ),
-  ];
-}
+  ),
+];
 
 const selectText = 'Select a Lichess player';
 

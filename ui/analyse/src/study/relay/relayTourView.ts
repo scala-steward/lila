@@ -395,7 +395,7 @@ const roundSelect = (relay: RelayCtrl, study: StudyCtrl) => {
                   'ongoing-round': !!round.ongoing,
                 },
                 on: {
-                  click: e => extractHrefAndNavigate(e, round),
+                  click: (e: PointerEvent) => extractHrefAndNavigate(e, round),
                 },
               },
               [

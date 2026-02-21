@@ -83,8 +83,7 @@ function clockContent(opts: ClockOpts): MaybeVNodes {
   return [...pauseNodes, ...timeNodes];
 }
 
-function clockContentNvui(opts: ClockOpts): MaybeVNode {
-  return !opts.centis && opts.centis !== 0 ? 'None' : formatClockTimeVerbal(opts.centis * 10);
-}
+const clockContentNvui = (opts: ClockOpts): MaybeVNode =>
+  !opts.centis && opts.centis !== 0 ? 'None' : formatClockTimeVerbal(opts.centis * 10);
 
 const pad2 = (num: number): string => (num < 10 ? '0' : '') + num;

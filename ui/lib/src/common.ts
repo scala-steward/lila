@@ -108,9 +108,7 @@ export const onClickAway =
     setTimeout(listen, 300);
   };
 
-export function hyphenToCamel(str: string): string {
-  return str.replace(/-([a-z])/g, g => g[1].toUpperCase());
-}
+export const hyphenToCamel = (str: string): string => str.replace(/-([a-z])/g, g => g[1].toUpperCase());
 
 export const requestIdleCallback = (f: () => void, timeout?: number): void => {
   if (window.requestIdleCallback) window.requestIdleCallback(f, timeout ? { timeout } : undefined);
@@ -139,13 +137,9 @@ export function scopedQuery(scope: Element): <T extends Element = HTMLElement>(s
 }
 
 // The username with all characters lowercase
-export function myUserId(): string | undefined {
-  return document.body.dataset.user;
-}
+export const myUserId = (): string | undefined => document.body.dataset.user;
 
-export function myUsername(): string | undefined {
-  return document.body.dataset.username;
-}
+export const myUsername = (): string | undefined => document.body.dataset.username;
 
 export function repeater(f: () => void, additionalStopCond?: () => boolean): void {
   let timeout: number | undefined = undefined;

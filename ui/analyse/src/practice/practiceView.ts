@@ -6,8 +6,8 @@ import { renderNextChapter } from '../study/nextChapter';
 import { fixCrazySan } from 'lib/game/chess';
 import type { Prop } from 'lib';
 
-function commentBest(c: Comment, ctrl: PracticeCtrl): MaybeVNodes {
-  return c.best
+const commentBest = (c: Comment, ctrl: PracticeCtrl): MaybeVNodes =>
+  c.best
     ? i18n.site[c.verdict === 'goodMove' ? 'anotherWasX' : 'bestWasX'].asArray(
         hl(
           'move',
@@ -26,10 +26,9 @@ function commentBest(c: Comment, ctrl: PracticeCtrl): MaybeVNodes {
         ),
       )
     : [];
-}
 
-function renderOffTrack(ctrl: PracticeCtrl): VNode {
-  return hl('div.player.off', [
+const renderOffTrack = (ctrl: PracticeCtrl): VNode =>
+  hl('div.player.off', [
     hl('div.icon.off', '!'),
     hl('div.instruction', [
       hl('strong', i18n.site.youBrowsedAway),
@@ -38,7 +37,6 @@ function renderOffTrack(ctrl: PracticeCtrl): VNode {
       ]),
     ]),
   ]);
-}
 
 function renderEnd(root: AnalyseCtrl, end: Outcome): VNode {
   const color = end.winner || root.turnColor();
@@ -94,15 +92,14 @@ export function renderCustomPearl({ ceval }: AnalyseCtrl, hardMode: boolean): VN
   return hl('div.practice-mode', [hl('p', 'Casual'), hl('p.secondary', 'depth 18')]);
 }
 
-export function renderCustomStatus({ ceval }: AnalyseCtrl, hardMode: Prop<boolean>): VNode | undefined {
-  return ceval.isComputing
+export const renderCustomStatus = ({ ceval }: AnalyseCtrl, hardMode: Prop<boolean>): VNode | undefined =>
+  ceval.isComputing
     ? undefined
     : hl(
         'button.status.button-link',
         { hook: bind('click', () => hardMode(!hardMode())) },
         'Toggle difficulty',
       );
-}
 
 export default function (root: AnalyseCtrl): VNode | undefined {
   const ctrl = root.practice;
