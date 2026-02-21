@@ -9,6 +9,7 @@
   position: relative;
 
   .link {
+    @include transition(color);
     @extend %top-icon;
     color: $c-font;
     @include if-transp {
@@ -131,10 +132,15 @@
   gap: 0.5rem;
 
   &::after {
+    @include transition(color);
     @extend %data-icon;
     color: $m-font_dimmer--mix-85;
     content: $licon-AccountCircle;
     font-size: 2rem;
+  }
+
+  &:hover::after {
+    color: $c-font-clearer;
   }
 }
 
