@@ -72,7 +72,7 @@ export class DevCtrl implements GameObserver {
   resetScript(test?: Test): void {
     this.log ??= [];
     this.trace = [];
-    const players = [env.game.white, env.game.black].filter(x => defined(x)) as string[];
+    const players = [env.game.white, env.game.black].filter(x => defined(x));
     this.script = {
       type: 'matchup',
       players,
@@ -128,7 +128,7 @@ export class DevCtrl implements GameObserver {
     this.updateRatings(this.white.uid, this.black.uid, winner);
 
     if (this.script.type === 'rate') {
-      const uid = this.script.players[0]!;
+      const uid = this.script.players[0];
       const rating = this.getRating(uid, env.game.speed);
       this.script.games.push(...rateBotMatchup(uid, rating, last));
     }

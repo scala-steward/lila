@@ -89,7 +89,7 @@ export const api: Api = {
     request: () => pubsub.emit('socket.send', 'following_onlines'),
     events: {
       on<K extends FriendsEventKey>(key: K, cb: FriendsCallback<K>): void {
-        if (!friendsEvents.includes(key as FriendsEventKey)) throw 'This event is not part of the public API';
+        if (!friendsEvents.includes(key)) throw 'This event is not part of the public API';
         pubsub.on(`socket.in.following_${key}`, cb);
       },
       off<K extends FriendsEventKey>(key: K, cb: FriendsCallback<K>): void {

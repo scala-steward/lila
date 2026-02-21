@@ -149,7 +149,7 @@ export function repeater(f: () => void, additionalStopCond?: () => boolean): voi
   })();
   const repeat = () => {
     f();
-    timeout = setTimeout(repeat, delay.next().value!);
+    timeout = setTimeout(repeat, delay.next().value);
     if (additionalStopCond?.()) clearTimeout(timeout);
   };
   repeat();

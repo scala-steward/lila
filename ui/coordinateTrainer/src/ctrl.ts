@@ -18,7 +18,7 @@ import { COLORS } from 'chessops';
 import { toggleZenMode } from 'lib/view/zen';
 
 const orientationFromColorChoice = (colorChoice: ColorChoice): Color =>
-  (colorChoice === 'random' ? COLORS[Math.round(Math.random())] : colorChoice) as Color;
+  colorChoice === 'random' ? COLORS[Math.round(Math.random())] : colorChoice;
 
 const randomChoice = (max: number) => Math.floor(Math.random() * max);
 

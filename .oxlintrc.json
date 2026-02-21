@@ -26,6 +26,10 @@
         "caughtErrorsIgnorePattern": "^_"
       }
     ],
+    "prefer-promise-reject-errors": "error",
+    "typescript/no-unnecessary-type-arguments": "error",
+    "typescript/no-unnecessary-type-assertion": "error",
+    "typescript/no-unnecessary-type-constraint": "error",
     "no-restricted-globals": [
       "error",
       "addEventListener",

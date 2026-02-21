@@ -53,7 +53,7 @@ export function studyView(ctrl: AnalyseCtrl, study: StudyCtrl, deps: typeof stud
     ctrl.keyboardMove && renderKeyboardMove(ctrl.keyboardMove),
     trainingView(ctrl),
     ctrl.study?.practice
-      ? deps?.studyPracticeView.side(study!)
+      ? deps?.studyPracticeView.side(study)
       : hl(
           'aside.analyse__side',
           {
@@ -162,7 +162,7 @@ export const overboard = (ctrl: StudyCtrl) =>
               : undefined;
 
 export function underboard(ctrl: AnalyseCtrl): LooseVNodes {
-  if (ctrl.study?.practice) return practiceView.underboard(ctrl.study!);
+  if (ctrl.study?.practice) return practiceView.underboard(ctrl.study);
   const study = ctrl.study!,
     toolTab = study.vm.toolTab();
   if (study.gamebookPlay)

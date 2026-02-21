@@ -25,7 +25,7 @@ interface Glyph {
 
 const autoScroll = throttle(150, (ctrl: PuzzleCtrl, el: HTMLElement) => {
   const cont = el.parentNode as HTMLElement;
-  const target = el.querySelector('.active') as HTMLElement | null;
+  const target = el.querySelector<HTMLElement>('.active');
   if (!target) {
     cont.scrollTop = ctrl.path === treePath.root ? 0 : 99999;
     return;

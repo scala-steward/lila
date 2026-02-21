@@ -482,7 +482,7 @@ function renderAcpl({ ctrl, moveStyle }: AnalyseNvuiContext): LooseVNodes {
               { attrs: { value: node.ply, selected: node.ply === ctrl.node.ply } },
               [
                 plyToTurn(node.ply),
-                renderSan(node.san!, node.uci, moveStyle.get()),
+                renderSan(node.san, node.uci, moveStyle.get()),
                 renderComments(node, moveStyle.get()),
               ].join(' '),
             ),

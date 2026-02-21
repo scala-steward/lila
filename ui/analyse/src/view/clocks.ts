@@ -36,7 +36,7 @@ export default function renderClocks(ctrl: AnalyseCtrl, path: TreePath): [VNode,
   if (lastMoveAt) {
     const spent = (Date.now() - lastMoveAt) / 10;
     const i = isWhiteTurn ? 0 : 1;
-    if (centis[i]) centis[i] = Math.max(0, centis[i]! - spent);
+    if (centis[i]) centis[i] = Math.max(0, centis[i] - spent);
   }
 
   const showTenths = !study?.relay;
