@@ -357,7 +357,7 @@ lazy val challenge = module("challenge",
 
 lazy val fide = module("fide",
   Seq(memo, ui),
-  Seq()
+  tests.bundle
 )
 
 lazy val title = module("title",
