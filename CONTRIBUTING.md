@@ -8,7 +8,7 @@
 
 ### Rules about AI-assisted code contributions
 
-Fully generated AI code can be accepted, under some conditions:
+Generated AI code can be accepted, under some conditions:
 
 - Carefully review and understand all the code you submit, and be able to explain it if asked.
 - Provide proof of manual testing of the changes, with screenshots or ideally a video.
