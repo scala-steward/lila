@@ -6,6 +6,14 @@
 - [Pick a GitHub issue to work on](https://github.com/lichess-org/lila/issues). The [`good first issue`](https://github.com/lichess-org/lila/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) and [`no scala`](https://github.com/lichess-org/lila/issues?q=is%3Aissue+is%3Aopen+label%3A%22no+scala%22) tags might be useful.
 - Communicate with other devs on [Discord](https://discord.gg/lichess).
 
+### Rules about AI-assisted code contributions
+
+Fully generated AI code can be accepted, under some conditions:
+
+- Carefully review and understand all the code you submit, and be able to explain it if asked.
+- Provide proof of manual testing of the changes, with screenshots or ideally a video.
+- Include in the pull-request message, or in commit messages, the prompts you used to generate the code, and the AI tool you used.
+
 ## I want to contribute artwork or documentation
 
 Some issues that need artwork and documentation to be resolved are tagged [`nontechnical`](https://github.com/lichess-org/lila/issues?q=is%3Aissue+is%3Aopen+label%3A%22non+technical%22).
