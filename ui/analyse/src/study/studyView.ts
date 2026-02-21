@@ -53,7 +53,7 @@ export function studyView(ctrl: AnalyseCtrl, study: StudyCtrl, deps: typeof stud
     ctrl.keyboardMove && renderKeyboardMove(ctrl.keyboardMove),
     trainingView(ctrl),
     ctrl.study?.practice
-      ? deps?.studyPracticeView.side(study!)
+      ? deps?.studyPracticeView.side(study)
       : hl(
           'aside.analyse__side',
           {
@@ -119,8 +119,8 @@ export function studySideNodes(ctrl: StudyCtrl, withSearch: boolean): LooseVNode
   ];
 }
 
-export function contextMenu(ctrl: StudyCtrl, path: TreePath, node: TreeNode): VNode[] {
-  return ctrl.vm.mode.write
+export const contextMenu = (ctrl: StudyCtrl, path: TreePath, node: TreeNode): VNode[] =>
+  ctrl.vm.mode.write
     ? [
         hl(
           'a',
@@ -145,7 +145,6 @@ export function contextMenu(ctrl: StudyCtrl, path: TreePath, node: TreeNode): VN
         ),
       ]
     : [];
-}
 
 export const overboard = (ctrl: StudyCtrl) =>
   ctrl.chapters.newForm.isOpen()
@@ -163,7 +162,7 @@ export const overboard = (ctrl: StudyCtrl) =>
               : undefined;
 
 export function underboard(ctrl: AnalyseCtrl): LooseVNodes {
-  if (ctrl.study?.practice) return practiceView.underboard(ctrl.study!);
+  if (ctrl.study?.practice) return practiceView.underboard(ctrl.study);
   const study = ctrl.study!,
     toolTab = study.vm.toolTab();
   if (study.gamebookPlay)
@@ -215,8 +214,8 @@ interface ToolButtonOpts {
   count?: number | string;
 }
 
-function toolButton(opts: ToolButtonOpts): VNode {
-  return hl(
+const toolButton = (opts: ToolButtonOpts): VNode =>
+  hl(
     'button.' + opts.tab,
     {
       attrs: { role: 'tab', title: opts.hint },
@@ -232,7 +231,6 @@ function toolButton(opts: ToolButtonOpts): VNode {
     },
     [!!opts.count && hl('count.data-count', { attrs: { 'data-count': opts.count } }), opts.icon],
   );
-}
 
 function buttons(root: AnalyseCtrl): VNode {
   const ctrl: StudyCtrl = root.study!,

@@ -108,9 +108,7 @@ export const onClickAway =
     setTimeout(listen, 300);
   };
 
-export function hyphenToCamel(str: string): string {
-  return str.replace(/-([a-z])/g, g => g[1].toUpperCase());
-}
+export const hyphenToCamel = (str: string): string => str.replace(/-([a-z])/g, g => g[1].toUpperCase());
 
 export const requestIdleCallback = (f: () => void, timeout?: number): void => {
   if (window.requestIdleCallback) window.requestIdleCallback(f, timeout ? { timeout } : undefined);
@@ -139,13 +137,9 @@ export function scopedQuery(scope: Element): <T extends Element = HTMLElement>(s
 }
 
 // The username with all characters lowercase
-export function myUserId(): string | undefined {
-  return document.body.dataset.user;
-}
+export const myUserId = (): string | undefined => document.body.dataset.user;
 
-export function myUsername(): string | undefined {
-  return document.body.dataset.username;
-}
+export const myUsername = (): string | undefined => document.body.dataset.username;
 
 export function repeater(f: () => void, additionalStopCond?: () => boolean): void {
   let timeout: number | undefined = undefined;
@@ -155,7 +149,7 @@ export function repeater(f: () => void, additionalStopCond?: () => boolean): voi
   })();
   const repeat = () => {
     f();
-    timeout = setTimeout(repeat, delay.next().value!);
+    timeout = setTimeout(repeat, delay.next().value);
     if (additionalStopCond?.()) clearTimeout(timeout);
   };
   repeat();
@@ -163,9 +157,8 @@ export function repeater(f: () => void, additionalStopCond?: () => boolean): voi
 }
 
 // Prevents the clicked element from acquiring focus on primary mouse clicks.
-export function blurIfPrimaryClick(e: Event, el?: EventTarget | null): void {
-  if (e instanceof MouseEvent && e.detail !== 0 && e.button === 0) {
-    const target = el ?? e.currentTarget;
-    if (target instanceof HTMLElement) requestAnimationFrame(() => target.blur());
-  }
+export function blurIfPrimaryClick(e: Event): void {
+  const target = document.activeElement;
+  if (target instanceof HTMLElement && e instanceof MouseEvent && e.detail !== 0 && e.button === 0)
+    requestAnimationFrame(() => target.blur());
 }

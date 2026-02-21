@@ -18,7 +18,7 @@ import { COLORS } from 'chessops';
 import { toggleZenMode } from 'lib/view/zen';
 
 const orientationFromColorChoice = (colorChoice: ColorChoice): Color =>
-  (colorChoice === 'random' ? COLORS[Math.round(Math.random())] : colorChoice) as Color;
+  colorChoice === 'random' ? COLORS[Math.round(Math.random())] : colorChoice;
 
 const randomChoice = (max: number) => Math.floor(Math.random() * max);
 
@@ -92,12 +92,7 @@ export default class CoordinateTrainerCtrl {
   }
 
   colorChoice: Prop<ColorChoice> = withEffect<ColorChoice>(
-    storedProp<ColorChoice>(
-      'coordinateTrainer.colorChoice',
-      'random',
-      str => str as ColorChoice,
-      v => v,
-    ),
+    storedProp<ColorChoice>('coordinateTrainer.colorChoice', 'random', str => str as ColorChoice),
     () => this.setOrientationFromColorChoice(),
   );
 
@@ -114,7 +109,6 @@ export default class CoordinateTrainerCtrl {
       'coordinateTrainer.mode',
       window.location.hash === '#name' ? 'nameSquare' : 'findSquare',
       str => str as Mode,
-      v => v,
     ),
     () => this.onModeChange(),
   );
@@ -148,7 +142,6 @@ export default class CoordinateTrainerCtrl {
       'coordinateTrainer.timeControl',
       document.body.classList.contains('kid') ? 'untimed' : 'thirtySeconds',
       str => str as TimeControl,
-      v => v,
     ),
     this.redraw,
   );
@@ -192,7 +185,6 @@ export default class CoordinateTrainerCtrl {
       'coordinateTrainer.coordinateInputMethod',
       window.innerWidth >= 980 ? 'text' : 'buttons',
       str => str as InputMethod,
-      v => v,
     ),
     this.redraw,
   );

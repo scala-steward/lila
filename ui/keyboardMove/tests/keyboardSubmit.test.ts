@@ -11,7 +11,7 @@ function spy() {
   f.calls = [] as any[];
   f.calledTimes = (n: number) => assert.equal(f.calls.length, n);
   f.calledWith = (...args: any[]) => assert.deepEqual(f.calls[0], args);
-  return f as any;
+  return f;
 }
 
 const startingFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';

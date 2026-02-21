@@ -185,7 +185,7 @@ export function view(ctrl: StudyCtrl): VNode {
                 const chapter = ctrl.chapters.list.get(id);
                 if (chapter) ctrl.chapters.editForm.toggle(chapter);
               } else ctrl.setChapter(id);
-              blurIfPrimaryClick(e, target.closest('button'));
+              blurIfPrimaryClick(e);
             });
             vnode.data!.li = {};
             ctrl.chapters.scroller.request('instant');

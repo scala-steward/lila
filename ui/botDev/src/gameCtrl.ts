@@ -264,7 +264,7 @@ export class GameCtrl {
   }
 
   private resetClock() {
-    const initial = this.live.initial as number;
+    const initial = this.live.initial;
     this.clock = Number.isFinite(initial)
       ? {
           initial: initial,

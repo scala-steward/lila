@@ -261,8 +261,8 @@ export function view(ctrl: AnalyseCtrl): VNode {
   ]);
 }
 
-function renderVariationOpacitySlider(ctrl: AnalyseCtrl) {
-  return hl('span.setting', [
+const renderVariationOpacitySlider = (ctrl: AnalyseCtrl) =>
+  hl('span.setting', [
     hl('label', 'Variation opacity'),
     hl('input.range', {
       key: 'variation-arrows',
@@ -287,4 +287,3 @@ function renderVariationOpacitySlider(ctrl: AnalyseCtrl) {
       },
     }),
   ]);
-}

@@ -214,7 +214,7 @@ async function buildColorMixes() {
       const mixed = (() => {
         switch (mix.op) {
           case 'mix':
-            return clr.mix(c2!, c1, clamp(mix.val, { min: 0, max: 100 }));
+            return clr.mix(c2, c1, clamp(mix.val, { min: 0, max: 100 }));
           case 'lighten':
             return c1.lighten(clamp(mix.val, { min: 0, max: 100 }));
           case 'alpha':
@@ -343,18 +343,10 @@ function resolvePartial(partial: string): string {
   return `${partial.slice(0, nameBegin)}_${partial.slice(nameBegin)}.scss`;
 }
 
-function absTempCss(scss: string) {
-  return join(env.cssTempDir, `${basename(scss, '.scss')}.css`);
-}
+const absTempCss = (scss: string): string => join(env.cssTempDir, `${basename(scss, '.scss')}.css`);
 
-function isConcrete(src: string) {
-  return src.startsWith('ui/') && !basename(src).startsWith('_');
-}
+const isConcrete = (src: string): boolean => src.startsWith('ui/') && !basename(src).startsWith('_');
 
-function isPartial(src: string) {
-  return src.startsWith('ui/') && basename(src).startsWith('_');
-}
+const isPartial = (src: string): boolean => src.startsWith('ui/') && basename(src).startsWith('_');
 
-function isUrlTarget(src: string) {
-  return src.startsWith('public/');
-}
+const isUrlTarget = (src: string): boolean => src.startsWith('public/');

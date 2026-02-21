@@ -34,7 +34,7 @@ const autoScroll = throttle(100, (movesEl: HTMLElement, ctrl: RoundController) =
     if (ctrl.ply < 3) st = 0;
     else if (ctrl.ply === util.lastPly(ctrl.data)) st = scrollMax;
     else {
-      const plyEl = movesEl.querySelector('.a1t') as HTMLElement | undefined;
+      const plyEl = movesEl.querySelector<HTMLElement>('.a1t');
       if (plyEl)
         st =
           displayColumns() === 1

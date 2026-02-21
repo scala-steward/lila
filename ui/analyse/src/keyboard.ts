@@ -134,8 +134,8 @@ export const bind = (ctrl: AnalyseCtrl) => {
   kbd.bind('mod+z', ctrl.study.undoShapeChange);
 };
 
-export function view(ctrl: AnalyseCtrl): VNode {
-  return snabDialog({
+export const view = (ctrl: AnalyseCtrl): VNode =>
+  snabDialog({
     class: 'help.keyboard-help',
     htmlUrl: xhr.url('/analysis/help', { study: !!ctrl.study }),
     modal: true,
@@ -144,7 +144,6 @@ export function view(ctrl: AnalyseCtrl): VNode {
       ctrl.redraw();
     },
   });
-}
 
 function addModifierKeyListeners(ctrl: AnalyseCtrl) {
   let modifierOnly = false;

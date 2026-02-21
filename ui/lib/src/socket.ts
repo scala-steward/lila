@@ -306,7 +306,7 @@ class WsSocket {
         // return true in a receive handler to prevent pubsub and events
         if (!(this.settings.receive && this.settings.receive(m.t, m.d))) {
           const sentAsEvent = this.settings.events[m.t] && this.settings.events[m.t](m.d || null, m);
-          if (!sentAsEvent) pubsub.emit(('socket.in.' + m.t) as PubsubEventKey, m.d as any, m as any);
+          if (!sentAsEvent) pubsub.emit(('socket.in.' + m.t) as PubsubEventKey, m.d, m);
         }
     }
   };

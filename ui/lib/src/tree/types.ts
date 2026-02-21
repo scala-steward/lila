@@ -1,4 +1,4 @@
-import type { Outcome, Position, PositionError } from 'chessops';
+import type { Outcome, Position } from 'chessops';
 import type { Result } from '@badrap/result';
 
 export type TreeNodeId = string;
@@ -68,7 +68,7 @@ export interface TreeNodeBase {
   collapsed?: boolean;
 }
 
-export type PositionResult = Result<Position, PositionError>;
+export type PositionResult = Result<Position>;
 
 export interface TreeNodeIncomplete extends TreeNodeBase {
   id?: TreeNodeId;

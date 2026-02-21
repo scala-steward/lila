@@ -363,17 +363,16 @@ const explorerTitle = (explorer: ExplorerCtrl) => {
   ]);
 };
 
-function showTitle(variant: Variant) {
-  if (variant.key === 'standard' || variant.key === 'fromPosition') return i18n.site.openingExplorer;
-  return i18n.site.xOpeningExplorer(variant.name);
-}
+const showTitle = (variant: Variant) =>
+  ['standard', 'fromPosition'].includes(variant.key)
+    ? i18n.site.openingExplorer
+    : i18n.site.xOpeningExplorer(variant.name);
 
-function showConfig(ctrl: AnalyseCtrl): VNode {
-  return hl('div.config', [explorerTitle(ctrl.explorer), renderConfig(ctrl.explorer.config)]);
-}
+const showConfig = (ctrl: AnalyseCtrl): VNode =>
+  hl('div.config', [explorerTitle(ctrl.explorer), renderConfig(ctrl.explorer.config)]);
 
-function showFailing(ctrl: AnalyseCtrl) {
-  return hl('div.data.empty', [
+const showFailing = (ctrl: AnalyseCtrl) =>
+  hl('div.data.empty', [
     hl('div.title', showTitle(ctrl.data.game.variant)),
     hl('div.failing.message', [
       hl('h3', 'Oops, sorry!'),
@@ -381,7 +380,6 @@ function showFailing(ctrl: AnalyseCtrl) {
       closeButton(ctrl),
     ]),
   ]);
-}
 
 let lastFen: FEN = '';
 
