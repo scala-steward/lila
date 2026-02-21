@@ -26,9 +26,35 @@ final class TutorReportsUi(helpers: Helpers, bits: TutorBits, q: TutorQueueUi):
     )
 
   private def preview(p: TutorFullReport.Preview)(using Context) =
-    a(href := p.config.url.root)(
-      momentFromNow(p.at),
-      p.toString
+    val days = daysBetween(p.config.from, p.config.to)
+    a(href := p.config.url.root, cls := "tutor-preview")(
+      // momentFromNow(p.at),
+      span(cls := "tutor-preview__dates")(
+        span(
+          semanticDate(p.config.from),
+          " → ",
+          semanticDate(p.config.to)
+        ),
+        trans.site.nbDays.plural(days, days)
+      ),
+      span(cls := "tutor-preview__perfs"):
+        p.perfs
+          .take(3)
+          .map: perf =>
+            span(cls := "tutor-preview__perf", dataIcon := perf.perf.icon)(
+              span(cls := "tutor-preview__perf__data")(
+                span(cls := "tutor-preview__perf__nb"):
+                  trans.site.nbGames.plural(perf.stats.totalNbGames, perf.stats.totalNbGames.localize)
+                ,
+                span(cls := "tutor-preview__perf__rating")(
+                  trans.site.rating(),
+                  " ",
+                  strong(perf.stats.rating)
+                )
+              )
+            )
+      ,
+      span(cls := "tutor-preview__nbGames")(trans.site.nbGames.plural(p.nbGames, p.nbGames.localize))
     )
 
   private def datePickr(field: Field) = form3.flatpickr(

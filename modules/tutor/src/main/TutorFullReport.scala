@@ -45,7 +45,8 @@ case class TutorFullReport(
 
 object TutorFullReport:
 
-  case class Preview(config: TutorConfig, at: Instant, perfs: List[TutorPerfReport.Preview])
+  case class Preview(config: TutorConfig, at: Instant, perfs: List[TutorPerfReport.Preview]):
+    def nbGames = perfs.map(_.stats.totalNbGames).sum
 
   object F:
     val config = "config"

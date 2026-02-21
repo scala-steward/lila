@@ -38,6 +38,9 @@ trait DateHelper:
     val dateString = dateFormatter.print(date)
     if lang.language == "ar" then dateString.replaceAll("\u200f", "") else dateString
 
+  def semanticDate(date: LocalDate)(using t: Translate): Tag =
+    timeTag(datetimeAttr := date.toString)(showDate(date))
+
   def showYearMonth(month: YearMonth)(using lang: Lang): String =
     val formatter = DateTimeFormatter.ofPattern("yyyy/MM").withLocale(lang.toLocale)
     month.format(formatter)
