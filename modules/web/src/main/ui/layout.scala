@@ -9,6 +9,7 @@ import lila.core.report.ScoreThresholds
 import lila.ui.*
 
 import ScalatagsTemplate.{ *, given }
+import lila.core.id.CmsPageId
 
 final class layout(helpers: Helpers, assetHelper: lila.web.ui.AssetFullHelper)(
     popularAlternateLanguages: List[Language],
@@ -103,12 +104,13 @@ final class layout(helpers: Helpers, assetHelper: lila.web.ui.AssetFullHelper)(
       if ctx.blind
       then trans.site.disableBlindMode.txt()
       else s"${trans.site.accessibility.txt()} - ${trans.site.enableBlindMode.txt()}"
+    def tutorialLink = ctx.blind.so:
+      val url = routes.Cms.lonePage(lila.core.id.CmsPageKey("blind-mode-tutorial"))
+      s"""&nbsp;-&nbsp;${a(href := url)("Blind mode tutorial")}"""
 
     s"""<form id="blind-mode" action="${routes.Main.toggleBlindMode}" method="POST"><input type="hidden" name="enable" value="${
         if ctx.blind then 0 else 1
-      }"><input type="hidden" name="redirect" value="${ctx.req.path}"><button id="nvui-button" type="submit">$btnText</button>&nbsp;-&nbsp;${a(
-        href := "https://lichess.org/page/blind-mode-tutorial"
-      )("Blind mode tutorial")}</form>"""
+      }"><input type="hidden" name="redirect" value="${ctx.req.path}"><button id="nvui-button" type="submit">$btnText</button>$tutorialLink</form>"""
 
   def zenZone(using Translate) = spaceless:
     s"""
