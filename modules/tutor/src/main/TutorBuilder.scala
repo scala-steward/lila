@@ -37,7 +37,7 @@ final private class TutorBuilder(
     report <- Future.fromTry(lap.result)
     doc = bsonWriteObjTry(report).get ++ $doc("_id" -> report.id, "millis" -> lap.millis)
     _ <- colls.report(_.insert.one(doc).void)
-    _ <- messenger.postPreset(config.user, doneMsg).void
+    _ <- messenger.postPreset(config.user, doneMsg(report)).void
   yield report
 
   private def produce(user: UserWithPerfs, config: TutorConfig): Fu[TutorFullReport] = for
@@ -97,8 +97,8 @@ final private class TutorBuilder(
         perfs.keys.foreach: pt =>
           lila.mon.tutor.peerMatch(matches.exists(_.perf == pt), pt.key).increment()
 
-  lazy private val doneMsg =
-    lila.core.msg.MsgPreset("Tutor complete", s"Your tutor report is ready! ${routeUrl(routes.Tutor.home())}")
+  private def doneMsg(report: TutorFullReport) =
+    lila.core.msg.MsgPreset("Tutor complete", s"Your tutor report is ready! ${routeUrl(report.url.root)}")
 
 private object TutorBuilder:
 
