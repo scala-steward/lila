@@ -179,7 +179,7 @@ export default class Mousetrap {
     for (const combo of Array.isArray(combinations) ? combinations : [combinations]) {
       const info = getKeyInfo(combo, action);
       this.bindings[info.key] ??= [];
-      if (multiple || !this.bindings[info.key].some(b => isEquivalent(b.modifiers, info.modifiers)))
+      if (multiple || this.bindings[info.key].every(b => !isEquivalent(b.modifiers, info.modifiers)))
         this.bindings[info.key].push({
           combination: combo,
           callback,

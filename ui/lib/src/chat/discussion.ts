@@ -176,7 +176,12 @@ const setupHooks = (ctrl: ChatCtrl, chatEl: HTMLInputElement) => {
     }),
   );
 
-  site.mousetrap.bind('c', () => chatEl.focus(), undefined, false);
+  site.mousetrap.bind(
+    'c',
+    () => (document.querySelector('input.mchat__say') as HTMLElement)?.focus(),
+    undefined,
+    false,
+  );
 
   // Ensure clicks remove chat focus.
   // See https://github.com/lichess-org/lila/pull/5323
