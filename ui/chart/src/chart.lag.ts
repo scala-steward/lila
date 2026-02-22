@@ -83,11 +83,11 @@ export async function initModule(): Promise<void> {
             ctx.rotate(Math.PI * (dest + 1.5));
             ctx.beginPath();
             ctx.fillStyle = '#838382';
-            ctx.moveTo(0 - 10, 0);
+            ctx.moveTo(10, 0);
             ctx.lineWidth = 1;
             ctx.lineTo(0, -outer);
             ctx.lineTo(10, 0);
-            ctx.lineTo(0 - 10, 0);
+            ctx.lineTo(10, 0);
             ctx.fill();
 
             ctx.beginPath();
