@@ -230,7 +230,7 @@ final private class RelayFetch(
 
   // remembers previously ongoing games so they can be fetched one last time when finished
   private val ongoingUserGameIdsCache =
-    cacheApi.notLoadingSync[RelayTourId, Set[GameId]](16, "relay.fetch.ongoingUserGameIds"):
+    cacheApi.notLoadingSync[RelayTourId, Set[GameId]](8, "relay.fetch.ongoingUserGameIds"):
       _.expireAfterWrite(15.minutes).build()
 
   private def fetchFromUsers(tour: RelayTour, users: List[UserStr]): Fu[RelayGames] =
