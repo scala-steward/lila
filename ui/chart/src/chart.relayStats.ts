@@ -2,7 +2,7 @@ import type { RoundStats } from './interface';
 import * as chart from 'chart.js';
 import 'chartjs-adapter-dayjs-4';
 import { hoverBorderColor, gridColor, tooltipBgColor, fontColor, fontFamily, animation } from './index';
-import { memoize } from 'lib';
+import { memoize, notNull } from 'lib';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 chart.Chart.register(
@@ -226,11 +226,10 @@ const fillData = (viewers: RoundStats['viewers']) => {
     .slice(0, viewers.length - 2)
     .reverse()
     .forEach(([behind, v]) => {
-      const minuteGap = points.find(({ x }) => x && x - behind <= 60);
-      const lastDate = points[points.length - 1].x;
-      if (!minuteGap && lastDate) {
-        for (let i = behind; i < lastDate; i += 60) points.push({ x: i, y: v });
+      const minuteGap = points.find(({ x }) => notNull(x) && x - behind <= 60);
+      if (!minuteGap) {
+        for (let i = behind; i < points[points.length - 1].x!; i += 60) points.push({ x: i, y: v });
       } else points.push({ x: behind, y: v });
     });
-  return points.map(p => ({ x: p.x ? p.x * 1000 : null, y: p.y })).reverse();
+  return points.map(p => ({ x: notNull(p.x) ? p.x * 1000 : null, y: p.y })).reverse();
 };

@@ -64,12 +64,15 @@
 
 %box-neat {
   @extend %box-shadow, %box-radius;
+  @include backdrop-blur-if-transparent;
 }
 
 %box-neat-top {
   @extend %box-shadow, %box-radius-top;
+  @include backdrop-blur-if-transparent;
 }
 
 %box-neat-force {
   @extend %box-shadow, %box-radius-force;
+  @include backdrop-blur-if-transparent;
 }

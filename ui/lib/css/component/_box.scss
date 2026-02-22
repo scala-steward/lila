@@ -3,6 +3,7 @@ $vp-max-width: 1200px;
 
 .box {
   @extend %box-shadow;
+  @include backdrop-blur-if-transparent;
 
   background: $c-bg-box;
 
