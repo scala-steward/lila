@@ -9,7 +9,7 @@
 
   &__list {
     display: grid;
-    gap: 0.5em;
+    grid-column-gap: 0.5em;
     margin-inline: calc(var(---box-padding) / 2);
     grid-template-columns: repeat(auto-fill, minmax(50ch, 1fr));
 
