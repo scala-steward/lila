@@ -460,7 +460,7 @@ final class Tournament(env: Env, apiC: => Api)(using akka.stream.Materializer) e
       f: Tour => Fu[Result]
   )(using ctx: Context, me: Me): Fu[Result] =
     WithVisibleTournament(id): t =>
-      if (t.createdBy.is(me) && !t.isFinished) || isGranted(_.ManageTournament)
+      if isGranted(_.ManageTournament) || (t.createdBy.is(me) && (!t.isFinished || ctx.req.method == "GET"))
       then f(t)
       else Redirect(routes.Tournament.show(t.id))
 

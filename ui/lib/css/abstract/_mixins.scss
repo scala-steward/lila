@@ -91,6 +91,12 @@
   }
 }
 
+@mixin backdrop-blur-if-transparent($size: 6px) {
+  @include if-transp {
+    backdrop-filter: blur($size);
+  }
+}
+
 @mixin topnav-unsticky {
   #top {
     position: relative;
@@ -99,9 +105,9 @@
     padding: 0;
     width: unset;
     background: unset;
-    border-bottom: unset;
+    border-bottom-color: transparent;
     transform: unset;
-    ---site-header-sticky-padding: 0px;
+    ---site-header-sticky-padding: 0;
 
     #topnav,
     .dropdown {
@@ -112,7 +118,7 @@
     }
   }
   #main-wrap {
-    margin-top: $site-header-margin;
+    margin-top: var(---sticky-gap);
   }
 }
 

@@ -3,6 +3,7 @@ $c-tabs-active: $c-accent !default;
 .tabs-horiz {
   @extend %flex-center-nowrap, %page-text;
   @include prevent-select;
+  @include backdrop-blur-if-transparent;
 
   justify-content: center;
   align-items: flex-end;

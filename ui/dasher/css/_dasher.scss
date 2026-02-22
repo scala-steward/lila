@@ -183,11 +183,14 @@
   }
 
   .background {
-    .image label {
-      display: block;
-      font-size: 0.9em;
-      padding: 5px;
-      margin-bottom: 1em;
+    .image {
+      padding: 12px;
+
+      label {
+        display: block;
+        font-size: 0.9em;
+        padding: 0 5px 5px 5px;
+      }
     }
 
     input {
@@ -216,9 +219,11 @@
     $thumb-w: 160px; // see bin/make-gallery
     $thumb-h: 90px;
 
+    @include inline-end(0);
+    @include backdrop-blur-if-transparent;
+
     position: absolute;
     top: 100%;
-    @include inline-end(0);
     background-color: #000b;
 
     #images-viewport {
