@@ -1,7 +1,7 @@
 import type { RoundStats } from './interface';
 import * as chart from 'chart.js';
 import 'chartjs-adapter-dayjs-4';
-import { hoverBorderColor, gridColor, tooltipBgColor, fontColor, fontFamily } from './index';
+import { hoverBorderColor, gridColor, tooltipBgColor, fontColor, fontFamily, animation } from './index';
 import { memoize, notNull } from 'lib';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
@@ -131,6 +131,7 @@ const makeChart = ($el: Cash, data: RoundStats) => {
       locale: document.documentElement.lang,
       maintainAspectRatio: false,
       responsive: true,
+      animations: animation(500 / ds[0].data.length),
       scales: {
         x: {
           type: 'time',
@@ -204,6 +205,7 @@ const makeChart = ($el: Cash, data: RoundStats) => {
   relayChart.updateData = (data: RoundStats) => {
     relayChart.data.datasets = makeDataset(data, $el[0] as HTMLCanvasElement);
     relayChart.options.plugins!.title!.text = titleText(data);
+    relayChart.options.animations = updateAnimations(data);
     relayChart.update();
   };
   return relayChart;
@@ -211,6 +213,9 @@ const makeChart = ($el: Cash, data: RoundStats) => {
 
 const titleText = (data: RoundStats): string =>
   `${data.round.name} • Start - ${dateFormat()(data.round.startsAt)}`;
+
+const updateAnimations = (data?: RoundStats) =>
+  data && data.viewers.length > 30 ? animation(1000 / data.viewers.length) : undefined;
 
 const fillData = (viewers: RoundStats['viewers']) => {
   const points: chart.Point[] = [];

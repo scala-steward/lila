@@ -1,4 +1,4 @@
-import { fontFamily, gridColor, hoverBorderColor } from './index';
+import { animation, fontFamily, gridColor, hoverBorderColor } from './index';
 import type { DistributionData } from './interface';
 import {
   type ChartConfiguration,
@@ -145,6 +145,7 @@ export async function initModule(data: DistributionData): Promise<void> {
             },
           },
         },
+        animations: animation(1000 / ratings.length),
         locale: document.documentElement.lang,
         maintainAspectRatio: false,
         responsive: true,

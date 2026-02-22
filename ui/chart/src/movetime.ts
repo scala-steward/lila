@@ -12,6 +12,7 @@ import {
 } from 'chart.js';
 import {
   type MovePoint,
+  animation,
   blackFill,
   fontColor,
   fontFamily,
@@ -174,6 +175,7 @@ export default async function (
     options: {
       maintainAspectRatio: false,
       responsive: true,
+      animations: animation(800 / labels.length - 1),
       scales: axisOpts(
         firstPly + 1,
         // Omit game-ending action to sync acpl and movetime charts

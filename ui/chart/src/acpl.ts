@@ -12,6 +12,7 @@ import {
   Tooltip,
 } from 'chart.js';
 import {
+  animation,
   blackFill,
   fontColor,
   fontFamily,
@@ -131,6 +132,7 @@ export default async function (
         intersect: false,
       },
       scales: axisOpts(firstPly + 1, mainline.length + firstPly),
+      animations: animation(500 / (mainline.length - 1)),
       maintainAspectRatio: false,
       responsive: true,
       plugins: {
