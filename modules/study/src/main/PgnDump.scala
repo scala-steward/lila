@@ -1,6 +1,7 @@
 package lila.study
 
 import akka.stream.scaladsl.*
+import play.api.mvc.RequestHeader
 import chess.format.pgn as chessPgn
 import chess.format.pgn.{ Comment, Glyphs, InitialComments, Pgn, PgnStr, PgnTree, Tag, Tags }
 import scalalib.StringOps.slug
@@ -33,6 +34,15 @@ final class PgnDump(
     (flags.comments && chapter.serverEval.exists(_.done))
       .so(analyser.byId(Analysis.Id(study.id, chapter.id)))
       .map(ofChapter(study, flags)(chapter, _))
+
+  def requestPgnFlags(using RequestHeader) =
+    import lila.common.HTTPRequest.{ queryStringBool, queryStringBoolOpt }
+    WithFlags(
+      comments = queryStringBoolOpt("comments") | true,
+      variations = queryStringBoolOpt("variations") | true,
+      clocks = queryStringBoolOpt("clocks") | true,
+      orientation = queryStringBool("orientation")
+    )
 
   private val fileR = """[\s,]""".r
   private val dateFormatter = java.time.format.DateTimeFormatter.ofPattern("yyyy.MM.dd")
