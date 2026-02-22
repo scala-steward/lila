@@ -35,6 +35,7 @@ import { displayColumns, shareIcon } from 'lib/device';
 import { viewContext, renderBoard, renderMain, renderTools, renderUnderboard } from '../view/components';
 import { renderControls } from '../view/controls';
 import type { TreeNode, TreePath } from 'lib/tree/types';
+import { blurIfPrimaryClick } from 'lib';
 
 export function studyView(ctrl: AnalyseCtrl, study: StudyCtrl, deps: typeof studyDeps): VNode {
   const ctx = viewContext(ctrl, deps);
@@ -79,7 +80,10 @@ export function studySideNodes(ctrl: StudyCtrl, withSearch: boolean): LooseVNode
         class: { active: activeTab === key },
         attrs: { role: 'tab' },
         on: {
-          click: () => ctrl.setTab(key),
+          click: e => {
+            ctrl.setTab(key);
+            blurIfPrimaryClick(e);
+          },
         },
       },
       name,
@@ -212,6 +216,7 @@ interface ToolButtonOpts {
   icon: VNode;
   onClick?: () => void;
   count?: number | string;
+  shouldBlurIfPrimaryClick?: boolean;
 }
 
 const toolButton = (opts: ToolButtonOpts): VNode =>
@@ -222,9 +227,10 @@ const toolButton = (opts: ToolButtonOpts): VNode =>
       class: { active: opts.tab === opts.ctrl.vm.toolTab() },
       hook: bind(
         'click',
-        () => {
+        e => {
           if (opts.onClick) opts.onClick();
           opts.ctrl.vm.toolTab(opts.tab);
+          if (opts.shouldBlurIfPrimaryClick) blurIfPrimaryClick(e);
         },
         opts.ctrl.redraw,
       ),
@@ -260,7 +266,13 @@ function buttons(root: AnalyseCtrl): VNode {
           },
           [hl('i.is'), 'REC'],
         ),
-      toolButton({ ctrl, tab: 'tags', hint: i18n.study.pgnTags, icon: iconTag(licon.Tag) }),
+      toolButton({
+        ctrl,
+        tab: 'tags',
+        hint: i18n.study.pgnTags,
+        icon: iconTag(licon.Tag),
+        shouldBlurIfPrimaryClick: true,
+      }),
       canContribute &&
         toolButton({
           ctrl,
@@ -279,6 +291,7 @@ function buttons(root: AnalyseCtrl): VNode {
           hint: i18n.study.annotateWithGlyphs,
           icon: hl('i.glyph-icon'),
           count: (root.node.glyphs || []).length,
+          shouldBlurIfPrimaryClick: true,
         }),
       (canContribute || root.data.analysis) &&
         toolButton({
@@ -287,9 +300,22 @@ function buttons(root: AnalyseCtrl): VNode {
           hint: i18n.site.computerAnalysis,
           icon: iconTag(licon.BarChart),
           count: root.data.analysis && '✓',
+          shouldBlurIfPrimaryClick: true,
         }),
-      toolButton({ ctrl, tab: 'multiBoard', hint: 'Multiboard', icon: iconTag(licon.Multiboard) }),
-      toolButton({ ctrl, tab: 'share', hint: i18n.study.shareAndExport, icon: iconTag(shareIcon()) }),
+      toolButton({
+        ctrl,
+        tab: 'multiBoard',
+        hint: 'Multiboard',
+        icon: iconTag(licon.Multiboard),
+        shouldBlurIfPrimaryClick: true,
+      }),
+      toolButton({
+        ctrl,
+        tab: 'share',
+        hint: i18n.study.shareAndExport,
+        icon: iconTag(shareIcon()),
+        shouldBlurIfPrimaryClick: true,
+      }),
       !ctrl.relay &&
         !ctrl.data.chapter.gamebook &&
         hl('span.help', {
