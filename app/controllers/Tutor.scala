@@ -17,18 +17,21 @@ final class Tutor(env: Env) extends LilaController(env):
 
   def user(username: UserStr) = Auth { _ ?=> _ ?=>
     WithUser(username): user =>
-      Ok.async(renderUser(user, TutorConfig.form.default))
+      renderUser(user, TutorConfig.form.default)
   }
 
   private def renderUser(user: UserModel, form: Form[?])(using Context) =
     for
       withPerfs <- env.user.api.withPerfs(user)
       av <- env.tutor.api.availability(withPerfs)
-      page <- av match
+      res <- av match
         case TutorAvailability.InsufficientGames =>
-          views.tutor.home.insufficientGames(user.id)
-        case TutorAvailability.Available(home) => views.tutor.home(home, TutorConfig.form.default)
-    yield page
+          Ok.page(views.tutor.home.insufficientGames(user.id))
+        case TutorAvailability.Available(home) =>
+          home.previews.headOption.ifTrue(getBool("waiting") && home.awaiting.isEmpty) match
+            case Some(done) => Redirect(done.config.url.root).toFuccess
+            case None => Ok.page(views.tutor.home(home, TutorConfig.form.default))
+    yield res
 
   def report(username: UserStr, range: String) = TutorReport(username, range) { _ ?=> full =>
     Ok.page(views.tutor.report(full))
@@ -64,7 +67,7 @@ final class Tutor(env: Env) extends LilaController(env):
   def compute(username: UserStr) = AuthBody { _ ?=> _ ?=>
     WithUser(username): user =>
       bindForm(TutorConfig.form.dates)(
-        err => renderUser(user, err).flatMap(BadRequest.page),
+        err => renderUser(user, err),
         dates =>
           val config = dates.config(user.id)
           env.tutor.api

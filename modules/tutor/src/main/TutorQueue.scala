@@ -93,7 +93,8 @@ object TutorQueue:
   case class InQueue(item: Item, position: Int, avgDuration: FiniteDuration) extends Status:
     def eta = avgDuration * position
 
-  case class Awaiting(q: InQueue, games: List[(Pov, PgnStr)])
+  case class Awaiting(q: InQueue, games: List[(Pov, PgnStr)]):
+    export q.item.config
 
   import TutorBsonHandlers.given
   private given BSONDocumentReader[Item] = Macros.reader

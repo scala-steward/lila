@@ -4,21 +4,21 @@ package ui
 import chess.format.pgn.PgnStr
 
 import lila.ui.*
-import lila.ui.ScalatagsTemplate.*
+import lila.ui.ScalatagsTemplate.{ *, given }
 
 final class TutorQueueUi(helpers: Helpers, bits: TutorBits):
   import helpers.*
 
   def waitingText(a: TutorQueue.Awaiting)(using Translate) =
     frag(
-      p("Computing a tutor report for ", bits.dateRange(a.q.item.config), "."),
+      p("Computing a tutor report for ", bits.dateRange(a.config), "."),
       p(strong(cls := "tutor__intro")("Here's the plan:")),
       examinationMethod,
       p(eta(a))
     )
 
   def waitingGames(a: TutorQueue.Awaiting) =
-    div(cls := "tutor__waiting__games"):
+    div(cls := "tutor__waiting__games", attrData("tutor-user") := a.config.user):
       div(cls := "tutor__waiting__games__carousel"):
         a.games.map: (pov, pgn) =>
           div(
