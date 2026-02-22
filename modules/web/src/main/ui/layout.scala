@@ -99,14 +99,16 @@ final class layout(helpers: Helpers, assetHelper: lila.web.ui.AssetFullHelper)(
         s"""<link id="favicon" rel="icon" type="image/png" href="$assetBaseUrl/assets/logo/lichess-favicon-32.png" sizes="32x32">"""
       )
   def blindModeForm(using ctx: Context) = raw:
+    val btnText =
+      if ctx.blind
+      then trans.site.disableBlindMode.txt()
+      else s"${trans.site.accessibility.txt()} - ${trans.site.enableBlindMode.txt()}"
+
     s"""<form id="blind-mode" action="${routes.Main.toggleBlindMode}" method="POST"><input type="hidden" name="enable" value="${
         if ctx.blind then 0 else 1
-      }"><input type="hidden" name="redirect" value="${ctx.req.path}"><button id="nvui-button" type="submit">${trans.site.accessibility
-        .txt()} - ${
-        if ctx.blind then trans.site.disableBlindMode.txt() else trans.site.enableBlindMode.txt()
-      } </button>&nbsp;-&nbsp;${a(href := "https://lichess.org/page/blind-mode-tutorial")(
-        "Blind mode tutorial"
-      )}</form>"""
+      }"><input type="hidden" name="redirect" value="${ctx.req.path}"><button id="nvui-button" type="submit">$btnText</button>&nbsp;-&nbsp;${a(
+        href := "https://lichess.org/page/blind-mode-tutorial"
+      )("Blind mode tutorial")}</form>"""
 
   def zenZone(using Translate) = spaceless:
     s"""
