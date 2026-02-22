@@ -9,7 +9,6 @@ import lila.core.report.ScoreThresholds
 import lila.ui.*
 
 import ScalatagsTemplate.{ *, given }
-import lila.core.id.CmsPageId
 
 final class layout(helpers: Helpers, assetHelper: lila.web.ui.AssetFullHelper)(
     popularAlternateLanguages: List[Language],
