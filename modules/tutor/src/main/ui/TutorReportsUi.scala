@@ -26,12 +26,11 @@ final class TutorReportsUi(helpers: Helpers, bits: TutorBits):
     )
 
   private def preview(p: TutorFullReport.Preview)(using Context) =
-    val days = daysBetween(p.config.from, p.config.to)
     a(href := p.config.url.root, cls := "tutor-preview")(
       // momentFromNow(p.at),
       span(cls := "tutor-preview__dates")(
         span(bits.dateRange(p.config)),
-        trans.site.nbDays.plural(days, days)
+        bits.days(p.config)
       ),
       span(cls := "tutor-preview__perfs"):
         p.perfs

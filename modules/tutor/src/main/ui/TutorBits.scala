@@ -39,6 +39,9 @@ final class TutorBits(helpers: Helpers)(
     semanticDate(config.to)
   )
 
+  def days(config: TutorConfig)(using Translate) =
+    trans.site.nbDays.plural(config.days, config.days.localize)
+
   val seeMore = a(cls := "tutor-card__more")("Click to see more...")
 
   def percentNumber[A](v: A)(using number: TutorNumber[A]) = f"${number.double(v)}%1.1f"
@@ -50,7 +53,11 @@ final class TutorBits(helpers: Helpers)(
     ctx.isnt(user).option(userIdSpanMini(user, withOnline = false))
 
   def menu(full: TutorFullReport, report: Option[TutorPerfReport])(using Context) = frag(
-    a(href := full.url.root, cls := report.isEmpty.option("active"))("Tutor"),
+    a(href := routes.Tutor.user(full.user))("Tutor"),
+    a(href := full.url.root, cls := report.isEmpty.option("active"))(
+      timeTag(showDate(full.config.from)),
+      timeTag(showDate(full.config.to))
+    ),
     full.perfs.map: p =>
       a(
         cls := List("active" -> report.exists(_.perf === p.perf)),

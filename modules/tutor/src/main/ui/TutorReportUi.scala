@@ -14,12 +14,11 @@ final class TutorReportUi(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi
           boxTop(h1("Lichess Tutor", bits.beta, bits.otherUser(full.user))),
           bits.mascotSays(
             p(
-              strong(
-                cls := "tutor__intro",
-                "Analysis complete on ",
-                full.nbGames.localize,
-                " recent rated games of yours."
-              )
+              bits.dateRange(full.config),
+              br,
+              trans.site.nbGames.plural(full.nbGames, full.nbGames.localize),
+              " in ",
+              bits.days(full.config)
             ),
             p(
               "Each aspect of your playstyle is compared to other players of similar rating, called \"peers\"."
