@@ -403,7 +403,7 @@ final class Study(
           )
 
   private def doPgn(study: StudyModel, flags: Update[WithFlags])(using RequestHeader) =
-    def makeStudySource = pgnDump.chaptersOf(study, _ => flags(pgnDump.requestPgnFlags))
+    def makeStudySource = pgnDump.chaptersOf(study, _ => flags(pgnDump.requestPgnFlags()))
     val pgnSource = akka.stream.scaladsl.Source.futureSource:
       if study.isRelay
       then env.relay.pgnStream.ofStudy(study).map(_ | makeStudySource)
@@ -438,7 +438,7 @@ final class Study(
       .flatMap:
         _.fold(studyNotFound) { case sc @ WithChapter(study, chapter) =>
           CanView(study) {
-            def makeChapterPgn = pgnDump.ofChapter(study, pgnDump.requestPgnFlags)(chapter)
+            def makeChapterPgn = pgnDump.ofChapter(study, pgnDump.requestPgnFlags())(chapter)
             for
               pgn <-
                 if study.isRelay
@@ -465,7 +465,7 @@ final class Study(
     val isMe = ctx.me.exists(_.is(userId))
     val makeStream = env.study.studyRepo
       .sourceByOwner(userId, isMe)
-      .flatMapConcat(pgnDump.chaptersOf(_, _ => pgnDump.requestPgnFlags))
+      .flatMapConcat(pgnDump.chaptersOf(_, _ => pgnDump.requestPgnFlags()))
       .throttle(if isMe then 20 else 10, 1.second)
     apiC.GlobalConcurrencyLimitPerIpAndUserOption(userId.some)(makeStream): source =>
       Ok.chunked(source)

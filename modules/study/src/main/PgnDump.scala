@@ -35,14 +35,21 @@ final class PgnDump(
       .so(analyser.byId(Analysis.Id(study.id, chapter.id)))
       .map(ofChapter(study, flags)(chapter, _))
 
-  def requestPgnFlags(using RequestHeader) =
+  def requestPgnFlags(default: WithFlags = defaultFlags)(using RequestHeader): WithFlags =
     import lila.common.HTTPRequest.{ queryStringBool, queryStringBoolOpt }
     WithFlags(
-      comments = queryStringBoolOpt("comments") | true,
-      variations = queryStringBoolOpt("variations") | true,
-      clocks = queryStringBoolOpt("clocks") | true,
-      orientation = queryStringBool("orientation")
+      comments = queryStringBoolOpt("comments") | default.comments,
+      variations = queryStringBoolOpt("variations") | default.variations,
+      clocks = queryStringBoolOpt("clocks") | default.clocks,
+      orientation = queryStringBool("orientation") | default.orientation
     )
+
+  private val defaultFlags = WithFlags(
+    comments = true,
+    variations = true,
+    clocks = true,
+    orientation = false
+  )
 
   private val fileR = """[\s,]""".r
   private val dateFormatter = java.time.format.DateTimeFormatter.ofPattern("yyyy.MM.dd")
