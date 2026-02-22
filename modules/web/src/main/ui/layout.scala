@@ -101,7 +101,7 @@ final class layout(helpers: Helpers, assetHelper: lila.web.ui.AssetFullHelper)(
   def blindModeForm(using ctx: Context) = raw:
     s"""<form id="blind-mode" action="${routes.Main.toggleBlindMode}" method="POST"><input type="hidden" name="enable" value="${
         if ctx.blind then 0 else 1
-      }"><input type="hidden" name="redirect" value="${ctx.req.path}"><button type="submit">${trans.site.accessibility
+      }"><input type="hidden" name="redirect" value="${ctx.req.path}"><button id="nvui-button" type="submit">${trans.site.accessibility
         .txt()} - ${
         if ctx.blind then trans.site.disableBlindMode.txt() else trans.site.enableBlindMode.txt()
       } </button>&nbsp;-&nbsp;${a(href := "https://lichess.org/page/blind-mode-tutorial")(
