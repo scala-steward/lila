@@ -116,8 +116,8 @@ export const bind = (ctrl: AnalyseCtrl) => {
 
   if (!ctrl.study) return;
 
-  keyToMouseEvent('d', 'mousedown', '.study__buttons .comments');
-  keyToMouseEvent('g', 'mousedown', '.study__buttons .glyphs');
+  keyToMouseEvent('d', 'click', '.study__buttons .comments');
+  keyToMouseEvent('g', 'click', '.study__buttons .glyphs');
 
   kbd.bind('p', ctrl.study.goToPrevChapter);
   kbd.bind('n', ctrl.study.goToNextChapter);
