@@ -64,6 +64,7 @@ final class UserActionMenu(helpers: Helpers):
               MenuItem(trans.site.listBlockedPlayers.txt(), Icon.NotAllowed, routes.Relation.blocks().url)
             ),
           ctx.me
+            .filter(_.is(u))
             .ifTrue(Granter.opt(_.LichessTeam))
             .map: me =>
               MenuItem("My permissions", Icon.Logo, routes.Mod.permissions(me.username).url),

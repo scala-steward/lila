@@ -38,8 +38,9 @@ body {
 
 .lobby__side {
   @extend %flex-column;
-  gap: $block-gap;
+  @include backdrop-blur-if-transparent;
 
+  gap: $block-gap;
   overflow: hidden;
 }
 

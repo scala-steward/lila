@@ -89,7 +89,7 @@ final class TournamentShow(helpers: Helpers, gathering: GatheringUi)(
               lila.gathering.ui.translateRated(tour.rated),
               separator,
               trans.arena.arena(),
-              (Granter.opt(_.ManageTournament) || (ctx.is(tour.createdBy) && tour.isEnterable)).option(
+              (Granter.opt(_.ManageTournament) || ctx.is(tour.createdBy)).option(
                 frag(
                   " ",
                   a(href := routes.Tournament.edit(tour.id), title := trans.arena.editTournament.txt())(

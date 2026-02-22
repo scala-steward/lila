@@ -62,7 +62,7 @@ team {
   }
 
   .players {
-    @extend %break-word;
+    @extend %break-word-hard;
 
     color: $c-font-dim;
   }
