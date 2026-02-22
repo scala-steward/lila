@@ -91,6 +91,12 @@
   }
 }
 
+@mixin backdrop-blur-if-transparent($size: 6px) {
+  @include if-transp {
+    backdrop-filter: blur($size);
+  }
+}
+
 @mixin topnav-unsticky {
   #top {
     position: relative;
