@@ -6,11 +6,12 @@ import chess.format.pgn.PgnStr
 import lila.ui.*
 import lila.ui.ScalatagsTemplate.*
 
-final class TutorQueueUi(helpers: Helpers):
+final class TutorQueueUi(helpers: Helpers, bits: TutorBits):
   import helpers.*
 
   def waitingText(a: TutorQueue.Awaiting)(using Translate) =
     frag(
+      p("Computing a tutor report for ", bits.dateRange(a.q.item.config), "."),
       p(strong(cls := "tutor__intro")("Here's the plan:")),
       examinationMethod,
       p(eta(a))

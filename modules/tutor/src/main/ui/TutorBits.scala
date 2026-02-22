@@ -33,6 +33,12 @@ final class TutorBits(helpers: Helpers)(
     mascot
   )
 
+  def dateRange(config: TutorConfig)(using Translate) = frag(
+    semanticDate(config.from),
+    " → ",
+    semanticDate(config.to)
+  )
+
   val seeMore = a(cls := "tutor-card__more")("Click to see more...")
 
   def percentNumber[A](v: A)(using number: TutorNumber[A]) = f"${number.double(v)}%1.1f"

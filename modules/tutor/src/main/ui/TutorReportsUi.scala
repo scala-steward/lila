@@ -7,7 +7,7 @@ import play.api.data.{ Form, Field }
 import lila.ui.*
 import lila.ui.ScalatagsTemplate.{ *, given }
 
-final class TutorReportsUi(helpers: Helpers):
+final class TutorReportsUi(helpers: Helpers, bits: TutorBits):
   import helpers.{ *, given }
 
   def newForm(user: UserId, form: Form[?])(using Context) =
@@ -30,11 +30,7 @@ final class TutorReportsUi(helpers: Helpers):
     a(href := p.config.url.root, cls := "tutor-preview")(
       // momentFromNow(p.at),
       span(cls := "tutor-preview__dates")(
-        span(
-          semanticDate(p.config.from),
-          " → ",
-          semanticDate(p.config.to)
-        ),
+        span(bits.dateRange(p.config)),
         trans.site.nbDays.plural(days, days)
       ),
       span(cls := "tutor-preview__perfs"):
