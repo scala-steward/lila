@@ -39,7 +39,7 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
       menu = perfUi.menu(perfReport, "opening".some)(using full.config)
     )(cls := "tutor__opening tutor-layout"):
       frag(
-        div(cls := "box tutor__first-box")(
+        div(cls := "box")(
           boxTop(
             h1(
               a(
@@ -101,7 +101,7 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
       cls := "tutor__openings tutor-layout"
     ):
       frag(
-        div(cls := "tutor__first-box box")(
+        div(cls := "box")(
           boxTop(
             h1(
               a(

@@ -6,7 +6,7 @@ import play.api.mvc.*
 import lila.app.{ *, given }
 import lila.common.LilaOpeningFamily
 import lila.rating.PerfType
-import lila.tutor.{ TutorFullReport, TutorPerfReport, TutorQueue, TutorConfig, TutorAvailability }
+import lila.tutor.{ TutorFullReport, TutorPerfReport, TutorConfig, TutorAvailability }
 
 final class Tutor(env: Env) extends LilaController(env):
 
@@ -77,6 +77,11 @@ final class Tutor(env: Env) extends LilaController(env):
                 for _ <- env.tutor.queue.enqueue(config)
                 yield Redirect(routes.Tutor.user(user.username))
       )
+  }
+
+  def delete(username: UserStr, range: String) = TutorReport(username, range) { _ ?=> full =>
+    for _ <- env.tutor.api.delete(full.config)
+    yield Redirect(routes.Tutor.user(username))
   }
 
   private def WithUser(username: UserStr)(f: UserModel => Fu[Result])(using

@@ -8,25 +8,34 @@ final class TutorReportUi(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi
   import helpers.{ *, given }
 
   def apply(full: TutorFullReport)(using Context) =
-    bits.page(menu = bits.menu(full, none))(cls := "tutor__home tutor-layout"):
-      val gamesTag = if full.perfs.isEmpty then badTag else span
+    bits.page(menu = bits.menu(full, none))(cls := "tutor__report tutor-layout"):
+      val metaTag = if full.perfs.isEmpty then badTag else span
       frag(
-        div(cls := "box tutor__first-box")(
+        div(cls := "box")(
           boxTop(h1("Lichess Tutor", bits.beta, bits.otherUser(full.user))),
           bits.mascotSays(
-            p(
-              bits.dateRange(full.config)(semanticDate(_)),
-              br,
-              gamesTag(trans.site.nbGames.plural(full.nbGames, full.nbGames.localize)),
-              " in ",
-              bits.days(full.config)
+            div(cls := "tutor__report__header")(
+              span(cls := "tutor__report__dates")(bits.dateRange(full.config)(semanticDate(_))),
+              metaTag(cls := "tutor__report__meta")(
+                strong(trans.site.nbGames.plural(full.nbGames, full.nbGames.localize)),
+                " in ",
+                bits.days(full.config)
+              ),
+              postForm(
+                cls := "tutor__report__delete",
+                action := routes.Tutor.delete(full.user.id, full.config.rangeStr)
+              ):
+                button(tpe := "submit")(trans.site.delete)
             ),
-            p(
-              "Each aspect of your playstyle is compared to other players of similar rating, called \"peers\"."
-            ),
-            p(
-              "It should give you some idea about what your strengths are, and where you have room for improvement."
-            )
+            full.perfs.nonEmpty.option:
+              frag(
+                p(
+                  "Each aspect of your playstyle is compared to other players of similar rating, called \"peers\"."
+                ),
+                p(
+                  "It should give you some idea about what your strengths are, and where you have room for improvement."
+                )
+              )
           )
         ),
         tutorConcepts,

@@ -4,6 +4,7 @@ import lila.common.{ Chronometer, LilaScheduler, Uptime }
 import lila.core.perf.UserWithPerfs
 import lila.db.dsl.{ *, given }
 import lila.memo.CacheApi
+import lila.memo.CacheApi.invalidate
 
 final class TutorApi(
     colls: TutorColls,
@@ -35,6 +36,10 @@ final class TutorApi(
       .list(16)
 
   def get(config: TutorConfig): Fu[Option[TutorFullReport]] = cache.get(config)
+
+  def delete(config: TutorConfig): Funit =
+    for _ <- colls.report(_.delete.one($id(config.id)))
+    yield cache.invalidate(config)
 
   private val initialDelay = if mode.isProd then 1.minute else 1.second
   LilaScheduler("TutorQueue", _.Every(1.second), _.AtMost(10.seconds), _.Delay(initialDelay))(pollQueue)
