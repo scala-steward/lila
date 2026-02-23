@@ -252,6 +252,12 @@ const share = (ctx: RelayViewContext) => {
             'our full database exports',
           ),
           '.',
+          hl('br'),
+          hl('p.form-help', [
+            'You can remove clocks and evals from the PGN by adding query parameters, for example: ',
+            hl('br'),
+            hl('code', '?clocks=false&comments=false'),
+          ]),
         ]),
         link('This round: ' + roundName, `${ctx.relay.roundPath()}.pgn`),
         link(

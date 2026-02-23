@@ -1,5 +1,5 @@
 import { renderEval, view as cevalView } from 'lib/ceval';
-import { repeater, myUserId } from 'lib';
+import { repeater, myUserId, blurIfPrimaryClick } from 'lib';
 import * as licon from 'lib/licon';
 import { type VNode, type LooseVNode, onInsert, hl, domDialog } from 'lib/view';
 import { displayColumns, isTouchDevice } from 'lib/device';
@@ -154,6 +154,7 @@ function clickControl(ctrl: AnalyseCtrl, e: PointerEvent) {
     else if (mode === 'retro') ctrl.toggleRetro();
     else ctrl.showCeval(!ctrl.showCeval());
   }
+  blurIfPrimaryClick(e);
   ctrl.redraw();
 }
 

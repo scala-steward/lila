@@ -29,6 +29,8 @@ final class Study(
     apiC: => Api
 ) extends LilaController(env):
 
+  private def pgnDump = env.study.pgnDump
+
   def search(text: String, page: Int, order: Option[StudyOrder]) =
     OpenOrScopedBody(parse.anyContent)(_.Study.Read, _.Web.Mobile):
       Reasonable(page):
@@ -401,13 +403,13 @@ final class Study(
           )
 
   private def doPgn(study: StudyModel, flags: Update[WithFlags])(using RequestHeader) =
-    def makeStudySource = env.study.pgnDump.chaptersOf(study, _ => flags(requestPgnFlags))
+    def makeStudySource = pgnDump.chaptersOf(study, _ => flags(pgnDump.requestPgnFlags()))
     val pgnSource = akka.stream.scaladsl.Source.futureSource:
       if study.isRelay
       then env.relay.pgnStream.ofStudy(study).map(_ | makeStudySource)
       else fuccess(makeStudySource)
     Ok.chunked(pgnSource.throttle(20, 1.second))
-      .asAttachmentStream(s"${env.study.pgnDump.filename(study)}.pgn")
+      .asAttachmentStream(s"${pgnDump.filename(study)}.pgn")
       .as(pgnContentType)
       .withDateHeaders(lastModified(study.updatedAt))
 
@@ -436,7 +438,7 @@ final class Study(
       .flatMap:
         _.fold(studyNotFound) { case sc @ WithChapter(study, chapter) =>
           CanView(study) {
-            def makeChapterPgn = env.study.pgnDump.ofChapter(study, requestPgnFlags)(chapter)
+            def makeChapterPgn = pgnDump.ofChapter(study, pgnDump.requestPgnFlags())(chapter)
             for
               pgn <-
                 if study.isRelay
@@ -446,7 +448,7 @@ final class Study(
                 chapterAnalysis(sc).map2: analysis =>
                   val division = env.study.serverEvalMerger.divisionOf(chapter)
                   env.analyse.jsonView.analysisHeader(sc.chapter.root, division, analysis)
-              filename = s"${env.study.pgnDump.filename(study, chapter)}.pgn"
+              filename = s"${pgnDump.filename(study, chapter)}.pgn"
               res = Ok(pgn.toString).as(pgnContentType).asAttachment(filename)
               resWithAnalysis = analysisJson.fold(res): a =>
                 res.withHeaders("X-Lichess-Analysis" -> Json.stringify(a))
@@ -463,7 +465,7 @@ final class Study(
     val isMe = ctx.me.exists(_.is(userId))
     val makeStream = env.study.studyRepo
       .sourceByOwner(userId, isMe)
-      .flatMapConcat(env.study.pgnDump.chaptersOf(_, _ => requestPgnFlags))
+      .flatMapConcat(pgnDump.chaptersOf(_, _ => pgnDump.requestPgnFlags()))
       .throttle(if isMe then 20 else 10, 1.second)
     apiC.GlobalConcurrencyLimitPerIpAndUserOption(userId.some)(makeStream): source =>
       Ok.chunked(source)
@@ -477,14 +479,6 @@ final class Study(
         .sourceByOwner(username.id, isMe)
         .throttle(if isMe then 50 else 20, 1.second)
         .map(lila.study.JsonView.metadata)
-
-  private def requestPgnFlags(using RequestHeader) =
-    WithFlags(
-      comments = getBoolOpt("comments") | true,
-      variations = getBoolOpt("variations") | true,
-      clocks = getBoolOpt("clocks") | true,
-      orientation = getBool("orientation")
-    )
 
   def chapterGif(
       id: StudyId,
@@ -500,7 +494,7 @@ final class Study(
             .ofChapter(chapter, theme, piece, showGlyphs)
             .map: stream =>
               Ok.chunked(stream)
-                .asAttachmentStream(s"${env.study.pgnDump.filename(study, chapter)}.gif")
+                .asAttachmentStream(s"${pgnDump.filename(study, chapter)}.gif")
                 .as("image/gif")
             .recover { case lila.core.lilaism.LilaInvalid(msg) =>
               BadRequest(msg)
