@@ -119,7 +119,7 @@ object show:
                 (t.enabled && canSeeMembers && info.tours.nonEmpty).option(
                   st.section(cls := "team-show__tour team-events team-tournaments")(
                     h2(a(href := routes.Team.tournaments(t.id))(trans.site.tournaments())),
-                    table(cls := "slist")(
+                    table(cls := "slist slist-resp")(
                       tournaments.renderList(
                         info.tours.next ::: info.tours.past.take(5 - info.tours.next.size)
                       )

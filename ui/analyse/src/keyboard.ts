@@ -5,6 +5,13 @@ import { snabDialog } from 'lib/view';
 import type { VNode } from 'snabbdom';
 import { pubsub } from 'lib/pubsub';
 
+export const keyToMouseEvent = (key: string, eventName: string, selector: string) =>
+  window.site.mousetrap.bind(key, () =>
+    $(selector).each(function (this: HTMLElement) {
+      this.dispatchEvent(new MouseEvent(eventName));
+    }),
+  );
+
 export const bind = (ctrl: AnalyseCtrl) => {
   addModifierKeyListeners(ctrl);
   const kbd = window.site.mousetrap;
@@ -92,13 +99,6 @@ export const bind = (ctrl: AnalyseCtrl) => {
       ctrl.redraw();
     });
 
-  const keyToMouseEvent = (key: string, eventName: string, selector: string) =>
-    kbd.bind(key, () =>
-      $(selector).each(function (this: HTMLElement) {
-        this.dispatchEvent(new MouseEvent(eventName));
-      }),
-    );
-
   //'Request computer analysis' & 'Learn From Your Mistakes' (mutually exclusive)
   keyToMouseEvent(
     'r',
@@ -113,25 +113,6 @@ export const bind = (ctrl: AnalyseCtrl) => {
       ?.getAttribute('data-uci');
     if (move) ctrl.explorerMove(move);
   });
-
-  if (!ctrl.study) return;
-
-  keyToMouseEvent('d', 'mousedown', '.study__buttons .comments');
-  keyToMouseEvent('g', 'mousedown', '.study__buttons .glyphs');
-
-  kbd.bind('p', ctrl.study.goToPrevChapter);
-  kbd.bind('n', ctrl.study.goToNextChapter);
-  // ! ? !! ?? !? ?! □ ⨀
-  for (let i = 1; i < 9; i++)
-    kbd.bind(i.toString(), () => ctrl.study?.glyphForm.toggleGlyph(i === 8 ? 22 : i));
-  // = ∞ ⩲ ⩱ ± ∓ +- -+
-  for (let i = 1; i < 9; i++)
-    kbd.bind(`shift+${i}`, () => ctrl.study?.glyphForm.toggleGlyph(i === 1 ? 10 : 11 + i));
-  // N ↑↑ ↑ → ⇆ ⊕ =∞ ∆
-  const observationIds = [146, 32, 36, 40, 132, 138, 44, 140];
-  for (let i = 1; i < 9; i++)
-    kbd.bind(`ctrl+shift+${i}`, () => ctrl.study?.glyphForm.toggleGlyph(observationIds[i - 1]));
-  kbd.bind('mod+z', ctrl.study.undoShapeChange);
 };
 
 export const view = (ctrl: AnalyseCtrl): VNode =>

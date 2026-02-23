@@ -128,7 +128,10 @@ object help:
                 frag(kbd("ctrl"), kbd("shift"), (1 to 8).map(kbd(_))),
                 trans.site.toggleObservationAnnotations()
               ),
-              row(frag(kbd("ctrl"), kbd("z")), "Undo arrow changes")
+              row(frag(kbd("ctrl"), kbd("z")), "Undo arrow changes"),
+              row(frag(kbd("shift"), kbd("S")), trans.study.editStudy()),
+              row(frag(kbd("shift"), kbd("E")), trans.study.editChapter()),
+              row(frag(kbd("shift"), kbd("N")), trans.study.addNewChapter())
             )
           ),
           header(trans.site.mouseTricks()),
