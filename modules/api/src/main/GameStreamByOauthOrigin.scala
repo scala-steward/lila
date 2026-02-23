@@ -2,8 +2,9 @@ package lila.api
 
 import akka.stream.scaladsl.*
 import play.api.libs.json.*
+import play.api.mvc.RequestHeader
 
-import lila.common.Bus
+import lila.common.{ Bus, HTTPRequest }
 import lila.core.game.{ FinishGame, Game, StartGame, WithInitialFen }
 import lila.oauth.AccessToken
 
@@ -20,7 +21,8 @@ final class GameStreamByOauthOrigin(
   private def mon = lila.mon.game.streamByOauthOrigin
 
   def apply(since: Option[Instant], extraUsers: Set[UserId])(using
-      me: Me
+      me: Me,
+      req: RequestHeader
   ): Either[String, Source[JsValue, ?]] =
     for
       origin <- origins.get(me.userId).toRight("Invalid authenticated user")
@@ -28,21 +30,25 @@ final class GameStreamByOauthOrigin(
         case Some(s) if s.isAfter(nowInstant) => Left("`since` is in the future")
         case Some(s) if s.isBefore(nowInstant.minusHours(3)) => Left("`since` is older than 3 hours")
         case s => Right(s)
-      _ = since.foreach: s =>
-        logger.info:
-          s"$origin game stream with ${s.toNow.toMinutes}m history and ${extraUsers.size} extra users"
+      randomName = ~scalalib.cuteName.CuteNameGenerator.make()
+      ip = HTTPRequest.ipAddress(req)
+      ua = HTTPRequest.userAgent(req)
+      request = s"$ip ${req.uri} $ua"
+      logMsg = s"$randomName $origin $request ${since.so(_.toNow.toMinutes)}m"
     yield Source.futureSource:
+      logger.branch("gameStream").info(s"OPEN  $logMsg")
       for
         tokenUsers <- tokenApi.userIdsByClientOrigin(origin)
         allUsers = tokenUsers ++ extraUsers
         recentlySeenUsers <- userRepo.filterSeenSince((since | nowInstant).minusMinutes(30))(allUsers)
-      yield run(since, origin, allUsers, recentlySeenUsers)
+      yield run(since, origin, allUsers, recentlySeenUsers, logMsg)
 
   private def run(
       since: Option[Instant],
       origin: String,
       initialUserIds: Set[UserId],
-      recentlySeenUserIds: List[UserId]
+      recentlySeenUserIds: List[UserId],
+      logMsg: String
   ): Source[JsObject, ?] =
     val startStream =
       Source.queue[Game](300, akka.stream.OverflowStrategy.dropHead).mapMaterializedValue { queue =>
@@ -70,6 +76,7 @@ final class GameStreamByOauthOrigin(
             Bus.unsub[StartGame](subStart)
             Bus.unsub[FinishGame](subFinish)
             Bus.unsub[AccessToken.Create](subToken)
+            logger.branch("gameStream").info(s"CLOSE $logMsg")
       }
     pastGamesSource(recentlySeenUserIds, since)
       .concat(currentGamesSource(recentlySeenUserIds))
