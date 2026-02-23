@@ -370,10 +370,11 @@ export const playerLinkHook = (ctrl: RelayPlayers, player: RelayPlayer, withTip:
             $(el).powerTip({
               closeDelay: 200,
               popupId: playerTipId,
+              defaultSize: [420, 150],
               preRender() {
                 const tipEl = document.getElementById(playerTipId) as HTMLElement;
                 const patch = initSnabbdom([attributesModule]);
-                tipEl.style.display = 'none';
+                tipEl.style.visibility = 'hidden';
                 ctrl.loadPlayerWithGames(id).then(p => {
                   const vdom = renderPlayerTipWithGames(ctrl, p);
                   tipEl.innerHTML = '';
