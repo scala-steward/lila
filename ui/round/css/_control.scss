@@ -165,6 +165,10 @@
       display: block;
       margin-inline-start: 2em;
     }
+
+    @media (width <= $xxx-small) {
+      margin-inline-start: 0;
+    }
   }
 
   .rematch {
