@@ -45,8 +45,9 @@ function renderPlot(ctrl: LobbyController, hook: Hook, translate: [number, numbe
     hook: {
       insert(vnode) {
         $(vnode.elm as HTMLElement).powerTip({
-          placement: hook.rating && hook.rating > 1800 ? 'se' : 'ne',
+          placement: hook.rating && hook.rating > 1800 ? 's' : 'n',
           closeDelay: 200,
+          defaultSize: [120, 80],
           popupId: 'hook',
           preRender() {
             $('#hook')
