@@ -111,7 +111,7 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
     yield color -> ops
 
   def menu(report: TutorPerfReport, active: Option[Angle])(using config: TutorConfig)(using Context) = frag(
-    a(href := config.url.root)("Tutor"),
+    bits.menuBase(report.some),
     a(
       href := config.url.perf(report.perf),
       cls := List("active" -> active.isEmpty),

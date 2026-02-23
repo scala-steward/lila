@@ -14,7 +14,7 @@ final class TutorReportUi(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi
           boxTop(h1("Lichess Tutor", bits.beta, bits.otherUser(full.user))),
           bits.mascotSays(
             p(
-              bits.dateRange(full.config),
+              bits.dateRange(full.config)(semanticDate(_)),
               br,
               trans.site.nbGames.plural(full.nbGames, full.nbGames.localize),
               " in ",

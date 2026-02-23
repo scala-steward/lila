@@ -29,7 +29,7 @@ final class TutorReportsUi(helpers: Helpers, bits: TutorBits):
     a(href := p.config.url.root, cls := "tutor-preview")(
       // momentFromNow(p.at),
       span(cls := "tutor-preview__dates")(
-        span(bits.dateRange(p.config)),
+        span(bits.dateRange(p.config)(showDateShort(_))),
         bits.days(p.config)
       ),
       span(cls := "tutor-preview__perfs"):

@@ -11,7 +11,7 @@ final class TutorQueueUi(helpers: Helpers, bits: TutorBits):
 
   def waitingText(a: TutorQueue.Awaiting)(using Translate) =
     frag(
-      p("Computing a tutor report for ", bits.dateRange(a.config), "."),
+      p("Computing a tutor report for ", bits.dateRange(a.config)(semanticDate(_)), "."),
       p(strong(cls := "tutor__intro")("Here's the plan:")),
       examinationMethod,
       p(eta(a))

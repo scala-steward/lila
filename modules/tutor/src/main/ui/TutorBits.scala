@@ -33,11 +33,8 @@ final class TutorBits(helpers: Helpers)(
     mascot
   )
 
-  def dateRange(config: TutorConfig)(using Translate) = frag(
-    semanticDate(config.from),
-    " → ",
-    semanticDate(config.to)
-  )
+  def dateRange(config: TutorConfig)(print: Instant => Frag) =
+    frag(print(config.from), " → ", print(config.to))
 
   def days(config: TutorConfig)(using Translate) =
     trans.site.nbDays.plural(config.days, config.days.localize)
@@ -52,12 +49,15 @@ final class TutorBits(helpers: Helpers)(
   def otherUser(user: UserId)(using ctx: Context) =
     ctx.isnt(user).option(userIdSpanMini(user, withOnline = false))
 
-  def menu(full: TutorFullReport, report: Option[TutorPerfReport])(using Context) = frag(
-    a(href := routes.Tutor.user(full.user))("Tutor"),
-    a(href := full.url.root, cls := report.isEmpty.option("active"))(
-      timeTag(showDate(full.config.from)),
-      timeTag(showDate(full.config.to))
-    ),
+  def menuBase(report: Option[TutorPerfReport])(using
+      config: TutorConfig
+  )(using Context): Frag = frag(
+    a(href := routes.Tutor.user(config.user))("Tutor"),
+    a(href := config.url.root, cls := report.isEmpty.option("active"))(dateRange(config)(showDateShort))
+  )
+
+  def menu(full: TutorFullReport, report: Option[TutorPerfReport])(using Context): Frag = frag(
+    menuBase(report)(using full.config),
     full.perfs.map: p =>
       a(
         cls := List("active" -> report.exists(_.perf === p.perf)),
