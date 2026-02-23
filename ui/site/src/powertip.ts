@@ -480,16 +480,17 @@ class TooltipController {
       return;
     }
 
+    // set tooltip position
+    this.resetPosition(element);
+
     // trigger powerTipPreRender event
     if (this.options.preRender) {
+      this.tipElement.empty();
       this.options.preRender($as(element));
     }
 
     this.scoped.activeHover = element;
     this.scoped.isTipOpen = true;
-
-    // set tooltip position
-    this.resetPosition(element);
 
     this.tipElement.css('visibility', 'visible');
 
