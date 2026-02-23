@@ -178,7 +178,7 @@ const setupHooks = (ctrl: ChatCtrl, chatEl: HTMLInputElement) => {
 
   site.mousetrap.bind(
     'c',
-    () => (document.querySelector('input.mchat__say') as HTMLElement)?.focus(),
+    () => document.querySelector<HTMLInputElement>('input.mchat__say')?.focus(),
     undefined,
     false,
   );
