@@ -7,7 +7,6 @@ import lila.app.{ *, given }
 import lila.common.LilaOpeningFamily
 import lila.rating.PerfType
 import lila.tutor.{ TutorFullReport, TutorPerfReport, TutorQueue, TutorConfig, TutorAvailability }
-import lila.ui.RenderedPage
 
 final class Tutor(env: Env) extends LilaController(env):
 
@@ -30,7 +29,7 @@ final class Tutor(env: Env) extends LilaController(env):
         case TutorAvailability.Available(home) =>
           home.previews.headOption.ifTrue(getBool("waiting") && home.awaiting.isEmpty) match
             case Some(done) => Redirect(done.config.url.root).toFuccess
-            case None => Ok.page(views.tutor.home(home, TutorConfig.form.default))
+            case None => Ok.page(views.tutor.home(home, form))
     yield res
 
   def report(username: UserStr, range: String) = TutorReport(username, range) { _ ?=> full =>

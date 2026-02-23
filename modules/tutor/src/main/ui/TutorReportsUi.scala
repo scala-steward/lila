@@ -12,12 +12,15 @@ final class TutorReportsUi(helpers: Helpers, bits: TutorBits):
 
   def newForm(user: UserId, form: Form[?])(using Context) =
     postForm(cls := "form3 tutor__report-form", action := routes.Tutor.compute(user.id)):
-      form3.fieldset("Request a new Tutor report", toggle = false.some)(cls := "box-pad")(
+      form3.fieldset("Request a new Tutor report", toggle = form.globalError.pp.isDefined.some)(
+        cls := "box-pad"
+      )(
         form3.split(
           form3.group(form("from"), "Start date")(datePickr)(cls := "form-third"),
           form3.group(form("to"), "End date")(datePickr)(cls := "form-third"),
           form3.submit("Compute my tutor report", icon = none)
-        )
+        ),
+        form3.globalError(form)
       )
 
   def list(previews: List[TutorFullReport.Preview])(using Context) =
@@ -26,28 +29,32 @@ final class TutorReportsUi(helpers: Helpers, bits: TutorBits):
     )
 
   private def preview(p: TutorFullReport.Preview)(using Context) =
-    a(href := p.config.url.root, cls := "tutor-preview")(
-      // momentFromNow(p.at),
+    a(
+      href := p.config.url.root,
+      cls := List("tutor-preview" -> true, "tutor-preview--empty" -> p.perfs.isEmpty)
+    )(
       span(cls := "tutor-preview__dates")(
         span(bits.dateRange(p.config)(showDateShort(_))),
         bits.days(p.config)
       ),
-      span(cls := "tutor-preview__perfs"):
-        p.perfs
-          .take(3)
-          .map: perf =>
-            span(cls := "tutor-preview__perf", dataIcon := perf.perf.icon)(
-              span(cls := "tutor-preview__perf__data")(
-                span(cls := "tutor-preview__perf__nb"):
-                  trans.site.nbGames.plural(perf.stats.totalNbGames, perf.stats.totalNbGames.localize)
-                ,
-                span(cls := "tutor-preview__perf__rating")(
-                  trans.site.rating(),
-                  " ",
-                  strong(perf.stats.rating)
+      if p.perfs.isEmpty then badTag(cls := "tutor-preview__empty")("Not enough games!")
+      else
+        span(cls := "tutor-preview__perfs"):
+          p.perfs
+            .take(3)
+            .map: perf =>
+              span(cls := "tutor-preview__perf", dataIcon := perf.perf.icon)(
+                span(cls := "tutor-preview__perf__data")(
+                  span(cls := "tutor-preview__perf__nb"):
+                    trans.site.nbGames.plural(perf.stats.totalNbGames, perf.stats.totalNbGames.localize)
+                  ,
+                  span(cls := "tutor-preview__perf__rating")(
+                    trans.site.rating(),
+                    " ",
+                    strong(perf.stats.rating)
+                  )
                 )
               )
-            )
       ,
       span(cls := "tutor-preview__nbGames")(trans.site.nbGames.plural(p.nbGames, p.nbGames.localize))
     )

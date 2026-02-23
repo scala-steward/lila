@@ -7,6 +7,13 @@
     background: $m-primary_bg--mix-10;
   }
 
+  &--empty {
+    background: $m-bad_bg--mix-10;
+    &:hover {
+      background: $m-bad_bg--mix-15;
+    }
+  }
+
   &__dates {
     @extend %flex-column;
   }

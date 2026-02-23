@@ -9,6 +9,7 @@ final class TutorReportUi(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi
 
   def apply(full: TutorFullReport)(using Context) =
     bits.page(menu = bits.menu(full, none))(cls := "tutor__home tutor-layout"):
+      val gamesTag = if full.perfs.isEmpty then badTag else span
       frag(
         div(cls := "box tutor__first-box")(
           boxTop(h1("Lichess Tutor", bits.beta, bits.otherUser(full.user))),
@@ -16,7 +17,7 @@ final class TutorReportUi(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi
             p(
               bits.dateRange(full.config)(semanticDate(_)),
               br,
-              trans.site.nbGames.plural(full.nbGames, full.nbGames.localize),
+              gamesTag(trans.site.nbGames.plural(full.nbGames, full.nbGames.localize)),
               " in ",
               bits.days(full.config)
             ),
