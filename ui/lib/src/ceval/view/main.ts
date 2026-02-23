@@ -242,6 +242,7 @@ export function renderCeval(ctrl: CevalHandler): VNode[] {
         ctrl.ceval.showEnginePrefs.toggle(); // must use ctrl.ceval rather than ceval here
         if (ctrl.ceval.showEnginePrefs())
           setTimeout(() => document.querySelector<HTMLElement>('#select-engine')?.focus()); // nvui
+        else blurIfPrimaryClick(e);
       },
       () => ctrl.ceval.opts.redraw(), // must use ctrl.ceval rather than ceval here
       false,
