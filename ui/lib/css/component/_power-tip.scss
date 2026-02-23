@@ -6,7 +6,8 @@
   width: 21rem;
   min-height: 3em;
   background: $c-bg-popup;
-  display: none;
+  display: block;
+  visibility: hidden;
   position: absolute;
   z-index: $z-powertip-120;
 
@@ -126,7 +127,7 @@
 
 #miniGame,
 #miniBoard {
-  min-height: 262px;
+  min-height: fit-content;
 
   .spinner {
     margin: 82px auto 0 auto;
