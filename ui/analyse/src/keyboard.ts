@@ -132,6 +132,17 @@ export const bind = (ctrl: AnalyseCtrl) => {
   for (let i = 1; i < 9; i++)
     kbd.bind(`ctrl+shift+${i}`, () => ctrl.study?.glyphForm.toggleGlyph(observationIds[i - 1]));
   kbd.bind('mod+z', ctrl.study.undoShapeChange);
+  kbd.bind('shift+s', () => ctrl.study?.toggleStudyFormIfAllowed());
+  kbd.bind('shift+e', () => {
+    if (!ctrl.study?.members.canContribute()) return;
+    ctrl.study.chapters.editForm.toggle(ctrl.study.currentChapter());
+    ctrl.redraw();
+  });
+  kbd.bind('shift+n', () => {
+    if (!ctrl.study?.members.canContribute()) return;
+    ctrl.study.chapters.toggleNewForm();
+    ctrl.redraw();
+  });
 };
 
 export const view = (ctrl: AnalyseCtrl): VNode =>

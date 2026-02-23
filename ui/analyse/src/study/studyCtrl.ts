@@ -607,6 +607,11 @@ export default class StudyCtrl {
     else this.nonRelayRecMapProp(this.data.id, this.vm.mode.write);
     this.xhrReload();
   };
+  toggleStudyFormIfAllowed = () => {
+    if (!this.members.isOwner()) return;
+    this.form.open.toggle();
+    this.redraw();
+  };
   goToPrevChapter = () => {
     const chapter = this.prevChapter();
     if (chapter) this.setChapter(chapter.id);
