@@ -1,7 +1,6 @@
 .tutor__report {
   &__header {
-    display: flex;
-    align-items: center;
+    @extend %flex-center;
     gap: 1em;
     margin-bottom: 2em;
   }

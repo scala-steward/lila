@@ -18,7 +18,7 @@ final class TutorReportUi(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi
               span(cls := "tutor__report__dates")(bits.dateRange(full.config)(semanticDate(_))),
               metaTag(cls := "tutor__report__meta")(
                 strong(trans.site.nbGames.plural(full.nbGames, full.nbGames.localize)),
-                " in ",
+                " • ",
                 bits.days(full.config)
               ),
               postForm(

@@ -35,7 +35,11 @@ final class TutorReportsUi(helpers: Helpers, bits: TutorBits):
     )(
       span(cls := "tutor-preview__dates")(
         span(bits.dateRange(p.config)(showDateShort(_))),
-        bits.days(p.config)
+        span(
+          strong(trans.site.nbGames.plural(p.nbGames, p.nbGames.localize)),
+          " • ",
+          bits.days(p.config)
+        )
       ),
       if p.perfs.isEmpty then badTag(cls := "tutor-preview__empty")("Not enough games!")
       else
@@ -55,8 +59,6 @@ final class TutorReportsUi(helpers: Helpers, bits: TutorBits):
                   )
                 )
               )
-      ,
-      span(cls := "tutor-preview__nbGames")(trans.site.nbGames.plural(p.nbGames, p.nbGames.localize))
     )
 
   private def datePickr(field: Field) = form3.flatpickr(
