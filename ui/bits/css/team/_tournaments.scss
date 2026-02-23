@@ -65,12 +65,17 @@
           border-top: 0;
           gap: 8px;
 
+          &:first-child,
+          &:last-child {
+            display: none;
+          }
+
           &::before {
             content: unset;
           }
 
           &.header a {
-            padding: 0 1em;
+            padding-bottom: 0;
           }
 
           &.text {
