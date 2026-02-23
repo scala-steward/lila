@@ -54,6 +54,7 @@ import { alert } from 'lib/view';
 import { displayColumns } from 'lib/device';
 import type { Glyph, Shape, TreeComment, TreeNode, TreePath } from 'lib/tree/types';
 import { completeNode } from 'lib/tree/node';
+import studyKeyboard from './studyKeyboard';
 
 interface Handlers {
   path(d: WithWhoAndPos): void;
@@ -251,6 +252,8 @@ export default class StudyCtrl {
     if (this.members.canContribute()) this.form.openIfNew();
 
     this.instantiateGamebookPlay();
+
+    studyKeyboard(this);
 
     window.addEventListener('popstate', () => window.location.reload());
   }
