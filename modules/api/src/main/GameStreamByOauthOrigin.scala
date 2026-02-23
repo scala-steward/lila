@@ -50,6 +50,8 @@ final class GameStreamByOauthOrigin(
       recentlySeenUserIds: List[UserId],
       logMsg: String
   ): Source[JsObject, ?] =
+    var nbGames = 0
+    val startedAt = nowInstant
     val startStream =
       Source.queue[Game](300, akka.stream.OverflowStrategy.dropHead).mapMaterializedValue { queue =>
         var userIds = initialUserIds
@@ -76,7 +78,8 @@ final class GameStreamByOauthOrigin(
             Bus.unsub[StartGame](subStart)
             Bus.unsub[FinishGame](subFinish)
             Bus.unsub[AccessToken.Create](subToken)
-            logger.branch("gameStream").info(s"CLOSE $logMsg")
+            val seconds = nowSeconds - startedAt.toSeconds
+            logger.branch("gameStream").info(s"CLOSE $logMsg ($seconds seconds, $nbGames games sent)")
       }
     pastGamesSource(recentlySeenUserIds, since)
       .concat(currentGamesSource(recentlySeenUserIds))
@@ -84,6 +87,7 @@ final class GameStreamByOauthOrigin(
       .mapAsync(1)(gameRepo.withInitialFen)
       .map: wif =>
         mon.event(if wif.game.finished then "finish" else "start").increment()
+        nbGames = nbGames + 1
         toJson(wif)
 
   private def toJson(wif: WithInitialFen): JsObject =
