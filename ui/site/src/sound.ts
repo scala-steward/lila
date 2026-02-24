@@ -223,10 +223,8 @@ export default new (class implements SoundI {
     }
     // if suspended, try audioContext.resume() with a timeout (sometimes it never resolves)
     if (this.ctx?.state === 'suspended') {
-      const resume = this.ctx.resume().catch(() => undefined);
-
       await Promise.race([
-        resume,
+        this.ctx.resume(),
         new Promise<void>(resolve => {
           setTimeout(() => {
             $('#warn-no-autoplay').addClass('shown');
