@@ -6,13 +6,14 @@ import play.api.data.{ Form, Field }
 
 import lila.ui.*
 import lila.ui.ScalatagsTemplate.{ *, given }
+import lila.insight.MeanRating
 
 final class TutorReportsUi(helpers: Helpers, bits: TutorBits):
   import helpers.{ *, given }
 
   def newForm(user: UserId, form: Form[?])(using Context) =
     postForm(cls := "form3 tutor__report-form", action := routes.Tutor.compute(user.id)):
-      form3.fieldset("Request a new Tutor report", toggle = form.globalError.pp.isDefined.some)(
+      form3.fieldset("Request a new Tutor report", toggle = form.globalError.isDefined.some)(
         cls := "box-pad"
       )(
         form3.split(
@@ -24,22 +25,16 @@ final class TutorReportsUi(helpers: Helpers, bits: TutorBits):
       )
 
   def list(previews: List[TutorFullReport.Preview])(using Context) =
-    div(cls := "box tutor__reports-list")(
-      previews.map(preview)
-    )
+    div(cls := "tutor__reports-list")(previews.map(preview))
 
   private def preview(p: TutorFullReport.Preview)(using Context) =
     a(
       href := p.config.url.root,
       cls := List("tutor-preview" -> true, "tutor-preview--empty" -> p.perfs.isEmpty)
     )(
-      span(cls := "tutor-preview__dates")(
-        span(bits.dateRange(p.config)(showDateShort(_))),
-        span(
-          strong(trans.site.nbGames.plural(p.nbGames, p.nbGames.localize)),
-          " • ",
-          bits.days(p.config)
-        )
+      span(cls := "tutor-preview__badges")(
+        bits.reportTime(p.config),
+        bits.reportMeta(p.stats.totalNbGames, p.stats.meanRating)
       ),
       if p.perfs.isEmpty then badTag(cls := "tutor-preview__empty")("Not enough games!")
       else

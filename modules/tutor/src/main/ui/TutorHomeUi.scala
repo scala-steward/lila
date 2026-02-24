@@ -45,7 +45,7 @@ final class TutorHomeUi(helpers: Helpers, bits: TutorBits, q: TutorQueueUi, rps:
             bits.mascotSays(q.waitingText(a)),
             q.waitingGames(a)
           ),
-          div(cls := "box")(rps.list(previews))
+          rps.list(previews)
         )
       case None =>
         frag(
@@ -59,7 +59,7 @@ final class TutorHomeUi(helpers: Helpers, bits: TutorBits, q: TutorQueueUi, rps:
             )
           ),
           rps.newForm(user, form),
-          div(cls := "box")(rps.list(previews))
+          rps.list(previews)
         )
 
   private def title(user: UserId)(using Context) =

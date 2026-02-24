@@ -4,21 +4,6 @@
     gap: 1em;
     margin-bottom: 2em;
   }
-  &__dates,
-  &__meta {
-    @extend %box-radius;
-    padding: 0.5em 1em;
-  }
-  &__dates {
-    background: $m-brag_bg--mix-20;
-    font-weight: bold;
-  }
-  &__meta {
-    background: $m-good_bg--mix-20;
-    &:is(bad) {
-      background: $m-bad_bg--mix-20;
-    }
-  }
   &__delete {
     font-size: 0.9em;
     button {

@@ -2,9 +2,9 @@ package lila.tutor
 package ui
 
 import lila.ui.*
-
-import ScalatagsTemplate.{ *, given }
+import lila.ui.ScalatagsTemplate.{ *, given }
 import lila.rating.PerfType
+import lila.insight.MeanRating
 
 final class TutorBits(helpers: Helpers)(
     val openingUrl: chess.opening.Opening => Call
@@ -37,7 +37,20 @@ final class TutorBits(helpers: Helpers)(
     frag(print(config.from), " → ", print(config.to))
 
   def days(config: TutorConfig)(using Translate) =
-    trans.site.nbDays.plural(config.days, config.days.localize)
+    trans.site.nbDays.plural(config.days, strong(config.days.localize))
+
+  def reportTime(config: TutorConfig)(using Context) =
+    span(cls := "tutor-badge tutor-badge--time")(
+      span(cls := "tutor-badge__dates")(dateRange(config)(showDateShort(_))),
+      span(cls := "tutor-badge__days")(days(config))
+    )
+
+  def reportMeta(nbGames: Int, rating: Option[MeanRating])(using Context) =
+    val tag = if nbGames == 0 then badTag else span
+    tag(cls := "tutor-badge tutor-badge--meta")(
+      span(cls := "tutor-badge__games")(trans.site.nbGames.plural(nbGames, strong(nbGames.localize))),
+      span(cls := "tutor-badge__rating")(trans.site.rating(), " ", strong(rating.fold("?")(_.toString)))
+    )
 
   val seeMore = a(cls := "tutor-card__more")("Click to see more...")
 

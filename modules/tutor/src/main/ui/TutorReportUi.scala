@@ -9,36 +9,29 @@ final class TutorReportUi(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi
 
   def apply(full: TutorFullReport)(using Context) =
     bits.page(menu = bits.menu(full, none))(cls := "tutor__report tutor-layout"):
-      val metaTag = if full.perfs.isEmpty then badTag else span
       frag(
         div(cls := "box")(
           boxTop(h1("Lichess Tutor", bits.beta, bits.otherUser(full.user))),
           bits.mascotSays(
             div(cls := "tutor__report__header")(
-              span(cls := "tutor__report__dates")(bits.dateRange(full.config)(semanticDate(_))),
-              metaTag(cls := "tutor__report__meta")(
-                strong(trans.site.nbGames.plural(full.nbGames, full.nbGames.localize)),
-                " • ",
-                bits.days(full.config)
-              ),
+              bits.reportTime(full.config),
+              bits.reportMeta(full.nbGames, full.stats.meanRating),
               postForm(
                 cls := "tutor__report__delete",
                 action := routes.Tutor.delete(full.user.id, full.config.rangeStr)
               ):
                 button(tpe := "submit")(trans.site.delete)
             ),
-            full.perfs.nonEmpty.option:
-              frag(
-                p(
-                  "Each aspect of your playstyle is compared to other players of similar rating, called \"peers\"."
-                ),
-                p(
-                  "It should give you some idea about what your strengths are, and where you have room for improvement."
-                )
+            if full.perfs.isEmpty then p("Not enough rated games to examine!")
+            else
+              p(
+                "Each aspect of your playstyle is compared to other players of similar rating, called \"peers\".",
+                br,
+                "It should give you some idea about what your strengths are, and where you have room for improvement."
               )
           )
         ),
-        tutorConcepts,
+        full.perfs.nonEmpty.option(tutorConcepts),
         div(cls := "tutor__perfs tutor-cards")(
           full.perfs.toList.map { perfReportCard(full, _) }
         )

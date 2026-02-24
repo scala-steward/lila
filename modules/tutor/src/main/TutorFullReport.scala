@@ -12,9 +12,12 @@ case class TutorFullReport(
 
   export config.{ user, id, url }
 
-  lazy val nbGames = perfs.toList.map(_.stats.totalNbGames).sum
+  def stats = perfs.map(_.stats)
+
+  lazy val nbGames = stats.totalNbGames
+
   lazy val totalTime: FiniteDuration =
-    perfs.toList.flatMap(_.estimateTotalTime).foldLeft(0.minutes)(_ + _)
+    perfs.flatMap(_.estimateTotalTime).foldLeft(0.minutes)(_ + _)
 
   def favouritePerfs: List[TutorPerfReport] = perfs.headOption.so:
     _ :: perfs.tailSafe.takeWhile: perf =>
@@ -46,7 +49,7 @@ case class TutorFullReport(
 object TutorFullReport:
 
   case class Preview(config: TutorConfig, at: Instant, perfs: List[TutorPerfReport.Preview]):
-    def nbGames = perfs.map(_.stats.totalNbGames).sum
+    def stats = perfs.map(_.stats)
 
   object F:
     val config = "config"

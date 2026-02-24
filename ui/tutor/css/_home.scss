@@ -24,4 +24,9 @@
       list-style-position: inside;
     }
   }
+
+  &__reports-list {
+    @extend %flex-column;
+    gap: 0.3em;
+  }
 }

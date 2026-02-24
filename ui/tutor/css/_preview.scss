@@ -1,6 +1,7 @@
 .tutor-preview {
-  @extend %flex-between-nowrap;
-  padding: 1em var(---box-padding);
+  @extend %box-neat, %flex-between-nowrap;
+  background: $c-bg-box;
+  padding: 1em 2em;
   color: $c-font;
   white-space: nowrap;
   gap: 2em;
@@ -8,17 +9,19 @@
 
   &:hover {
     background: $m-primary_bg--mix-10;
+    color: $c-font-clearer;
   }
 
   &--empty {
-    background: $m-bad_bg--mix-10;
+    background: $m-bad_bg--mix-05;
     &:hover {
-      background: $m-bad_bg--mix-15;
+      background: $m-bad_bg--mix-10;
     }
   }
 
-  &__dates {
-    @extend %flex-column;
+  &__badges {
+    @extend %flex-center-nowrap;
+    gap: 1em;
   }
   &__perfs {
     @extend %flex-center-nowrap;
