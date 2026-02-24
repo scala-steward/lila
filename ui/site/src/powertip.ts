@@ -557,11 +557,6 @@ class TooltipController {
       tipHeight,
       coords = cssCoordinates();
 
-    // set the tip to 0,0 to get the full expanded width
-    coords.top = 0;
-    coords.left = 0;
-    this.tipElement.css(coords);
-
     // to support elastic tooltips we need to check for a change in the
     // rendered dimensions after the tooltip has been positioned
     do {
