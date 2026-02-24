@@ -85,9 +85,7 @@ export async function domDialog(o: DomDialogOpts): Promise<Dialog> {
   (o.parent ?? document.body).appendChild(dialog);
 
   const wrapper = new DialogWrapper(dialog, view, o, false);
-  if (o.show) return wrapper.show();
-
-  return wrapper;
+  return o.show ? wrapper.show() : wrapper;
 }
 
 export function snabDialog(o: SnabDialogOpts): VNode {
@@ -167,7 +165,10 @@ class DialogWrapper implements Dialog {
       if (!this.dialog.isConnected) console.trace('likely zombie dialog. Always Be Close()ing');
       if (Date.now() - justThen < 200) return;
       const r = dialog.getBoundingClientRect();
-      if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom)
+      if (
+        (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) &&
+        !dialog.contains(e.target as Node | null) // close button could be positioned outside the dialog
+      )
         this.close('cancel');
     };
     this.observer.observe(document.body, { childList: true, subtree: true });
@@ -176,7 +177,7 @@ class DialogWrapper implements Dialog {
 
     this.dialogEvents.addListener(dialog, 'cancel', e => {
       if (o.noClickAway && o.noCloseButton && o.class !== 'alert') return e.preventDefault();
-      if (!this.returnValue) this.returnValue = 'cancel';
+      this.returnValue ||= 'cancel';
     });
     this.dialogEvents.addListener(dialog, 'close', this.onRemove);
     if (!o.noCloseButton)
