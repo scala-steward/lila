@@ -17,19 +17,19 @@
     bottom: 10px;
     top: auto;
   }
+}
 
-  #blindfoldtog {
-    @extend %box-radius;
-    flex: 0 0 auto;
-    padding: 0.2em 1em;
-    opacity: 0.9;
-    background: $c-bad;
-    color: $c-over;
-    font-weight: bold;
-    text-transform: uppercase;
-    line-height: 1.2;
-    &:hover {
-      opacity: 1;
-    }
+#blindfoldtog {
+  @extend %box-radius;
+  flex: 0 0 auto;
+  padding: 0.2em 1em;
+  opacity: 0.9;
+  background: $c-bad;
+  color: $c-over;
+  font-weight: bold;
+  text-transform: uppercase;
+  line-height: 1.2;
+  &:hover {
+    opacity: 1;
   }
 }
