@@ -34,7 +34,11 @@ export default (ctrl: PuzzleCtrl) =>
     .bind('z', () => pubsub.emit('zen'))
     .bind('?', () => ctrl.keyboardHelp(!ctrl.keyboardHelp()))
     .bind('f', ctrl.flip)
-    .bind('n', ctrl.nextPuzzle);
+    .bind('n', ctrl.nextPuzzle)
+    .bind('h', () => {
+      ctrl.menu.toggle();
+      ctrl.redraw();
+    });
 
 export const view = (ctrl: PuzzleCtrl) =>
   snabDialog({

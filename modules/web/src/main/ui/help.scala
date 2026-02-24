@@ -31,6 +31,7 @@ object help:
   private def flip(using Translate) = row(kbd("f"), trans.site.flipBoard())
   private def zen(using Translate) = row(kbd("z"), trans.preferences.zenMode())
   private def helpDialog(using Translate) = row(kbd("?"), trans.site.showHelpDialog())
+  private def menu(using Translate) = row(kbd("h"), trans.site.menu())
   private def localAnalysis(using Translate) = frag(
     row(kbd("l"), trans.site.toggleLocalAnalysis()),
     row(kbd("space"), trans.site.playComputerMove()),
@@ -53,6 +54,7 @@ object help:
           hasChat.option(
             row(kbd("c"), trans.site.focusChat())
           ),
+          menu,
           helpDialog
         )
       )
@@ -69,6 +71,7 @@ object help:
           header(trans.site.other()),
           flip,
           zen,
+          menu,
           helpDialog
         )
       )
@@ -106,6 +109,7 @@ object help:
           row(kbd("c"), trans.site.focusChat()),
           helpDialog,
           row(kbd("e"), trans.site.openingEndgameExplorer()),
+          menu,
           row(
             frag(kbd("shift"), kbd("space")),
             trans.site.playFirstOpeningEndgameExplorerMove()
