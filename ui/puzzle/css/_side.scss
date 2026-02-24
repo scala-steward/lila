@@ -211,11 +211,10 @@
     }
 
     &--daily {
-      outline: 3px solid $m-secondary_bg-page--mix-50;
+      outline: 3px solid $m-primary_bg-page--mix-50;
       a {
         margin: 0;
         text-align: center;
-        text-transform: uppercase;
       }
     }
   }
