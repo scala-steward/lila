@@ -6,9 +6,9 @@ export function renderBlindfoldToggle(isActive: boolean | undefined | null, disa
 
   return hl('div#blindfoldzone', [
     hl(
-      'a#blindfoldtog.text.fbt.active',
+      'a#blindfoldtog.text',
       {
-        attrs: { 'data-icon': licon.Checkmark },
+        attrs: { 'data-icon': licon.CautionCircle },
         hook: bind('click', disable),
       },
       i18n.preferences.blindfold,
