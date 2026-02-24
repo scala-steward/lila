@@ -30,13 +30,13 @@ final class Env(
 
   lazy val nbAnalysisSetting = settingStore[Int](
     "tutorNbAnalysis",
-    default = 30,
+    default = 100,
     text = "Number of fishnet analysis per tutor build".some
   ).taggedWith[NbAnalysis]
 
   lazy val parallelismSetting = settingStore[Int](
     "tutorParallelism",
-    default = 3,
+    default = 20,
     text = "Number of tutor reports to build in parallel".some
   ).taggedWith[Parallelism]
 

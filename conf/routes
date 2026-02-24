@@ -854,11 +854,13 @@ POST  /account/signout/:sessionId      controllers.Account.signout(sessionId)
 GET   /account/now-playing             controllers.Account.nowPlaying
 
 GET   /tutor                           controllers.Tutor.home()
-GET   /tutor/:username                 controllers.Tutor.user(username: UserStr)
-POST  /tutor/:username/refresh         controllers.Tutor.refresh(username: UserStr)
-GET   /tutor/:username/:perf           controllers.Tutor.perf(username: UserStr, perf: PerfKey)
-GET   /tutor/:username/:perf/:angle    controllers.Tutor.angle(username: UserStr, perf: PerfKey, angle)
-GET   /tutor/:username/:perf/opening/:color/:opening controllers.Tutor.opening(username: UserStr, perf: PerfKey, color: Color, opening)
+GET   /tutor/:user                     controllers.Tutor.user(user: UserStr)
+POST  /tutor/:user/compute             controllers.Tutor.compute(user: UserStr)
+GET   /tutor/:user/:range              controllers.Tutor.report(user: UserStr, range)
+POST  /tutor/:user/delete              controllers.Tutor.delete(user: UserStr, range)
+GET   /tutor/:user/:range/:perf        controllers.Tutor.perf(user: UserStr, range, perf: PerfKey)
+GET   /tutor/:user/:range/:perf/:angle controllers.Tutor.angle(user: UserStr, range, perf: PerfKey, angle)
+GET   /tutor/:user/:range/:perf/opening/:color/:opening controllers.Tutor.opening(user: UserStr, range, perf: PerfKey, color: Color, opening: String)
 
 # Recap
 GET   /recap                           controllers.Recap.home

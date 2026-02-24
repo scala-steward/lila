@@ -515,6 +515,11 @@ class TooltipController {
 
     // fade out
     this.tipElement.css('visibility', 'hidden');
+    // move outside of viewport to hide `position: absolute` elements it contains
+    const coords = cssCoordinates();
+    coords.top = -9999;
+    coords.left = -9999;
+    this.tipElement.css(coords);
 
     // reset session and tooltip element
     this.scoped.isClosing = false;

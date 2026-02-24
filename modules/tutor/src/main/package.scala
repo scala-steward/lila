@@ -3,7 +3,7 @@ package lila.tutor
 import chess.IntRating
 
 import lila.core.perf.UserWithPerfs
-import lila.insight.ClockPercent
+import lila.insight.{ ClockPercent, InsightPerfStats, MeanRating }
 export lila.core.lilaism.Lilaism.{ *, given }
 export lila.common.extensions.*
 
@@ -15,5 +15,10 @@ private given Ordering[IntRating] = intOrdering
 private given Ordering[GoodPercent] = doubleOrdering
 
 private given Conversion[UserWithPerfs, User] = _.user
+
+extension (stats: List[InsightPerfStats])
+  def totalNbGames = stats.map(_.totalNbGames).sum
+  def meanRating = (totalNbGames > 0).option:
+    MeanRating(stats.map(s => s.rating.value * s.totalNbGames).sum / totalNbGames)
 
 type Angle = "skills" | "opening" | "time" | "phases" | "pieces"
