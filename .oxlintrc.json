@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["typescript", "unicorn"],
+  "plugins": ["promise", "typescript", "unicorn"],
   "env": {
     "builtin": true
   },
@@ -27,6 +27,8 @@
       }
     ],
     "prefer-promise-reject-errors": "error",
+    "promise/no-callback-in-promise": "error",
+    "promise/no-multiple-resolved": "error",
     "typescript/no-unnecessary-type-arguments": "error",
     "typescript/no-unnecessary-type-assertion": "error",
     "typescript/no-unnecessary-type-constraint": "error",
