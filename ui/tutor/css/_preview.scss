@@ -1,10 +1,10 @@
 .tutor-preview {
   @extend %box-neat, %flex-between-nowrap;
   background: $c-bg-box;
-  padding: 1em 2em;
+  padding: 1em var(---box-padding);
   color: $c-font;
   white-space: nowrap;
-  gap: 2em;
+  gap: 1em;
   overflow: hidden;
 
   &:hover {
@@ -25,17 +25,22 @@
   }
   &__perfs {
     @extend %flex-center-nowrap;
-    gap: 2em;
+    gap: 1em;
   }
   &__perf {
-    @extend %flex-center-nowrap;
+    @extend %flex-center-nowrap, %box-radius;
+    @media (width > $xxx-small) {
+      padding: 0.5em 1em;
+      border: $border;
+    }
     gap: 1ch;
     &::before {
       font-size: 2.5em;
+      opacity: 0.8;
     }
     &__data {
       @extend %flex-column;
-      @media (width < $xx-small) {
+      @media (width < $x-small) {
         display: none;
       }
     }

@@ -14,8 +14,6 @@ final class TutorReportsUi(helpers: Helpers, bits: TutorBits):
   def newForm(user: UserId, form: Form[?])(using Context) =
     postForm(cls := "form3 tutor__report-form", action := routes.Tutor.compute(user.id)):
       form3.fieldset("Request a new Tutor report", toggle = form.globalError.isDefined.some)(
-        cls := "box-pad"
-      )(
         form3.split(
           form3.group(form("from"), "Start date")(datePickr)(cls := "form-third"),
           form3.group(form("to"), "End date")(datePickr)(cls := "form-third"),
@@ -45,7 +43,8 @@ final class TutorReportsUi(helpers: Helpers, bits: TutorBits):
               span(cls := "tutor-preview__perf", dataIcon := perf.perf.icon)(
                 span(cls := "tutor-preview__perf__data")(
                   span(cls := "tutor-preview__perf__nb"):
-                    trans.site.nbGames.plural(perf.stats.totalNbGames, perf.stats.totalNbGames.localize)
+                    trans.site.nbGames
+                      .plural(perf.stats.totalNbGames, strong(perf.stats.totalNbGames.localize))
                   ,
                   span(cls := "tutor-preview__perf__rating")(
                     trans.site.rating(),

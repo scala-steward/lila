@@ -41,7 +41,7 @@ final class TutorApi(
     for _ <- colls.report(_.delete.one($id(config.id)))
     yield cache.invalidate(config)
 
-  private val initialDelay = if mode.isProd then 1.minute else 1.second
+  private val initialDelay = if mode.isProd then 1.minute else 5.second
   LilaScheduler("TutorQueue", _.Every(1.second), _.AtMost(10.seconds), _.Delay(initialDelay))(pollQueue)
 
   private def pollQueue = queue.next.flatMap: items =>

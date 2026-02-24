@@ -42,11 +42,7 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
         div(cls := "box")(
           boxTop(
             h1(
-              a(
-                href := full.url.angle(perfReport.perf, "opening"),
-                dataIcon := Icon.LessThan,
-                cls := "text"
-              ),
+              a(href := full.url.angle(perfReport.perf, "opening"), dataIcon := Icon.LessThan),
               bits.perfSelector(full, perfReport.perf, "opening".some),
               openingSelector(perfReport, report, as)(using full.config),
               bits.otherUser(full.user)
@@ -104,11 +100,7 @@ final class TutorOpening(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi)
         div(cls := "box")(
           boxTop(
             h1(
-              a(
-                href := full.config.url.perf(report.perf),
-                dataIcon := Icon.LessThan,
-                cls := "text"
-              ),
+              a(href := full.config.url.perf(report.perf), dataIcon := Icon.LessThan),
               bits.perfSelector(full, report.perf, "opening".some),
               bits.reportSelector(report, "opening"),
               bits.otherUser(full.user)

@@ -39,13 +39,13 @@ final class TutorBits(helpers: Helpers)(
   def days(config: TutorConfig)(using Translate) =
     trans.site.nbDays.plural(config.days, strong(config.days.localize))
 
-  def reportTime(config: TutorConfig)(using Context) =
+  def reportTime(config: TutorConfig)(using Translate) =
     span(cls := "tutor-badge tutor-badge--time")(
       span(cls := "tutor-badge__dates")(dateRange(config)(showDateShort(_))),
       span(cls := "tutor-badge__days")(days(config))
     )
 
-  def reportMeta(nbGames: Int, rating: Option[MeanRating])(using Context) =
+  def reportMeta(nbGames: Int, rating: Option[MeanRating])(using Translate) =
     val tag = if nbGames == 0 then badTag else span
     tag(cls := "tutor-badge tutor-badge--meta")(
       span(cls := "tutor-badge__games")(trans.site.nbGames.plural(nbGames, strong(nbGames.localize))),

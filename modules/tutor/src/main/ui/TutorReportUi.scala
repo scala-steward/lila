@@ -11,7 +11,14 @@ final class TutorReportUi(helpers: Helpers, bits: TutorBits, perfUi: TutorPerfUi
     bits.page(menu = bits.menu(full, none))(cls := "tutor__report tutor-layout"):
       frag(
         div(cls := "box")(
-          boxTop(h1("Lichess Tutor", bits.beta, bits.otherUser(full.user))),
+          boxTop(
+            h1(
+              a(href := routes.Tutor.user(full.user), dataIcon := Icon.LessThan),
+              "Lichess Tutor",
+              bits.beta,
+              bits.otherUser(full.user)
+            )
+          ),
           bits.mascotSays(
             div(cls := "tutor__report__header")(
               bits.reportTime(full.config),

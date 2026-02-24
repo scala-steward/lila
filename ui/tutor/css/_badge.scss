@@ -1,5 +1,7 @@
 .tutor-badge {
-  @extend %box-radius, %flex-column;
+  @extend %box-radius;
+  display: inline-flex;
+  flex-flow: column;
   padding: 0.5em 1em;
   &--time {
     background: $m-brag_bg--mix-20;

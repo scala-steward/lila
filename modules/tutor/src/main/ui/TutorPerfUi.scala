@@ -7,7 +7,7 @@ import lila.ui.ScalatagsTemplate.{ *, given }
 import chess.Color
 
 final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
-  import helpers.{ *, given }
+  import helpers.given
 
   def apply(full: TutorFullReport, report: TutorPerfReport)(using Context) =
     given TutorConfig = full.config
@@ -16,18 +16,16 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
         div(cls := "box")(
           boxTop(
             h1(
-              a(href := full.url.root, dataIcon := Icon.LessThan, cls := "text"),
+              a(href := full.url.root, dataIcon := Icon.LessThan),
               "Tutor",
               bits.perfSelector(full, report.perf, none),
               bits.otherUser(full.user)
             )
           ),
           bits.mascotSays(
-            p(
-              "Looking at ",
-              pluralizeLocalize("game", report.stats.totalNbGames),
-              report.stats.dates.map: dates =>
-                frag(" played between ", showDate(dates.start), " and ", showDate(dates.end), ".")
+            div(cls := "tutor__report__header")(
+              bits.reportTime(full.config),
+              bits.reportMeta(report.stats.totalNbGames, report.stats.rating.some)
             ),
             timePercentAndRating(full, report),
             ul(TutorCompare.mixedBag(report.relevantComparisons)(4).map(compare.show(_)))
@@ -257,7 +255,7 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
   ) =
     boxTop:
       h1(
-        a(href := full.url.perf(report.perf), dataIcon := Icon.LessThan, cls := "text"),
+        a(href := full.url.perf(report.perf), dataIcon := Icon.LessThan),
         bits.perfSelector(full, report.perf, angle.some),
         bits.reportSelector(report, angle),
         bits.otherUser(full.user)
