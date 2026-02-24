@@ -26,7 +26,7 @@ import { renderBlindfoldToggle } from 'lib/view/blindfold';
 
 export const playView = (ctrl: PlayCtrl) =>
   hl(`main.bot-app.bot-game.unique-game-${ctrl.game.id}.bot-color--${ctrl.opts.bot.key}`, [
-    renderBlindfoldToggle(ctrl.blindfold(), () => ctrl.blindfold(false)),
+    renderBlindfoldToggle(ctrl.blindfold),
     viewBoard(ctrl),
     hl('div.bot-game__table'),
     viewTable(ctrl),

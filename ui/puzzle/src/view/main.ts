@@ -95,7 +95,7 @@ export default function (ctrl: PuzzleCtrl): VNode {
       },
     },
     [
-      renderBlindfoldToggle(ctrl.blindfold(), () => ctrl.blindfold(false)),
+      renderBlindfoldToggle(ctrl.blindfold),
       hl('aside.puzzle__side', [
         replay(ctrl),
         puzzleBox(ctrl),

@@ -35,7 +35,7 @@ export function main(ctrl: RoundController): VNode {
           },
         },
         [
-          renderBlindfoldToggle(hideBoard, () => ctrl.blindfold(false)),
+          renderBlindfoldToggle(ctrl.blindfold),
           hl(
             'div.round__app__board.main-board' + (hideBoard ? '.blindfold' : ''),
             {
