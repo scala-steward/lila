@@ -32,10 +32,7 @@ export const init = (ctrl: RoundController): LichessMousetrap =>
       ctrl.keyboardHelp = !ctrl.keyboardHelp;
       ctrl.redraw();
     })
-    .bind('h', () => {
-      ctrl.menu.toggle();
-      ctrl.redraw();
-    });
+    .bind('h', ctrl.menu.toggle);
 
 export const view = (ctrl: RoundController): VNode =>
   snabDialog({
