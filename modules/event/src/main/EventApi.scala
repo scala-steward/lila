@@ -3,7 +3,8 @@ import scalalib.model.Language
 import lila.db.dsl.{ *, given }
 import lila.memo.CacheApi.*
 
-final class EventApi(coll: Coll, cacheApi: lila.memo.CacheApi, eventForm: EventForm)(using
+final class EventApi(coll: Coll, cacheApi: lila.memo.CacheApi, eventForm: EventForm, ircApi: lila.irc.IrcApi)(
+    using
     Executor,
     Scheduler
 ):
@@ -42,10 +43,13 @@ final class EventApi(coll: Coll, cacheApi: lila.memo.CacheApi, eventForm: EventF
     eventForm.form.fill:
       EventForm.Data.make(event)
 
-  def update(old: Event, data: EventForm.Data)(using MyId): Fu[Int] = for
-    res <- coll.update.one($id(old.id), data.update(old))
-    _ = promotable.invalidateUnit()
-  yield res.n
+  def update(old: Event, data: EventForm.Data)(using MyId): Fu[Int] =
+    val next = data.update(old)
+    for
+      res <- coll.update.one($id(old.id), next)
+      _ = promotable.invalidateUnit()
+      _ = notifyBBB(next, old.some)
+    yield res.n
 
   def createForm = eventForm.form
 
@@ -54,6 +58,7 @@ final class EventApi(coll: Coll, cacheApi: lila.memo.CacheApi, eventForm: EventF
     for
       _ <- coll.insert.one(event)
       _ = promotable.invalidateUnit()
+      _ = notifyBBB(event, none)
     yield event
 
   def clone(old: Event) =
@@ -61,3 +66,14 @@ final class EventApi(coll: Coll, cacheApi: lila.memo.CacheApi, eventForm: EventF
       title = s"${old.title} (clone)",
       startsAt = nowInstant.plusDays(7)
     )
+
+  private def notifyBBB(next: Event, prev: Option[Event])(using me: MyId) =
+    if prev.map(_.featureDates).forall(_ != next.featureDates) then
+      ircApi.bbb(
+        me,
+        "event",
+        next.title,
+        routes.Event.show(next.id),
+        next.featureSince,
+        next.featureUntil.some
+      )
