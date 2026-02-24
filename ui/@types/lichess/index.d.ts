@@ -306,6 +306,7 @@ declare namespace PowerTip {
     manual?: boolean;
     openEvents?: string[];
     closeEvents?: string[];
+    defaultSize?: [number, number];
   }
 }
 

@@ -54,6 +54,10 @@ export const bind = (ctrl: AnalyseCtrl) => {
   if (ctrl.study?.practice) return;
 
   kbd
+    .bind('h', () => {
+      ctrl.toggleActionMenu();
+      ctrl.redraw();
+    })
     .bind('f', ctrl.flip)
     .bind('?', () => {
       ctrl.keyboardHelp = !ctrl.keyboardHelp;
