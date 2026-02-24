@@ -54,6 +54,7 @@ import { alert } from 'lib/view';
 import { displayColumns } from 'lib/device';
 import type { Glyph, Shape, TreeComment, TreeNode, TreePath } from 'lib/tree/types';
 import { completeNode } from 'lib/tree/node';
+import studyKeyboard from './studyKeyboard';
 
 interface Handlers {
   path(d: WithWhoAndPos): void;
@@ -251,6 +252,8 @@ export default class StudyCtrl {
     if (this.members.canContribute()) this.form.openIfNew();
 
     this.instantiateGamebookPlay();
+
+    studyKeyboard(this);
 
     window.addEventListener('popstate', () => window.location.reload());
   }
@@ -606,6 +609,11 @@ export default class StudyCtrl {
     if (this.relay) this.relayRecProp(this.vm.mode.write);
     else this.nonRelayRecMapProp(this.data.id, this.vm.mode.write);
     this.xhrReload();
+  };
+  toggleStudyFormIfAllowed = () => {
+    if (!this.members.isOwner()) return;
+    this.form.open.toggle();
+    this.redraw();
   };
   goToPrevChapter = () => {
     const chapter = this.prevChapter();

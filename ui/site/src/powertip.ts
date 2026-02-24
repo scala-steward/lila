@@ -47,6 +47,7 @@ const gamePowertip = (el: HTMLElement) =>
     .powerTip({
       preRender: onPowertipPreRender('miniGame', () => spinnerHtml),
       placement: inCrosstable(el) ? 'n' : 'w',
+      defaultSize: [264, 264],
       popupId: 'miniGame',
     });
 
@@ -166,9 +167,7 @@ $.fn.powerTip = function (opts) {
   return this;
 };
 
-interface Options extends PowerTip.Options {
-  defaultSize: [number, number];
-}
+type Options = PowerTip.Options & Required<Pick<PowerTip.Options, 'defaultSize'>>;
 
 const defaults: Options = {
   popupId: 'powerTip',
@@ -481,20 +480,19 @@ class TooltipController {
       return;
     }
 
-    this.tipElement.empty();
+    // set tooltip position
+    this.resetPosition(element);
 
     // trigger powerTipPreRender event
     if (this.options.preRender) {
+      this.tipElement.empty();
       this.options.preRender($as(element));
     }
 
     this.scoped.activeHover = element;
     this.scoped.isTipOpen = true;
 
-    // set tooltip position
-    this.resetPosition(element);
-
-    this.tipElement.show();
+    this.tipElement.css('visibility', 'visible');
 
     // start desync polling
     if (!this.scoped.desyncTimeout) {
@@ -516,18 +514,16 @@ class TooltipController {
     $as<WithTooltip>(element).forcedOpen = false;
 
     // fade out
-    this.tipElement.hide();
+    this.tipElement.css('visibility', 'hidden');
+    // move outside of viewport to hide `position: absolute` elements it contains
     const coords = cssCoordinates();
+    coords.top = -9999;
+    coords.left = -9999;
+    this.tipElement.css(coords);
 
     // reset session and tooltip element
     this.scoped.isClosing = false;
     this.tipElement.removeClass();
-
-    // support mouse-follow and fixed position tips at the same time by
-    // moving the tooltip to the last cursor location after it is hidden
-    coords.top = session.currentY + this.options.offset!;
-    coords.left = session.currentX + this.options.offset!;
-    this.tipElement.css(coords);
   }
 
   resetPosition(element: Cash) {

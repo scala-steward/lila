@@ -50,7 +50,7 @@
   <string name="opponentLeftChoices">Raqibingiz oʻyinni tark etdi. Gʻalaba yoki durang talab etishingiz mumkin yoki yana kutishingiz mumkin.</string>
   <string name="forceResignation">Gʻalaba talab qilish</string>
   <string name="forceDraw">Durang talab qilish</string>
-  <string name="talkInChat">Iltimos chatda xushmuomalali boʻling!</string>
+  <string name="talkInChat">Chatda odob saqlang!</string>
   <string name="theFirstPersonToComeOnThisUrlWillPlayWithYou">Ushbu havolaga boʻyicha birinchi kelgan odam siz bilan oʻynaydi.</string>
   <string name="whiteResigned">Oqlar taslim bo\'ldi</string>
   <string name="blackResigned">Qoralar taslim bo\'ldi</string>
@@ -179,16 +179,16 @@
   <string name="currentGames">Joriy oʻyinlar</string>
   <string name="joinedX">%s qoʻshildi</string>
   <plurals name="nbGames">
-    <item quantity="one">%s ta oʻyin</item>
-    <item quantity="other">%s ta oʻyin</item>
+    <item quantity="one">%s oʻyin</item>
+    <item quantity="other">%s oʻyin</item>
   </plurals>
   <plurals name="ratingXOverYGames">
     <item quantity="one">%2$s ta oʻyin uchun %1$s reyting</item>
     <item quantity="other">%2$s ta oʻyin uchun %1$s reyting</item>
   </plurals>
   <plurals name="nbBookmarks">
-    <item quantity="one">%s ta xatchoʻp</item>
-    <item quantity="other">%s ta xatchoʻp</item>
+    <item quantity="one">%s saqlangan</item>
+    <item quantity="other">%s saqlangan</item>
   </plurals>
   <string name="viewInFullSize">To\'liq o\'lchamda ko\'rish</string>
   <string name="logOut">Chiqish</string>
@@ -213,7 +213,7 @@
   <string name="variantsDescription">Oʻynashni boshqa usullari</string>
   <string name="timeControl">Vaqt nazorati</string>
   <string name="realTime">Jonli</string>
-  <string name="correspondence">Sirtqi</string>
+  <string name="correspondence">Yozishmali oʻyin</string>
   <string name="daysPerTurn">Har bir yurish uchun kunlar soni</string>
   <string name="oneDay">Bir kun</string>
   <plurals name="nbDays">
@@ -276,8 +276,8 @@
     <item quantity="other">Oʻrin har %s daqiqa yangilanadi</item>
   </plurals>
   <plurals name="nbPuzzles">
-    <item quantity="one">%s ta boshqotirma</item>
-    <item quantity="other">%s ta boshqotirma</item>
+    <item quantity="one">%s masala</item>
+    <item quantity="other">%s masala</item>
   </plurals>
   <string name="gamesPlayed">O\'ynalgan o\'yinlar</string>
   <plurals name="nbGamesWithYou">
@@ -320,7 +320,7 @@
   <string name="cancelRematchOffer">Revansh taklifini bekor qilish</string>
   <string name="viewRematch">Revansh oʻyinini koʻrish</string>
   <string name="confirmMove">Yurishni tasdiqlash</string>
-  <string name="play">O\'yin</string>
+  <string name="play">Oʻynash</string>
   <string name="inbox">Xabarlar</string>
   <string name="chatRoom">Chat</string>
   <string name="loginToChat">Chatda yozish uchun hisobingizga kiring</string>
@@ -332,24 +332,24 @@
   <string name="incrementInSeconds">Qoʻshimcha vaqt, soniyalarda</string>
   <string name="freeOnlineChess">Bepul onlayn shaxmat</string>
   <plurals name="nbRated">
-    <item quantity="one">%s ta reytingli</item>
-    <item quantity="other">%s ta reytingli</item>
+    <item quantity="one">%s reytingli</item>
+    <item quantity="other">%s reytingli</item>
   </plurals>
   <plurals name="nbWins">
-    <item quantity="one">%s ta gʻalaba</item>
-    <item quantity="other">%s ta gʻalaba</item>
+    <item quantity="one">%s gʻalaba</item>
+    <item quantity="other">%s gʻalaba</item>
   </plurals>
   <plurals name="nbLosses">
-    <item quantity="one">%s ta magʻlubiyat</item>
-    <item quantity="other">%s ta magʻlubiyat</item>
+    <item quantity="one">%s magʻlubiyat</item>
+    <item quantity="other">%s magʻlubiyat</item>
   </plurals>
   <plurals name="nbDraws">
-    <item quantity="one">%s ta durang</item>
-    <item quantity="other">%s ta durang</item>
+    <item quantity="one">%s durang</item>
+    <item quantity="other">%s durang</item>
   </plurals>
   <plurals name="nbPlaying">
-    <item quantity="one">%s ta oʻynalmoqda</item>
-    <item quantity="other">%s ta oʻynalmoqda</item>
+    <item quantity="one">%s oʻynalmoqda</item>
+    <item quantity="other">%s oʻynalmoqda</item>
   </plurals>
   <string name="exportGames">O\'yinlarni eksport qilish</string>
   <string name="ratingFilter">Reyting filtri</string>
@@ -380,12 +380,12 @@
     <item quantity="other">%s turnir ochko</item>
   </plurals>
   <plurals name="nbStudies">
-    <item quantity="one">%s ta oʻquv qoʻllanmasi</item>
-    <item quantity="other">%s ta oʻquv qoʻllanmasi</item>
+    <item quantity="one">%s oʻquv qoʻllanmasi</item>
+    <item quantity="other">%s oʻquv qoʻllanmasi</item>
   </plurals>
   <plurals name="nbSimuls">
-    <item quantity="one">%s ta biryoʻla seans</item>
-    <item quantity="other">%s ta biryoʻla seans</item>
+    <item quantity="one">%s biryoʻla seans</item>
+    <item quantity="other">%s biryoʻla seans</item>
   </plurals>
   <string name="viewTournament">Turnirni ko\'rish</string>
   <string name="backToTournament">Turnirga qaytish</string>
@@ -428,7 +428,7 @@
   <string name="reset">Qayta tiklash</string>
   <string name="apply">Saqlash</string>
   <string name="save">Saqlash</string>
-  <string name="leaderboard">Liderlar jadvali</string>
+  <string name="leaderboard">Eng kuchli oʻyinchilar</string>
   <string name="screenshotCurrentPosition">Joriy pozitsiyani skrinshot qilish</string>
   <string name="gameAsGIF">Oʻyin GIF formatida</string>
   <string name="playerNames">Oʻyinchilar ismlari</string>
@@ -469,12 +469,12 @@
   <string name="unblock">Blokdan chiqarish</string>
   <string name="xStartedFollowingY">%1$s %2$sʼni kuzatishni boshladi</string>
   <plurals name="nbFollowers">
-    <item quantity="one">%s ta kuzatuvchi</item>
-    <item quantity="other">%s ta kuzatuvchi</item>
+    <item quantity="one">%s kuzatuvchi</item>
+    <item quantity="other">%s kuzatuvchi</item>
   </plurals>
   <plurals name="nbFollowing">
-    <item quantity="one">%s tasini kuzatmoqda</item>
-    <item quantity="other">%s tasini kuzatmoqda</item>
+    <item quantity="one">%s kuzatmoqda</item>
+    <item quantity="other">%s kuzatmoqda</item>
   </plurals>
   <string name="more">Batafsil</string>
   <string name="memberSince">Roʻyxatdan oʻtgan kuni</string>
@@ -488,7 +488,7 @@
   <string name="winner">G\'olib</string>
   <string name="standings">Turnir jadvali</string>
   <string name="createANewTournament">Yangi turnir yaratish</string>
-  <string name="tournamentCalendar">Turnir taqvimi</string>
+  <string name="tournamentCalendar">Turnirlar taqvimi</string>
   <string name="conditionOfEntry">Ishtirok etish shartlari:</string>
   <string name="advancedSettings">Kengaytirilgan sozlashlar</string>
   <string name="safeTournamentName">Turnir uchun juda ham xavfsiz nom tanlash.</string>
@@ -552,7 +552,7 @@
   </plurals>
   <string name="automaticallyProceedToNextGameAfterMoving">Yurishdan so\'ng avtomatik tarzda keyingi o\'yinga o\'tish</string>
   <string name="autoSwitch">Avtomatik oʻtish</string>
-  <string name="puzzles">Boshqotirmalar</string>
+  <string name="puzzles">Masalalar</string>
   <string name="onlineBots">Onlayn botlar</string>
   <string name="name">Ism</string>
   <string name="description">Izoh</string>
@@ -561,7 +561,7 @@
   <string name="no">Yoʻq</string>
   <string name="yes">Ha</string>
   <string name="website">Veb-sayt</string>
-  <string name="mobile">Mobil</string>
+  <string name="mobile">Mobil ilova</string>
   <string name="help">Yordam:</string>
   <string name="createANewTopic">Yangi mavzu yaratish</string>
   <string name="topics">Mavzular</string>
@@ -584,7 +584,7 @@
   <string name="reportUsernameHelp">Ushbu foydalanuvchi nomi nima uchun haqoratli ekanligini tushuntiring. Shunchaki “bu haqoratomuz/nooʻrin” deb qoʻya qolmasdan, nima sababdan bunday deb oʻylashingizni asoslab bering. Ayniqsa, haqorat yashirin boʻlsa, ingliz tilida boʻlmasa, jargon (sleng) boʻlsa yoki tarixiy/madaniy mazmunga ega boʻlsa.</string>
   <string name="reportProcessedFasterInEnglish">Ingliz tilida shikoyat joʻnatsangiz, tezroq koʻrib chiqiladi.</string>
   <string name="error.provideOneCheatedGameLink">Iltimos kamida bitta o\'yinga havolani keltiring.</string>
-  <string name="by">%s tomonidan</string>
+  <string name="by">%s tomonidan yaratildi</string>
   <string name="importedByX">%s tomonidan import qilindi</string>
   <string name="thisTopicIsNowClosed">Ushbu mavzu yopiq.</string>
   <string name="blog">Blog</string>
@@ -603,7 +603,7 @@
   <string name="newPasswordStrength">Parol mustahkamligi</string>
   <string name="clockInitialTime">Boshlang\'ich vaqt</string>
   <string name="clockIncrement">Vaqtni oshishi</string>
-  <string name="privacy">Shaxsiylik</string>
+  <string name="privacy">Maxfiylik</string>
   <string name="privacyPolicy">Maxfiylik siyosati</string>
   <string name="letOtherPlayersFollowYou">Boshqa oʻyinchilarga sizni kuzatishga ruxsat berish</string>
   <string name="letOtherPlayersChallengeYou">Boshqa oʻyinchilarga sizni oʻyinga chorlashga ruxsat berish</string>
@@ -640,7 +640,7 @@
   <string name="listBlockedPlayers">Siz bloklagan oʻyinchilar roʻyxati</string>
   <string name="human">Odam</string>
   <string name="computer">Kompyuter</string>
-  <string name="side">Taraf</string>
+  <string name="side">Rang</string>
   <string name="clock">Soat</string>
   <string name="opponent">Raqib</string>
   <string name="learnMenu">Oʻrganish</string>
@@ -668,8 +668,8 @@
   <string name="whiteCastlingKingside">Oqlar O-O</string>
   <string name="blackCastlingKingside">Qoralar O-O</string>
   <plurals name="nbForumPosts">
-    <item quantity="one">%s ta forum post</item>
-    <item quantity="other">%s ta forum post</item>
+    <item quantity="one">%s forum post</item>
+    <item quantity="other">%s forum post</item>
   </plurals>
   <string name="tpTimeSpentPlaying">Jami %s oʻynagan</string>
   <string name="watchGames">O\'yinlarni tomosha qilish</string>
@@ -701,7 +701,7 @@
   <string name="aboutSimulImage">Fisher 50 ta raqibdan 47 tasini magʻlub qilgan, 2 ta oʻyinda durang oʻynagan va bittasiga magʻlub boʻlgan.</string>
   <string name="aboutSimulRealLife">Ushbu tushuncha hayotiy voqealardan olingan. Real hayotda seans oʻtkazuvchisi stoldan-stolga yurib bittadan yurish amalga oshiradi.</string>
   <string name="aboutSimulRules">Seans boshlanganda, har bir ishtirokchi seans oʻtkazuvchi bilan oʻyinni boshlaydi. Seans hamma oʻyinlar tugaganda yakunlanadi.</string>
-  <string name="aboutSimulSettings">Seanslar doim norasmiy. Qayta o\'ynashlar, ortga qaytarishlar va \"ko\'pmarta\"liklar barchasi o\'chirilgan.</string>
+  <string name="aboutSimulSettings">Seanslar reytingsiz oʻynaladi. Revanshlar, yurishni ortga qaytarish va vaqt qoʻshib berish imkoniyatlari oʻchirilgan.</string>
   <string name="create">Yaratish</string>
   <string name="whenCreateSimul">Biryoʻla seans yaratganingizda bir vaqtni oʻzida bir nechta oʻyinchilar bilan oʻynaysiz.</string>
   <string name="simulVariantsHint">Bir nechta variant tanlasangiz, har bir oʻyinchi qaysi variantda oʻynashni oʻzi tanlaydi.</string>
@@ -711,7 +711,7 @@
   <string name="simulAddExtraTimePerPlayer">Seansga qoʻshilgan har bir oʻyinchi uchun soatingizga boshlangʻich vaqt qoʻshing.</string>
   <string name="simulHostExtraTimePerPlayer">Har bir oʻyinchi uchun qoʻshimcha vaqt (seans oʻtkazuvchi uchun)</string>
   <string name="lichessTournaments">Lichess turnirlar</string>
-  <string name="tournamentFAQ">Arena turnirlari haqida koʻp beriladigan savollar</string>
+  <string name="tournamentFAQ">Arena turnirlari haqida TTSS</string>
   <string name="timeBeforeTournamentStarts">Turnir boshlangunicha</string>
   <string name="averageCentipawnLoss">Oʻrtacha sentipiyoda yoʻqotilishi</string>
   <string name="accuracy">Aniqlik</string>
@@ -895,14 +895,14 @@
   <string name="sorry">Kechirasiz :(</string>
   <string name="weHadToTimeYouOutForAWhile">Biz sizni oʻyinlardan vaqtinchalik chetlashtirishga majbur boʻldik.</string>
   <string name="why">Nima uchun?</string>
-  <string name="pleasantChessExperience">Biz har bir kishiga shahmat malakasini oshirishni maqsad qilganmiz.</string>
+  <string name="pleasantChessExperience">Biz barcha uchun yoqimli shaxmat muhitini yaratishni maqsad qilganmiz.</string>
   <string name="goodPractice">Buning uchun biz barcha o\'yinchilar yaxshi amaliyot ortidan ketishi uchun imkoniyat yaratishimiz kerak.</string>
   <string name="potentialProblem">Qachon qandaydir jiddiy muammo aniqlansa biz bu habarni chiqaramiz.</string>
   <string name="howToAvoidThis">Buni qanday qilib oldini olish mumkin?</string>
   <string name="playEveryGame">Har bir boshlagan o\'yiningizni oxirigacha o\'ynang.</string>
   <string name="tryToWin">Har bir oʻyinda yutishga uchun harakat qiling (yoki hech boʻlmaganda duranga).</string>
   <string name="resignLostGames">Boy berilgan o\'yinda taslim bo\'ling (vaqt ketishiga yo\'l qo\'ymang).</string>
-  <string name="temporaryInconvenience">Vaqtinchalik noqulaylik uchun uzr so\'raymiz</string>
+  <string name="temporaryInconvenience">Vaqtinchalik noqulayliklar uchun uzr soʻraymiz</string>
   <string name="wishYouGreatGames">va lichess.org dagi o\'yinlarda muvaffaqiyat tilaymiz.</string>
   <string name="thankYouForReading">Eʻtiboringiz uchun rahmat!</string>
   <string name="lifetimeScore">Umumiy hisob</string>
@@ -927,7 +927,7 @@
   <string name="puzzleDesc">Shaxmat taktikalari trenajyori</string>
   <string name="important">Muhim</string>
   <string name="yourQuestionMayHaveBeenAnswered">Savolingizga javob allaqachon %1$s boʻlishi mumkin</string>
-  <string name="inTheFAQ">koʻp beriladigan savollar ichida</string>
+  <string name="inTheFAQ">TTSS boʻlimida</string>
   <string name="toReportSomeoneForCheatingOrBadBehavior">Foydalanuvchi ustidan firibgarlik yoki yomon xulq-atvor boʻyicha shikoyat qilish uchun %1$s</string>
   <string name="useTheReportForm">shikoyat shaklidan foydalaning</string>
   <string name="toRequestSupport">Qoʻllab-quvvatlash xizmatiga murojaat qilish uchun, %1$s</string>
@@ -974,10 +974,10 @@ Oʻyinlarni boshlangʻich pozitsiyadan boshlash uchun boʻsh qoldiring.</string>
   <string name="simulHostcolor">Har bir oʻyin uchun biryoʻla seans oʻtkazuvchining rangi</string>
   <string name="estimatedStart">Taxminiy boshlanish vaqti</string>
   <string name="simulFeatured">%s mazilida koʻrsatish</string>
-  <string name="simulFeaturedHelp">%s dagi hammaga sizning seansingizni ko‘rsatish. Shaxsiy seanslaringiz uchun uni o‘chirib qo‘ying.</string>
+  <string name="simulFeaturedHelp">Biryoʻla seansingizni %sʼdagi barchaga koʻrsatish. Shaxsiy biryoʻla seanslar uchun buni oʻchirib qoʻying.</string>
   <string name="simulDescription">Seans tavsifi</string>
   <string name="simulDescriptionHelp">Ishtirokchilarga aytadigan gapingiz bormi?</string>
-  <string name="markdownIsAvailable">Formatlash uchun %s qoʻllay olasiz</string>
+  <string name="markdownIsAvailable">Matnni formatlash uchun %sʼdan foydalanishingiz mumkin.</string>
   <string name="embedsAvailable">Biriktirish uchun oʻyin yoki dars bobi havolasini qoʻying.</string>
   <string name="inYourLocalTimezone">Mahalliy vaqtingiz boʻyicha</string>
   <string name="tournChat">Turnir chati</string>
@@ -998,30 +998,30 @@ Oʻyinlarni boshlangʻich pozitsiyadan boshlash uchun boʻsh qoldiring.</string>
   <string name="sentEmailWithLink">Sizga ichida havolasi bor e-pochta yubordik.</string>
   <string name="tournamentEntryCode">Turnirga kirish kodi</string>
   <string name="hangOn">Toʻxtang!</string>
-  <string name="gameInProgress">%sʼga qarshi oʻyiningiz davom etayapti.</string>
+  <string name="gameInProgress">Sizni %s bilan tugallanmagan oʻyiningiz bor.</string>
   <string name="abortTheGame">O‘yinni bekor qilish</string>
   <string name="resignTheGame">Taslim bo‘lish</string>
-  <string name="youCantStartNewGame">Joriy oʻyinni yakunlamasangiz yangi oʻyin boshlay olmaysiz.</string>
-  <string name="since">Dan beri</string>
-  <string name="until">Toki</string>
-  <string name="lichessDbExplanation">Lichessʼdagi reytingli oʻyinlar</string>
-  <string name="switchSides">Tomonlarni almashtirish</string>
+  <string name="youCantStartNewGame">Ushbu oʻyin tugamaguncha yangisini boshlay olmaysiz.</string>
+  <string name="since">Shu sanadan</string>
+  <string name="until">Shu sanagacha</string>
+  <string name="lichessDbExplanation">Lichessʼda oʻynalgan reytingli oʻyinlar</string>
+  <string name="switchSides">Rangni almashtirish</string>
   <string name="closingAccountWithdrawAppeal">Akkauntingizni yopsangiz appelyatsiyangiz bekor qilinadi.</string>
-  <string name="ourEventTips">Tadbirlarni oʻtkazish borasida bizning maslahatlarimiz</string>
+  <string name="ourEventTips">Tadbirlarni tashkillashtirish boʻyicha tavsiyalarimiz</string>
   <string name="instructions">Ko\'rsatmalar</string>
-  <string name="showMeEverything">Menga hamma narsani ko\'rsat</string>
-  <string name="lichessPatronInfo">Lichess - bu xayriyali va ochiq kodli bepul dasturiy ta‘minot.
-Ishlab chiqish, saytni ma‘lumotlar bilan to‘ldirish kabi barcha boshqa amallar harajatlari xayriya jamg‘armasi hisobidan bajariladi.</string>
+  <string name="showMeEverything">Hammasini koʻrsat</string>
+  <string name="lichessPatronInfo">Lichess — bu xayriya loyihasi boʻlib, mutlaqo bepul va ochiq kodli dasturdir.
+Loyiha faoliyati, uni rivojlantirish va barcha xarajatlar faqat foydalanuvchilarning ixtiyoriy xayriyalari orqali qoplanadi.</string>
   <string name="nothingToSeeHere">Ayni paytda bu yerda hech nima yoʻq.</string>
   <string name="stats">Statistika</string>
-  <string name="accessibility">Maxsus imkoniyatlar</string>
-  <string name="enableBlindMode">Koʻzi ojizlar uchun rejimni yoqing</string>
-  <string name="disableBlindMode">Koʻzi ojizlar uchun rejimni oʻchiring</string>
-  <string name="copyToClipboard">Nusxalash</string>
+  <string name="accessibility">Maxsus qulayliklar</string>
+  <string name="enableBlindMode">Koʻzi ojizlar rejimini yoqish</string>
+  <string name="disableBlindMode">Koʻzi ojizlar rejimini oʻchirish</string>
+  <string name="copyToClipboard">Nusxa olish</string>
   <string name="online" comment="status of a user">onlayn</string>
   <string name="offline" comment="status of a user">oflayn</string>
   <string name="search">Qidirish</string>
   <string name="clearSearch">Qidiruvni tozalash</string>
   <string name="tags">Teglar</string>
-  <string name="enPassant">Kesib oʻtish</string>
+  <string name="enPassant">“En passant” huquqi</string>
 </resources>

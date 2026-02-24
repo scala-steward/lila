@@ -225,7 +225,7 @@ lazy val timeline = module("timeline",
 )
 
 lazy val event = module("event",
-  Seq(memo, ui),
+  Seq(memo, ui, irc),
   Seq()
 )
 
@@ -311,7 +311,7 @@ lazy val gathering = module("gathering",
 )
 
 lazy val tournament = module("tournament",
-  Seq(gathering, room, memo),
+  Seq(gathering, room, memo, irc),
   Seq(lettuce) ++ tests.bundle
 ).dependsOn(coreI18n % "test->test")
 
