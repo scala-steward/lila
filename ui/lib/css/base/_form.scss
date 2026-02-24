@@ -51,9 +51,3 @@ select:-webkit-autofill {
   -webkit-text-fill-color: $c-font;
   box-shadow: 0 0 0 1000px $m-secondary_bg--mix-10 inset;
 }
-
-input[type='password'] {
-  &::-ms-reveal {
-    display: none;
-  }
-}
