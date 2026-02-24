@@ -337,9 +337,8 @@ $hover-bg: $m-primary_bg--mix-30;
       }
     }
     .name {
+      @include ellipsis;
       padding: 0.3em 0 0.3em 1em;
-      overflow: hidden;
-      text-overflow: ellipsis;
       width: 100%;
     }
     .time,
@@ -630,8 +629,7 @@ $hover-bg: $m-primary_bg--mix-30;
       display: none;
     }
     .player-intro__name {
-      overflow: hidden;
-      text-overflow: ellipsis;
+      @include ellipsis;
     }
   }
 }

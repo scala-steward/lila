@@ -15,10 +15,7 @@
     }
 
     .infos {
-      @extend %flex-center-nowrap;
-
-      overflow: hidden;
-      white-space: nowrap;
+      @extend %flex-center-nowrap, %nowrap-hidden;
 
       &__angle-img {
         height: 3.5rem;

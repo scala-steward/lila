@@ -37,8 +37,7 @@ $c-slider: $c-setup;
         }
 
         .desc {
-          overflow: hidden;
-          text-overflow: ellipsis;
+          @extend %ellipsis;
         }
       }
     }

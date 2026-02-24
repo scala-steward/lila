@@ -1,11 +1,9 @@
 .tutor-preview {
-  @extend %box-neat, %flex-between-nowrap;
+  @extend %box-neat, %flex-between-nowrap, %nowrap-hidden;
   background: $c-bg-box;
   padding: 1em var(---box-padding);
   color: $c-font;
-  white-space: nowrap;
   gap: 1em;
-  overflow: hidden;
 
   &:hover {
     background: $m-primary_bg--mix-10;

@@ -38,9 +38,7 @@
     overflow: hidden;
 
     .notes {
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
+      @extend %nowrap-ellipsis;
     }
   }
 
