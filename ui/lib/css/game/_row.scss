@@ -98,13 +98,10 @@
     }
 
     @media (width <= $xxx-small) {
-      flex-direction: column;
-      margin: 0.5em;
-      row-gap: 0.5em;
+      column-gap: 1em;
 
-      .player,
-      .player.black {
-        text-align: center;
+      .swords {
+        font-size: 1.5em;
       }
     }
   }
