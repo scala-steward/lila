@@ -346,24 +346,23 @@ final class ReportApi(
       hasFlaggedImages = flaggedImages.nonEmpty
       kamonTag = if hasFlaggedImages then "image" else if fromLlm == "pass" then "ok" else fromLlm
       _ = lila.mon.mod.report.automod.assessment(kamonTag).increment()
-      reason <- fromLlm
-        .match
-          case "pass" if hasFlaggedImages => Reason("comm")
-          case "other" => Reason("comm") // llm knows "other"
-          case r => Reason(r)
-        .toTry(s"invalid automod reason: $fromLlm")
-        .toFuture
+      reason = fromLlm match
+        case "pass" if hasFlaggedImages => Reason("comm")
+        case "other" => Reason("comm") // llm knows "other"
+        case r => Reason(r)
       suspect <- suspectOpt.toTry(s"suspect $me not found").toFuture
       summary = (flaggedImages ++ res.str("reason")).mkString(", ")
-    yield (hasFlaggedImages || !onlyIfFlaggedImages).option:
-      Candidate(
-        reporter = reporter,
-        suspect = suspect,
-        reason = reason,
-        text = s"[AUTO " + (hasFlaggedImages.option("IMG") ++ (fromLlm != "pass").option("TXT"))
-          .mkString("/") +
-          s"]: $summary $url"
-      )
+    yield reason
+      .ifTrue(hasFlaggedImages || !onlyIfFlaggedImages)
+      .map: reason =>
+        Candidate(
+          reporter = reporter,
+          suspect = suspect,
+          reason = reason,
+          text = s"[AUTO " + (hasFlaggedImages.option("IMG") ++ (fromLlm != "pass").option("TXT"))
+            .mkString("/") +
+            s"]: $summary $url"
+        )
     candidate
       .flatMapz(create(_))
       .recoverWith: e =>
