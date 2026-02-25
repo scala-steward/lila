@@ -34,7 +34,7 @@ final private class TutorBuilder(
     chrono = lila.common.Chronometer.lapTry(produce(user, config))
     _ = chrono.mon { r => lila.mon.tutor.buildFull(r.isSuccess) }
     lap <- chrono.lap
-    report <- Future.fromTry(lap.result)
+    report <- lap.result.toFuture
     doc = bsonWriteObjTry(report).get ++ $doc("_id" -> report.id, "millis" -> lap.millis)
     _ <- colls.report(_.insert.one(doc).void)
     _ <- messenger.postPreset(config.user, doneMsg(report)).void
