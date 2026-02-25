@@ -9,6 +9,8 @@ export lila.common.extensions.*
 
 private val logger = lila.log("tutor")
 
+private val supportedPerfs = lila.rating.PerfType.standardWithUltra ::: lila.rating.PerfType.variants
+
 private given Ordering[lila.analyse.AccuracyPercent] = doubleOrdering
 private given Ordering[ClockPercent] = doubleOrdering
 private given Ordering[IntRating] = intOrdering

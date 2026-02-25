@@ -24,6 +24,9 @@ case class TutorPerfReport(
     pieces: TutorPieces,
     flagging: TutorFlagging
 ):
+
+  def variant = lila.rating.PerfType.variantOf(perf)
+
   lazy val estimateTotalTime: Option[FiniteDuration] =
     (perf != PerfType.Correspondence).option(stats.time * 2)
 
