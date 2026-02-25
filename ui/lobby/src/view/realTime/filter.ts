@@ -61,9 +61,9 @@ function initialize(ctrl: LobbyController, el: HTMLElement) {
 
 export function toggle(ctrl: LobbyController, nbFiltered: number) {
   const filter = ctrl.filter;
-  return h('i.toggle.toggle-filter', {
+  return h('button.toggle.toggle-filter', {
     class: { gamesFiltered: nbFiltered > 0, active: filter.open },
-    hook: bind('mousedown', filter.toggle, ctrl.redraw),
+    hook: bind('click', filter.toggle, ctrl.redraw),
     attrs: { 'data-icon': filter.open ? licon.X : licon.Gear, title: i18n.site.filterGames },
   });
 }
