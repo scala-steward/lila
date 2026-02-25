@@ -883,7 +883,7 @@ POST   /api/token/test                 controllers.OAuth.testTokens
 
 # Events
 GET   /event/$id<\w{8}>                controllers.Event.show(id)
-GET   /event/manager                   controllers.Event.manager
+GET   /event/manager                   controllers.Event.manager(page: Int ?= 1)
 GET   /event/manager/$id<\w{8}>        controllers.Event.edit(id)
 POST  /event/manager/$id<\w{8}>        controllers.Event.update(id)
 GET   /event/manager/clone/$id<\w{8}>  controllers.Event.cloneE(id)
