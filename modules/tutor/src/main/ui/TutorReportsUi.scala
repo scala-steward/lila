@@ -7,17 +7,24 @@ import play.api.data.{ Form, Field }
 import lila.ui.*
 import lila.ui.ScalatagsTemplate.{ *, given }
 import lila.insight.MeanRating
+import lila.memo.RateLimit
 
 final class TutorReportsUi(helpers: Helpers, bits: TutorBits):
   import helpers.{ *, given }
 
-  def newForm(user: UserId, form: Form[?])(using Context) =
+  def newForm(user: UserId, form: Form[?], limit: RateLimit.Status)(using Context) =
     postForm(cls := "form3 tutor__report-form", action := routes.Tutor.compute(user.id)):
       form3.fieldset("Request a new Tutor report", toggle = form.globalError.isDefined.some)(
         form3.split(
           form3.group(form("from"), "Start date")(datePickr)(cls := "form-third"),
           form3.group(form("to"), "End date")(datePickr)(cls := "form-third"),
-          form3.submit("Compute my tutor report", icon = none)
+          div(cls := "form-group")(
+            span(cls := "tutor__report-form__limit")(s"${limit.used} / ${limit.max} daily reports used."),
+            form3.submit("Compute my tutor report", icon = none)(
+              limit.reached.option(disabled),
+              cls := limit.reached.option("disabled")
+            )
+          )
         ),
         form3.globalError(form)
       )
