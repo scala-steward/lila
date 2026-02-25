@@ -30,14 +30,13 @@ $c-tabs-active: $c-accent !default;
       letter-spacing: inherit;
     }
 
-    &.active,
     &:hover {
-      color: $c-font-clear;
-      border-color: $c-tabs-active;
+      border-color: $m-accent--fade-50;
     }
 
     &.active {
       color: $c-tabs-active;
+      border-color: $c-tabs-active;
     }
 
     &.narrow {
