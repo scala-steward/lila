@@ -38,7 +38,7 @@ function createSeek(ctrl: LobbyController): VNode | undefined {
   if (ctrl.me && ctrl.data.seeks.length < 8)
     return h('div.create', [
       h(
-        'a.button',
+        'button.button',
         {
           hook: bind(
             'click',
