@@ -5,11 +5,12 @@ import play.api.data.Form
 
 import lila.ui.*
 import lila.ui.ScalatagsTemplate.{ *, given }
+import lila.memo.RateLimit
 
 final class TutorHomeUi(helpers: Helpers, bits: TutorBits, q: TutorQueueUi, rps: TutorReportsUi):
   import helpers.{ *, given }
 
-  def apply(home: TutorHome, form: Form[?])(using Context) =
+  def apply(home: TutorHome, form: Form[?], limit: RateLimit.Status)(using Context) =
     Page("Lichess Tutor")
       .css("tutor.home")
       .js(Esm("bits.flatpickr"))
@@ -18,7 +19,7 @@ final class TutorHomeUi(helpers: Helpers, bits: TutorBits, q: TutorQueueUi, rps:
         main(cls := "page page-small tutor tutor-home"):
           if home.previews.isEmpty
           then newUser(home)
-          else withReports(home, form)
+          else withReports(home, form, limit)
 
   private def newUser(home: TutorHome)(using Context) =
     import home.*
@@ -35,7 +36,7 @@ final class TutorHomeUi(helpers: Helpers, bits: TutorBits, q: TutorQueueUi, rps:
         )
     )
 
-  private def withReports(home: TutorHome, form: Form[?])(using Context) =
+  private def withReports(home: TutorHome, form: Form[?], limit: RateLimit.Status)(using Context) =
     import home.*
     awaiting match
       case Some(a) =>
@@ -58,7 +59,7 @@ final class TutorHomeUi(helpers: Helpers, bits: TutorBits, q: TutorQueueUi, rps:
               )
             )
           ),
-          rps.newForm(user, form),
+          rps.newForm(user, form, limit),
           rps.list(previews)
         )
 
