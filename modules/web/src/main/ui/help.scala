@@ -105,7 +105,6 @@ object help:
           row(kbd("z"), trans.site.toggleAllAnalysis()),
           row(kbd("a"), trans.site.bestMoveArrow()),
           row(kbd("v"), trans.site.toggleVariationArrows()),
-          row(kbd("r"), trans.site.keyRequestComputerAnalysis()),
           row(kbd("c"), trans.site.focusChat()),
           helpDialog,
           row(kbd("e"), trans.site.openingEndgameExplorer()),

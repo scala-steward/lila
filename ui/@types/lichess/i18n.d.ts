@@ -3721,8 +3721,6 @@ interface I18n {
     keyNextBranch: string;
     /** Previous branch */
     keyPreviousBranch: string;
-    /** Request computer analysis, Learn from your mistakes */
-    keyRequestComputerAnalysis: string;
     /** show/hide comments */
     keyShowOrHideComments: string;
     /** Kid mode */
