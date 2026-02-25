@@ -202,7 +202,7 @@ export default class LobbyController {
     this.flushHooksTimeout = this.flushHooksSchedule();
   };
 
-  private flushHooksSchedule = (): number => setTimeout(this.flushHooks, 8000);
+  private flushHooksSchedule = () => setTimeout(this.flushHooks, 8000);
 
   setTab = (tab: Tab) => {
     if (tab !== this.tab) {

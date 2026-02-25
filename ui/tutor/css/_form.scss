@@ -9,4 +9,10 @@
   .form-group {
     margin: 0;
   }
+  &__limit {
+    display: block;
+    margin: 0 0 0.5em 0;
+    font-size: 0.9em;
+    color: $c-font-dim;
+  }
 }
