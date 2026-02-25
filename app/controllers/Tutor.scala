@@ -29,7 +29,7 @@ final class Tutor(env: Env) extends LilaController(env):
         case TutorAvailability.Available(home) =>
           home.previews.headOption.ifTrue(getBool("waiting") && home.awaiting.isEmpty) match
             case Some(done) => Redirect(done.config.url.root).toFuccess
-            case None => Ok.page(views.tutor.home(home, form))
+            case None => Ok.page(views.tutor.home(home, form, env.tutor.limit.status(user.id)))
     yield res
 
   def report(username: UserStr, range: String) = TutorReport(username, range) { _ ?=> full =>
@@ -73,9 +73,10 @@ final class Tutor(env: Env) extends LilaController(env):
             .get(config)
             .flatMap:
               case Some(report) => Redirect(report.url.root).toFuccess
-              case None =>
+              case _ if env.tutor.limit.zero(user.id)(true) =>
                 for _ <- env.tutor.queue.enqueue(config)
                 yield Redirect(routes.Tutor.user(user.username))
+              case _ => Redirect(routes.Tutor.user(user.username)).toFuccess
       )
   }
 
