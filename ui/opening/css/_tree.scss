@@ -10,8 +10,11 @@
         border-bottom: $border;
       }
     }
-    summary:focus-visible {
-      outline: $outline;
+    summary {
+      cursor: pointer;
+      &:focus-visible {
+        outline: $outline;
+      }
     }
     > div,
     > details {
@@ -28,7 +31,6 @@
       > summary {
         @extend %box-radius;
         padding: 0.5em 0.5em 0.5em 1em;
-        cursor: pointer;
         &:hover {
           background: $m-primary_bg--mix-20;
         }
