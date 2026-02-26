@@ -524,6 +524,7 @@ $hover-bg: $m-primary_bg--mix-30;
     }
     &__card {
       @extend %box-neat, %flex-column;
+      font-family: monospace;
       align-items: center;
       gap: 0.5em;
       background: $c-bg-zebra;
@@ -533,13 +534,20 @@ $hover-bg: $m-primary_bg--mix-30;
         font-weight: bold;
       }
       em {
-        @extend %roboto;
+        @extend %roboto, %flex-center;
         text-transform: uppercase;
+        gap: 0.5ch;
         color: $c-font-dim;
+      }
+      .performance,
+      .diff {
+        @extend %flex-center;
+        gap: 0.5ch;
       }
     }
     .mini-game__flag {
       width: 1em;
+      height: 1em;
     }
   }
 
@@ -619,6 +627,19 @@ $hover-bg: $m-primary_bg--mix-30;
   .fide-players-table {
     .game-link {
       @extend %game-link-styles;
+    }
+
+    td:has(.game-link) {
+      width: 0;
+    }
+
+    td:not(.player-intro-td) {
+      font-family: monospace;
+      text-align: end;
+
+      a {
+        @extend %base-font;
+      }
     }
   }
   @media (max-width: at-most($medium)) {
