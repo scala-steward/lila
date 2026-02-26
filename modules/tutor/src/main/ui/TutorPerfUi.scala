@@ -45,8 +45,12 @@ final class TutorPerfUi(helpers: Helpers, bits: TutorBits):
             frag(report.perf.trans, " openings"),
             full.url.angle(report.perf, "opening").some
           )(
-            selectFourOpenings(report).map: (color, fam) =>
-              grade.peerGrade(concept.opening(fam.family, color), fam.mix, h4)
+            cls := (if report.variant.exotic then "tutor__perf__angle--na" else ""),
+            if report.variant.exotic
+            then "Not applicable to variants"
+            else
+              selectFourOpenings(report).map: (color, fam) =>
+                grade.peerGrade(concept.opening(fam.family, color), fam.mix, h4)
           ),
           angleCard(
             frag(report.perf.trans, " time management"),

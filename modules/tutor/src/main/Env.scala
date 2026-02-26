@@ -46,7 +46,7 @@ final class Env(
 
   val api = wire[TutorApi]
 
-  val limit = RateLimit[UserId](credits = 1, duration = 24.hour, key = "tutor.user")
+  val limit = RateLimit[UserId](credits = 3, duration = 24.hour, key = "tutor.user")
 
 final private class TutorColls(val report: AsyncColl, val queue: AsyncColl)
 trait NbAnalysis

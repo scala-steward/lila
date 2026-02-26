@@ -61,7 +61,7 @@ final private class TutorBuilder(
   yield TutorFullReport(config, nowInstant, perfs)
 
   private[tutor] def eligiblePerfKeysOf(user: UserWithPerfs): List[PerfKey] =
-    lila.rating.PerfType.standardWithUltra.filter: pt =>
+    supportedPerfs.filter: pt =>
       val perf = user.perfs(pt)
       perf.nb >= 30 && perf.latest.exists(_.isAfter(lila.insight.minDate))
 
