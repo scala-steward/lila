@@ -103,13 +103,6 @@ export const bind = (ctrl: AnalyseCtrl) => {
       ctrl.redraw();
     });
 
-  //'Request computer analysis' & 'Learn From Your Mistakes' (mutually exclusive)
-  keyToMouseEvent(
-    'r',
-    'click',
-    '.analyse__underboard__panels .computer-analysis button, .analyse__round-training .advice-summary a.button',
-  );
-
   //First explorer move
   kbd.bind('shift+space', () => {
     const move = document

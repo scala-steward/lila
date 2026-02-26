@@ -234,7 +234,7 @@ export default class SetupController {
       this.gameMode() === 'rated' &&
       this.timeControl.isRealTime();
     const id = this.timeControl.clockStr();
-    return valid && this.root.pools.find(p => p.id === id)
+    return valid && this.root.pools.some(p => p.id === id)
       ? {
           id,
           range: this.ratingRange(),

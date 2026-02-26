@@ -67,7 +67,7 @@ final class TutorApi(
       queue.remove(config.user)
 
   private val cache = cacheApi[TutorConfig, Option[TutorFullReport]](256, "tutor.report"):
-    _.expireAfterAccess(if mode.isProd then 2 minutes else 1 second).buildAsyncFuture(findByConfig)
+    _.expireAfterAccess(2.minutes).buildAsyncFuture(findByConfig)
 
   private def findByConfig(config: TutorConfig) = colls.report:
     _.find($id(config.id)).one[TutorFullReport]
