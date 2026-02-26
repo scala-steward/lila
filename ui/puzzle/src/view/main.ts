@@ -175,7 +175,7 @@ function session(ctrl: PuzzleCtrl): MaybeVNode {
             rd,
           );
         }),
-        rounds.find(r => r.id === current)
+        rounds.some(r => r.id === current)
           ? !ctrl.streak &&
             hl('a.session-new', { key: 'new', attrs: { href: `/training/${ctrl.session.theme}` } })
           : hl(
