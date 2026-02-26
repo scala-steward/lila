@@ -189,6 +189,7 @@
   .axis-form .ms-drop {
     color: $c-font;
     width: var(---drop-menu-width);
+    overflow: visible;
 
     ul > li label input {
       display: none;
@@ -307,6 +308,7 @@
 
   .box {
     @extend %box-radius-bottom;
+    overflow: visible;
     .top {
       @extend %metal, %box-radius-top;
 
