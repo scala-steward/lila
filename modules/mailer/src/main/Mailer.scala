@@ -23,39 +23,35 @@ final class Mailer(
   private given blockingExecutor: Executor =
     system.dispatchers.lookup("blocking-smtp-dispatcher")
 
-  private val primaryClient = SMTPMailer(config.primary.toClientConfig)
-  private val secondaryClient = SMTPMailer(config.secondary.toClientConfig)
+  enum Client(val mailer: SMTPMailer, val config: Mailer.Smtp):
+    case primary extends Client(SMTPMailer(config.primary.toClientConfig), config.primary)
+    case secondary extends Client(SMTPMailer(config.secondary.toClientConfig), config.secondary)
 
-  private val clients: Map[String, (SMTPMailer, Mailer.Smtp)] = Map(
-    "primary" -> (primaryClient, config.primary),
-    "secondary" -> (secondaryClient, config.secondary)
-  )
+  private[mailer] def getClient(name: String): Option[Client] = name.toLowerCase match
+    case "primary" => Client.primary.some
+    case "secondary" => Client.secondary.some
+    case _ => none
 
-  private def randomClientFor(recipient: EmailAddress): (SMTPMailer, Mailer.Smtp) =
+  private def randomClientFor(recipient: EmailAddress): Client =
     // Stick to one mailer for each recipient, because each mailer may have its
     // own supression list.
-    if recipient.normalize.value.hashCode.abs % 1000 < getSecondaryPermille() then
-      (secondaryClient, config.secondary)
-    else (primaryClient, config.primary)
+    if recipient.normalize.value.hashCode.abs % 1000 < getSecondaryPermille()
+    then Client.secondary
+    else Client.primary
 
   def canSend = canSendEmails.get()
 
   def sendOrFail(msg: Mailer.Message): Funit = send(msg, orFail = true, retry = Mailer.Retry(3))
   def sendOrSkip(msg: Mailer.Message): Funit = send(msg, orFail = false, retry = Mailer.Retry(0))
 
-  def clientNames: Iterable[String] = clients.keys
-
-  def sendTest(msg: Mailer.Message, clientName: String): Option[Funit] =
-    clients
-      .get(clientName)
-      .map: forced =>
-        send(msg, orFail = true, retry = Mailer.Retry(0), forceClient = forced.some)
+  def sendTest(msg: Mailer.Message, client: Client): Funit =
+    send(msg, orFail = true, retry = Mailer.Retry(0), forceClient = client.some)
 
   private def send(
       msg: Mailer.Message,
       orFail: Boolean,
       retry: Mailer.Retry,
-      forceClient: Option[(SMTPMailer, Mailer.Smtp)] = None
+      forceClient: Option[Client] = None
   ): Funit =
     if !canSend then
       logger.warn("Can't send any emails due to live setting")
@@ -65,16 +61,16 @@ final class Mailer(
       funit
     else
       Future:
-        val (client, config) = forceClient.getOrElse(randomClientFor(msg.to))
+        val client = forceClient.getOrElse(randomClientFor(msg.to))
         val email = Email(
           subject = msg.subject,
-          from = config.sender,
+          from = client.config.sender,
           to = Seq(msg.to.value),
           bodyText = msg.text.some,
           bodyHtml = msg.htmlBody.map { body => Mailer.html.wrap(msg.subject, body).render }
         )
         blocking:
-          client.send(email)
+          client.mailer.send(email)
       .monSuccess(_.email.send.time)
         .recoverWith:
           case _: EmailException if msg.to.normalize.value != msg.to.value =>
