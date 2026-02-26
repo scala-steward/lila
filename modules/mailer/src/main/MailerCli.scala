@@ -11,7 +11,7 @@ final private class MailerCli(mailer: Mailer)(using Executor):
             Mailer.Message(
               to = email,
               subject = "Lichess test email",
-              text = "This is a test email from Lichess."
+              text = "This is a test email from Lichess: https://lichess.org/dev/cli"
             ),
             clientName = client
           ) match
