@@ -26,6 +26,11 @@ final class Mailer(
   private val primaryClient = SMTPMailer(config.primary.toClientConfig)
   private val secondaryClient = SMTPMailer(config.secondary.toClientConfig)
 
+  private val clients: Map[String, (SMTPMailer, Mailer.Smtp)] = Map(
+    "primary" -> (primaryClient, config.primary),
+    "secondary" -> (secondaryClient, config.secondary)
+  )
+
   private def randomClientFor(recipient: EmailAddress): (SMTPMailer, Mailer.Smtp) =
     // Stick to one mailer for each recipient, because each mailer may have its
     // own supression list.
@@ -38,7 +43,20 @@ final class Mailer(
   def sendOrFail(msg: Mailer.Message): Funit = send(msg, orFail = true, retry = Mailer.Retry(3))
   def sendOrSkip(msg: Mailer.Message): Funit = send(msg, orFail = false, retry = Mailer.Retry(0))
 
-  private def send(msg: Mailer.Message, orFail: Boolean, retry: Mailer.Retry): Funit =
+  def clientNames: Iterable[String] = clients.keys
+
+  def sendTest(msg: Mailer.Message, clientName: String): Option[Funit] =
+    clients
+      .get(clientName)
+      .map: forced =>
+        send(msg, orFail = true, retry = Mailer.Retry(0), forceClient = forced.some)
+
+  private def send(
+      msg: Mailer.Message,
+      orFail: Boolean,
+      retry: Mailer.Retry,
+      forceClient: Option[(SMTPMailer, Mailer.Smtp)] = None
+  ): Funit =
     if !canSend then
       logger.warn("Can't send any emails due to live setting")
       funit
@@ -47,7 +65,7 @@ final class Mailer(
       funit
     else
       Future:
-        val (client, config) = randomClientFor(msg.to)
+        val (client, config) = forceClient.getOrElse(randomClientFor(msg.to))
         val email = Email(
           subject = msg.subject,
           from = config.sender,
@@ -61,7 +79,7 @@ final class Mailer(
         .recoverWith:
           case _: EmailException if msg.to.normalize.value != msg.to.value =>
             logger.warn(s"Email ${msg.to} is invalid, trying ${msg.to.normalize}")
-            send(msg.copy(to = msg.to.normalize.into(EmailAddress)), orFail, retry)
+            send(msg.copy(to = msg.to.normalize.into(EmailAddress)), orFail, retry, forceClient)
           case e: Exception =>
             retry.again match
               case None if orFail => throw e
@@ -70,7 +88,7 @@ final class Mailer(
                 funit
               case Some(nextTry) =>
                 logger.info(s"Will retry to send email to ${msg.to} after: ${e.getMessage}")
-                scheduler.scheduleOnce(nextTry.delay)(send(msg, orFail, nextTry))
+                scheduler.scheduleOnce(nextTry.delay)(send(msg, orFail, nextTry, forceClient))
                 funit
         .void
 
