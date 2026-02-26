@@ -698,7 +698,6 @@ $hover-bg: $m-primary_bg--mix-30;
   }
   .mini-game__gauge {
     order: 0;
-    @extend %box-radius;
     tick {
       top: 1.5px;
       border-bottom-width: 3px;
