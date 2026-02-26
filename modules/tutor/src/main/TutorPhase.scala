@@ -41,7 +41,7 @@ private object TutorPhases:
 
   private type PhaseGet = Phase => Option[Double]
 
-  def compute(user: TutorPlayer)(using InsightApi, Executor): Fu[TutorPhases] =
+  def compute(user: TutorPlayer)(using TutorConfig, InsightApi, Executor): Fu[TutorPhases] =
 
     def cachedOrComputedPeerPhaseGet[V](
         question: Question[Phase],

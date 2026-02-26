@@ -8,10 +8,6 @@ final private class AggregationPipeline(store: InsightStorage)(using Executor):
   import InsightStorage.*
   import BSONHandlers.given
 
-  def gameMatcher(filters: List[Filter[?]]) = combineDocs(filters.collect {
-    case f if f.dimension.isInGame => f.matcher
-  })
-
   def aggregate[X](
       question: Question[X],
       target: Either[User, PeersRatingRange],
@@ -224,7 +220,7 @@ final private class AggregationPipeline(store: InsightStorage)(using Executor):
 
         val pipeline = Match(
           target.fold(u => selectUserId(u.id), selectPeers) ++
-            gameMatcher(question.filters) ++
+            gameMatcher(question.filters).ppAs(lila.db.BSON.debug) ++
             fieldExistsMatcher ++
             (InsightMetric.requiresAnalysis(metric) || InsightDimension.requiresAnalysis(dimension))
               .so($doc(F.analysed -> true)) ++
