@@ -37,7 +37,7 @@ private object ViewerCount:
 
   val encode: Viewer => String =
     case (ip, ua, id) =>
-      s"${ip}${ua.value}${id.map(_.value).getOrElse("")}"
+      s"${ip}${id.so(_.value)}${ua.value}"
 
 final class ViewerCountApi(db: lila.db.Db, cacheApi: CacheApi)(using scheduler: Scheduler)(using Executor):
 
@@ -69,5 +69,4 @@ final class ViewerCountApi(db: lila.db.Db, cacheApi: CacheApi)(using scheduler: 
     cache.underlying.synchronous
       .asMap()
       .forEach: (key, vc) =>
-        println(s"ViewerCountApi: persist $key -> ${vc.get}")
         coll.update.one($id(key), $set("v" -> vc.get), upsert = true)
