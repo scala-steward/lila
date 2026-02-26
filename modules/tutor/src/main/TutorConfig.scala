@@ -36,7 +36,8 @@ object TutorConfig:
     scala.util.Try(LocalDate.parse(str, dateFormatter)).toOption
 
   private def fromDate(date: LocalDate) = date.atStartOfDay.instant
-  private def toDate(date: LocalDate) = date.atTime(LocalTime.MAX).instant
+  private def toDate(date: LocalDate) = date.atTime(maxLocalTime).instant
+  private val maxLocalTime = LocalTime.of(23, 59, 59, 999_000_000) // ms precision
 
   val minFrom = lila.insight.minDate.date
 
