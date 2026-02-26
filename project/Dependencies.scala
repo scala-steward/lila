@@ -85,7 +85,7 @@ object Dependencies {
   }
 
   object reactivemongo {
-    val rmVersion = "1.1.0-RC19"
+    val rmVersion = "1.1.0-RC20"
     val driver = "org.reactivemongo" %% "reactivemongo" % rmVersion
     val stream = "org.reactivemongo" %% "reactivemongo-akkastream" % rmVersion
     val shaded = "org.reactivemongo" % s"reactivemongo-shaded-native-$os-$dashArch" % rmVersion
