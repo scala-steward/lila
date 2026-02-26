@@ -584,6 +584,7 @@ POST  /auth/token/:token               controllers.Auth.loginWithTokenPost(token
 GET   /auth/magic-link                 controllers.Auth.magicLink
 POST  /auth/magic-link/send            controllers.Auth.magicLinkApply
 GET   /auth/magic-link/sent            controllers.Auth.magicLinkSent
+GET   /auth/check                      controllers.Auth.check
 
 # Mod
 POST  /mod/:username/alt/:v            controllers.Mod.alt(username: UserStr, v: Boolean)
