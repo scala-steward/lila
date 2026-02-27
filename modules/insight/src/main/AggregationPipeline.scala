@@ -220,7 +220,7 @@ final private class AggregationPipeline(store: InsightStorage)(using Executor):
 
         val pipeline = Match(
           target.fold(u => selectUserId(u.id), selectPeers) ++
-            gameMatcher(question.filters).ppAs(lila.db.BSON.debug) ++
+            gameMatcher(question.filters) ++
             fieldExistsMatcher ++
             (InsightMetric.requiresAnalysis(metric) || InsightDimension.requiresAnalysis(dimension))
               .so($doc(F.analysed -> true)) ++
