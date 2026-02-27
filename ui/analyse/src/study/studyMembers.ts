@@ -15,7 +15,7 @@ import { cmnToggleWrap } from 'lib/view/cmn-toggle';
 
 interface Opts {
   initDict: StudyMemberMap;
-  myId: string | undefined;
+  myId?: string;
   ownerId: string;
   send: AnalyseSocketSend;
   tab: Prop<Tab>;
@@ -41,7 +41,7 @@ export class StudyMemberCtrl {
   confing = prop<string | null>(null);
   inviteForm: StudyInviteFormCtrl;
   readonly active: Map<string, () => void> = new Map();
-  online: { [id: string]: boolean } = {};
+  online: Record<string, boolean> = {};
   spectatorIds: string[] = [];
   max = 30;
 

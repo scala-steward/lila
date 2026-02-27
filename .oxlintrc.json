@@ -29,6 +29,7 @@
     "prefer-promise-reject-errors": "error",
     "promise/no-callback-in-promise": "error",
     "promise/no-multiple-resolved": "error",
+    "typescript/consistent-indexed-object-style": "error",
     "typescript/no-confusing-non-null-assertion": "error",
     "typescript/no-extra-non-null-assertion": "error",
     "typescript/no-unnecessary-type-arguments": "error",

@@ -90,7 +90,7 @@ export interface NodeCrazy {
   pockets: [CrazyPocket, CrazyPocket];
 }
 
-export type CrazyPocket = { [role in Exclude<Role, 'king'>]?: number };
+export type CrazyPocket = Record<Exclude<Role, 'king'>, number>;
 
 export interface TreeComment {
   id: string;

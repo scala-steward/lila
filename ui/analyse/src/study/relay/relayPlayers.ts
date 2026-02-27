@@ -133,13 +133,13 @@ export default class RelayPlayers {
     return full;
   };
 
-  playerLinkConfig = (p: StudyPlayer): VNodeData | undefined => playerLinkConfig(this, p, true);
+  playerLinkConfig = (p: StudyPlayer) => playerLinkConfig(this, p, true);
 }
 
 export const playersView = (ctrl: RelayPlayers): VNode =>
   ctrl.show ? playerView(ctrl, ctrl.show) : playersList(ctrl);
 
-const ratingCategs: { [key in FideTC]: string } = {
+const ratingCategs: Record<FideTC, string> = {
   standard: i18n.site.classical,
   rapid: i18n.site.rapid,
   blitz: i18n.site.blitz,
@@ -530,7 +530,7 @@ const ratingDiff = (p: RelayPlayer | RelayPlayerGame, showIcons: boolean = false
   });
 };
 
-const diffNode = (rd: number | undefined) =>
+const diffNode = (rd?: number) =>
   !defined(rd)
     ? undefined
     : rd > 0

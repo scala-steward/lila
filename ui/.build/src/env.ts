@@ -43,7 +43,7 @@ export const env = new (class {
   workspaceDeps: Map<string, string[]> = new Map();
   building: Package[] = [];
 
-  private status: { [key in Context]?: number | false } = {};
+  private status = {} as Record<Context, number | false | undefined>;
 
   manifestOk(): boolean {
     return (
