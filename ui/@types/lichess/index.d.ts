@@ -275,20 +275,8 @@ interface Cash {
 }
 
 declare namespace PowerTip {
-  type Placement =
-    | 'n'
-    | 'e'
-    | 's'
-    | 'w'
-    | 'nw'
-    | 'ne'
-    | 'sw'
-    | 'se'
-    | 'nw-alt'
-    | 'ne-alt'
-    | 'sw-alt'
-    | 'se-alt';
-
+  type BasePlacement = 'n' | 'e' | 's' | 'w' | 'nw' | 'ne' | 'sw' | 'se';
+  type Placement = BasePlacement | 'n-alt' | 'e-alt' | 's-alt' | 'w-alt';
   interface Options {
     preRender?: (el: HTMLElement) => void;
     placement?: Placement;

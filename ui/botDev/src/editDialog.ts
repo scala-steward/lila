@@ -395,12 +395,10 @@ export class EditDialog {
   }
 }
 
-interface ReadableBot extends BotInfo {
-  readonly [key: string]: any;
-}
+type ReadableBot = BotInfo & Record<string, any>;
 
-interface WritableBot extends Bot {
-  [key: string]: any;
-  disabled: Set<string>;
-  viewing: Map<string, string>;
-}
+type WritableBot = Bot &
+  Record<string, any> & {
+    disabled: Set<string>;
+    viewing: Map<string, string>;
+  };

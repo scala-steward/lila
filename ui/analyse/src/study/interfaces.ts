@@ -150,17 +150,13 @@ export type StudyMember = {
   role: string;
 };
 
-export interface StudyMemberMap {
-  [id: string]: StudyMember;
-}
+export type StudyMemberMap = Record<string, StudyMember>;
 
 export type TagTypes = string[];
 export type TagArray = [string, string];
 export type TagMap = Map<string, string>;
 
-export interface LocalPaths {
-  [chapterId: string]: TreePath;
-}
+export type LocalPaths = Record<string, TreePath>;
 
 export interface ChapterPreviewBase {
   id: ChapterId;

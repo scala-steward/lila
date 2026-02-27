@@ -46,9 +46,7 @@ interface Params extends Record<string, any> {
 
 interface Settings {
   receive?: (t: Tpe, d: Payload) => void;
-  events: {
-    [tpe: string]: (d: Payload | null, msg: MsgIn) => any;
-  };
+  events: Record<string, (d: Payload | null, msg: MsgIn) => any>;
   params?: Partial<Params>;
   options?: Partial<Options>;
 }

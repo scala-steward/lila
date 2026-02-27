@@ -37,9 +37,7 @@ export interface Question {
   filters: Filters;
 }
 
-export type Filters = {
-  [L in string]: string[];
-};
+export type Filters = Record<string, string[]>;
 
 export interface UI {
   dimensionCategs: Categ<Dimension>[];

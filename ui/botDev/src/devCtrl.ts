@@ -34,7 +34,7 @@ interface Script extends Test {
 
 export type Glicko = { r: number; rd: number };
 
-type DevRatings = { [speed in LocalSpeed]?: Glicko };
+type DevRatings = Record<LocalSpeed, Glicko>;
 
 export class DevCtrl implements GameObserver {
   hurryProp: Prop<boolean> = storedBooleanProp('botdev.hurry', false);
@@ -43,7 +43,7 @@ export class DevCtrl implements GameObserver {
   log: Result[];
   private traceDb: PermaLog;
   private trace: string[] = [];
-  ratings: { [uid: string]: DevRatings } = {};
+  ratings: Record<string, DevRatings> = {};
   private localRatings: ObjectStorage<DevRatings>;
 
   async init(): Promise<void> {
@@ -147,7 +147,6 @@ export class DevCtrl implements GameObserver {
 
   setRating(uid: string | undefined, speed: LocalSpeed, rating: Glicko): Promise<void | IDBValidKey> {
     if (!uid || !env.bot.bots.has(uid)) return Promise.resolve();
-    this.ratings[uid] ??= {};
     this.ratings[uid][speed] = rating;
     return this.localRatings.put(uid, this.ratings[uid]);
   }

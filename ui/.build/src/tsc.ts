@@ -24,7 +24,7 @@ export async function tsc(): Promise<void> {
     .filter(x => env.building.some(pkg => x.startsWith(`${pkg.root}/`)));
 
   const logicalCores = os.cpus().length;
-  const workBuckets: { [T in 'noCheck' | 'noEmit']: SplitConfig[][] } = {
+  const workBuckets: Record<'noCheck' | 'noEmit', SplitConfig[][]> = {
     noCheck: Array.from({ length: clamp(logicalCores / 4, { min: 1, max: 4 }) }, () => []),
     noEmit: Array.from({ length: clamp(logicalCores / 2, { min: 1, max: 8 }) }, () => []),
   };

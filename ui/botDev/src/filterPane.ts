@@ -20,7 +20,7 @@ export class FilterPane extends Pane {
   info: FilterInfo;
   graphEl: HTMLElement;
   graph: Chart;
-  facets = {} as { [key in FilterFacetKey]: FacetToggle };
+  facets = {} as Record<FilterFacetKey, FacetToggle>;
 
   constructor(p: PaneArgs) {
     super(p);

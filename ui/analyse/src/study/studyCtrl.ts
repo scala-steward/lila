@@ -63,7 +63,7 @@ interface Handlers {
   promote(d: WithWhoAndPos & { toMainline: boolean }): void;
   liking(d: WithWho & { l: { likes: number; me: boolean } }): void;
   shapes(d: WithWhoAndPos & { s: DrawShape[] }): void;
-  members(d: { [id: string]: { user: { name: string; id: string }; role: 'r' | 'w' } }): void;
+  members(d: Record<string, { user: { name: string; id: string }; role: 'r' | 'w' }>): void;
   setComment(d: WithWhoAndPos & { c: TreeComment }): void;
   deleteComment(d: WithWhoAndPos & { id: string }): void;
   glyphs(d: WithWhoAndPos & { g: Glyph[] }): void;
