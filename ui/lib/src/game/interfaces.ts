@@ -152,10 +152,6 @@ export interface Hold {
 
 export type ContinueMode = 'friend' | 'ai';
 
-export interface GameView {
-  status(data: GameData): string;
-}
-
 export interface CheckState {
   ply: Ply;
   check?: boolean | (() => boolean);
@@ -166,9 +162,7 @@ export interface CheckCount {
   black: number;
 }
 
-export type MaterialDiffSide = {
-  [role in Role]: number;
-};
+export type MaterialDiffSide = Record<Role, number>;
 
 export interface MaterialDiff {
   white: MaterialDiffSide;

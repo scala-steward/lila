@@ -10,7 +10,6 @@ export type ChapterTab = 'init' | 'edit' | 'game' | 'fen' | 'pgn';
 export type ToolTab = 'tags' | 'comments' | 'glyphs' | 'serverEval' | 'share' | 'multiBoard';
 export type Visibility = 'public' | 'unlisted' | 'private';
 export type ChapterId = string;
-export type TeamName = string;
 export type PointsStr = '1' | '0' | '1/2';
 export type GamePointsStr = '1-0' | '0-1' | '½-½' | '0-0' | '½-0' | '0-½';
 export type StatusStr = GamePointsStr | '*';
@@ -125,11 +124,6 @@ export interface StudyChapter {
 export interface StudyChapterServerEval {
   done: boolean;
   path: string;
-}
-
-export interface StudyChapterRelay {
-  path: TreePath;
-  lastMoveAt?: number;
 }
 
 interface StudyChapterSetup {

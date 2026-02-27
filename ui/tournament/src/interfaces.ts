@@ -232,14 +232,6 @@ export interface Nb {
   berserk: number;
 }
 
-export interface Pagination {
-  from: number;
-  to: number;
-  currentPageResults: Page;
-  nbResults: number;
-  nbPages: number;
-}
-
 export interface Tournament {
   id: string;
   fullName: string;

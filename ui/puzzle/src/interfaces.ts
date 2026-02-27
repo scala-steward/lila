@@ -8,11 +8,6 @@ import type { TreePath } from 'lib/tree/types';
 export type PuzzleId = string;
 export type ThemeKey = keyof I18n['puzzleTheme'];
 
-export interface AllThemes {
-  dynamic: ThemeKey[];
-  static: Set<ThemeKey>;
-}
-
 export interface NvuiPlugin {
   render(): VNode;
 }
