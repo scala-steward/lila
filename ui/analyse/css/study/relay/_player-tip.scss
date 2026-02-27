@@ -43,6 +43,15 @@
     &__details {
       @extend %flex-column;
       gap: 0.5em;
+
+      > div {
+        @extend %flex-center;
+
+        .diff {
+          @extend %flex-center;
+          gap: 0.5em;
+        }
+      }
     }
   }
   &__preload {
