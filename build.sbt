@@ -101,7 +101,7 @@ lazy val coreI18n = module("coreI18n",
 lazy val common = module("common",
   Seq(core),
   Seq(
-    kamon.core, scaffeine, apacheText, chess.playJson
+    kamon.core, scaffeine, apacheText, chess.playJson,
   ) ++ flexmark.bundle
 )
 
@@ -112,7 +112,7 @@ lazy val db = module("db",
 
 lazy val memo = module("memo",
   Seq(db),
-  Seq(scaffeine) ++ playWs.bundle
+  Seq(scaffeine, bloomFilter) ++ playWs.bundle
 )
 
 lazy val i18n = module("i18n",
@@ -436,7 +436,7 @@ lazy val msg = module("msg",
 )
 
 lazy val forum = module("forum",
-  Seq(memo, ui, report),
+  Seq(memo, ui),
   Seq()
 )
 
@@ -446,7 +446,7 @@ lazy val forumSearch = module("forumSearch",
 )
 
 lazy val team = module("team",
-  Seq(memo, room, ui, report),
+  Seq(memo, room, ui),
   Seq()
 )
 
@@ -515,7 +515,7 @@ lazy val web = module("web",
   Seq(ui, memo),
   playWs.bundle ++ tests.bundle ++ Seq(
     play.logback, play.server, play.netty,
-    kamon.prometheus,
+    kamon.prometheus
   )
 )
 

@@ -2,6 +2,7 @@ package lila.event
 import scalalib.model.Language
 import lila.db.dsl.{ *, given }
 import lila.memo.CacheApi.*
+import scalalib.paginator.Paginator
 
 final class EventApi(coll: Coll, cacheApi: lila.memo.CacheApi, eventForm: EventForm, ircApi: lila.irc.IrcApi)(
     using
@@ -33,7 +34,17 @@ final class EventApi(coll: Coll, cacheApi: lila.memo.CacheApi, eventForm: EventF
       .dmap:
         _.filter(_.featureNow).take(10)
 
-  def list = coll.find($empty).sort($doc("startsAt" -> -1)).cursor[Event]().list(50)
+  def pager(page: Int) = Paginator(
+    adapter = lila.db.paginator.Adapter[Event](
+      collection = coll,
+      selector = $empty,
+      projection = none,
+      sort = $sort.desc("startsAt"),
+      _.sec
+    ),
+    currentPage = page,
+    maxPerPage = MaxPerPage(40)
+  )
 
   def oneEnabled(id: String) = coll.byId[Event](id).dmap(_.filter(_.enabled))
 
