@@ -12,7 +12,7 @@ export interface Vm {
 }
 
 export interface Env {
-  i18n: { [key: string]: string };
+  i18n: Record<string, string>;
   initialQuestion: Question;
   myUserId: string;
   pageUrl: string;

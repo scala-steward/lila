@@ -127,9 +127,7 @@ export interface PlayerUser {
   patronColor?: PatronColor;
   title?: string;
   flair?: Flair;
-  perfs: {
-    [key: string]: Perf;
-  };
+  perfs: Record<string, Perf>;
 }
 
 export interface Perf {

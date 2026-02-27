@@ -69,7 +69,7 @@ export interface PuzzleData {
   puzzle: Puzzle;
   angle: Angle;
   game: PuzzleGame;
-  user: PuzzleUser | undefined;
+  user?: PuzzleUser;
   replay?: PuzzleReplay;
   streak?: string;
   externalEngines?: ExternalEngineInfo[];
@@ -122,9 +122,7 @@ export interface PuzzleResult {
   replayComplete?: boolean;
 }
 
-export type RoundThemes = {
-  [key in ThemeKey]: boolean;
-};
+export type RoundThemes = Record<ThemeKey, boolean>;
 
 export interface PuzzleRound {
   win: boolean;

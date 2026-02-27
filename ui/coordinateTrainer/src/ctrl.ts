@@ -43,7 +43,7 @@ const targetSvg = (target: 'current' | 'next'): string => $html`
     <rect class="${target}-target" fill="none" stroke-width="10" x="-50" y="-50" width="100" height="100" rx="5" />
   </g>`;
 
-const rankWords: { [_: string]: string } = {
+const rankWords: Record<string, string> = {
   one: '1',
   two: '2',
   three: '3',

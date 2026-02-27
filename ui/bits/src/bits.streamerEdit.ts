@@ -5,7 +5,7 @@ import { scopedQuery, frag } from 'lib';
 type Platform = 'youtube' | 'twitch';
 type MaybeEl = HTMLElement | null;
 type OAuthBox = { div: HTMLElement; linkBtn: MaybeEl; unlinkBtn: MaybeEl; url: HTMLAnchorElement | null };
-type OAuthBoxes = { [key in Platform]: OAuthBox };
+type OAuthBoxes = Record<Platform, OAuthBox>;
 
 export function initModule(): any {
   const el = scopedQuery(document.querySelector('.streamer-edit')!);
