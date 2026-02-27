@@ -1,5 +1,6 @@
 package lila.memo
 
+import play.api.mvc.RequestHeader
 import bloomfilter.mutable.BloomFilter
 import lila.core.net.UserAgent
 import lila.core.userId.UserId
@@ -29,7 +30,7 @@ private final class ViewerCount(initialCount: Int, maxCount: Int):
 
   def get: Int = count
 
-private object ViewerCount:
+object ViewerCount:
 
   type CountKey = String
   type IP = String
@@ -38,6 +39,9 @@ private object ViewerCount:
   val encode: Viewer => String =
     case (ip, ua, id) =>
       s"${ip}${id.so(_.value)}${ua.value}"
+
+  def makeViewer(req: RequestHeader, user: Option[UserId]): Viewer =
+    (req.remoteAddress, HTTPRequest.userAgent(req), user)
 
 final class ViewerCountApi(db: lila.db.Db, cacheApi: CacheApi)(using scheduler: Scheduler)(using Executor):
 
@@ -62,10 +66,8 @@ final class ViewerCountApi(db: lila.db.Db, cacheApi: CacheApi)(using scheduler: 
   def hit(key: CountKey, maxCount: Int)(viewer: Viewer): Unit =
     cache.getFuture(key, build(_, maxCount)).foreach(_.hit(viewer))
 
-  import play.api.mvc.RequestHeader
   def hit(key: CountKey, maxCount: Int)(req: RequestHeader, user: Option[UserId]): Unit =
-    val viewer = (req.remoteAddress, HTTPRequest.userAgent(req), user)
-    hit(key, maxCount)(viewer)
+    hit(key, maxCount)(makeViewer(req, user))
 
   scheduler.scheduleWithFixedDelay(ttl / 2, ttl / 2): () =>
     cache.underlying.synchronous
