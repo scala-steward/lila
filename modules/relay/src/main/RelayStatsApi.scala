@@ -14,19 +14,23 @@ final class RelayStatsApi(colls: RelayColls, viewerCount: lila.memo.ViewerCountA
   import RelayStats.*
 
   object viewers:
-    private def maxCountIfRecent(tour: RelayTour) =
-      tour.tier
+
+    def hit(rt: RelayRound.WithTour)(using ctx: lila.ui.Context): Unit =
+      maxCountIfRecent(rt).foreach: maxCount =>
+        viewerCount.hit(rt.round.id.value, maxCount)(ctx.req, ctx.userId)
+
+    def get(rt: RelayRound.WithTour): Fu[Int] =
+      maxCountIfRecent(rt).nonEmpty.so:
+        rt.tour.official.so(viewerCount.get(rt.round.id.value))
+
+    private def maxCountIfRecent(rt: RelayRound.WithTour) =
+      rt.tour.tier
         .map:
           case RelayTour.Tier.normal => 1_000
           case RelayTour.Tier.high => 10_000
           case RelayTour.Tier.best => 100_000
-        .ifTrue(tour.daysSinceFinished.forall(_ <= 1))
-    def hit(rt: RelayRound.WithTour)(using ctx: lila.ui.Context): Unit =
-      maxCountIfRecent(rt.tour).foreach: maxCount =>
-        viewerCount.hit(rt.round.id.value, maxCount)(ctx.req, ctx.userId)
-    def get(rt: RelayRound.WithTour): Fu[Int] =
-      maxCountIfRecent(rt.tour).nonEmpty.so:
-        rt.tour.official.so(viewerCount.get(rt.round.id.value))
+        .ifTrue(rt.round.daysSinceFinished.forall(_ <= 3))
+        .ifTrue(rt.tour.daysSinceFinished.forall(_ <= 1))
 
   // one measurement by minute at most; the storage depends on it.
   scheduler.scheduleWithFixedDelay(2.minutes, 2.minutes)(() => record())

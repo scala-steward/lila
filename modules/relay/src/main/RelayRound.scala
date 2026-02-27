@@ -71,6 +71,10 @@ case class RelayRound(
       case Some(at) => at.isBefore(nowInstant.minusHours(3))
       case None => createdAt.isBefore(nowInstant.minusDays(1))
 
+  def daysSinceFinished =
+    import java.time.temporal.ChronoUnit
+    finishedAt.map(ChronoUnit.DAYS.between(_, nowInstant))
+
   def withSync(f: Update[RelayRound.Sync]) = copy(sync = f(sync))
 
   def withTour(tour: RelayTour) = RelayRound.WithTour(this, tour)
