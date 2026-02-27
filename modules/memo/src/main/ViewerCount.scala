@@ -11,7 +11,7 @@ import lila.common.HTTPRequest
 /* Counts approximate unique viewers of a given resource.
  * Uses a bloom filter on (IP, UserAgent, UserId) to prevent duplicate counts.
  * The count is significantly underestimated, due to anonymous users,
- * and to bloom filter false positives.
+ * and to bloom filter false positives (1%).
  */
 
 private final class ViewerCount(initialCount: Int, maxCount: Int):
