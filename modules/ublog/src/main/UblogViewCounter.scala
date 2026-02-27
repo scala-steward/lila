@@ -6,11 +6,11 @@ import lila.db.dsl.{ *, given }
 import lila.memo.ViewerCount.*
 import lila.ui.Context
 
-final class UblogViewCounter(colls: UblogColls)(using Executor):
+final class UblogViewCounter(colls: UblogColls)(using mode: play.api.Mode)(using Executor):
 
   private val bloomFilter = BloomFilter[String](
-    numberOfItems = 300_000,
-    falsePositiveRate = 0.001
+    numberOfItems = if mode.isDev then 1000 else 400_000,
+    falsePositiveRate = 0.01
   )
 
   def apply(post: UblogPost)(using ctx: Context): UblogPost =
