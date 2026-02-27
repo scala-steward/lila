@@ -20,8 +20,7 @@ final class RelayStatsApi(colls: RelayColls, viewerCount: lila.memo.ViewerCountA
         viewerCount.hit(rt.round.id.value, maxCount)(ctx.req, ctx.userId)
 
     def get(rt: RelayRound.WithTour): Fu[Int] =
-      maxCountIfRecent(rt).nonEmpty.so:
-        rt.tour.official.so(viewerCount.get(rt.round.id.value))
+      rt.tour.official.so(viewerCount.get(rt.round.id.value))
 
     private def maxCountIfRecent(rt: RelayRound.WithTour) =
       rt.tour.tier
