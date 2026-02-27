@@ -18,17 +18,24 @@ private final class ViewerCount(initialCount: Int, maxCount: Int):
 
   import ViewerCount.*
 
-  private val bloom = BloomFilter[String](maxCount, 0.001)
+  private val bloom = BloomFilter[String](maxCount, 0.01)
+  private var alive = true
 
   private var count: Int = initialCount
 
   def hit(a: Viewer): Unit =
-    val s = encode(a)
-    if !bloom.mightContain(s) then
-      bloom.add(s)
-      count += 1
+    if !alive then logger.warn("hit on dead viewer count")
+    else
+      val s = encode(a)
+      if !bloom.mightContain(s) then
+        bloom.add(s)
+        count += 1
 
   def get: Int = count
+
+  def kill(): Unit =
+    bloom.dispose()
+    alive = false
 
 object ViewerCount:
 
@@ -52,7 +59,9 @@ final class ViewerCountApi(db: lila.db.Db, cacheApi: CacheApi)(using scheduler: 
   private val coll = db(CollName("viewer_count"))
 
   private val cache = cacheApi.notLoading[CountKey, ViewerCount](512, "viewerCount"):
-    _.expireAfterAccess(ttl).buildAsync()
+    _.expireAfterAccess(ttl)
+      .removalListener[CountKey, ViewerCount]((_, vc, _) => vc.kill())
+      .buildAsync()
 
   private def fetch(key: CountKey): Fu[Int] =
     coll.primitiveOne[Int]($id(key), "v").dmap(_.orZero)
