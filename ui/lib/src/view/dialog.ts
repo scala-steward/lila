@@ -163,13 +163,7 @@ class DialogWrapper implements Dialog {
     const justThen = Date.now();
     const cancelOnInterval = (e: PointerEvent) => {
       if (!this.dialog.isConnected) console.trace('likely zombie dialog. Always Be Close()ing');
-      if (Date.now() - justThen < 200) return;
-      const r = dialog.getBoundingClientRect();
-      if (
-        (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) &&
-        !dialog.contains(e.target as Node | null) // close button could be positioned outside the dialog
-      )
-        this.close('cancel');
+      if (Date.now() - justThen >= 200 && !dialog.contains(e.target as Node | null)) this.close('cancel');
     };
     this.observer.observe(document.body, { childList: true, subtree: true });
     document.body.style.setProperty('---viewport-height', `${window.innerHeight}px`);
