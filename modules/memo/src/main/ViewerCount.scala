@@ -43,10 +43,12 @@ final class ViewerCountApi(db: lila.db.Db, cacheApi: CacheApi)(using scheduler: 
 
   import ViewerCount.*
 
+  private val ttl = 20.minutes
+
   private val coll = db(CollName("viewer_count"))
 
-  private val cache = cacheApi.notLoading[CountKey, ViewerCount](64, "viewerCount"):
-    _.expireAfterAccess(20.minutes).buildAsync()
+  private val cache = cacheApi.notLoading[CountKey, ViewerCount](512, "viewerCount"):
+    _.expireAfterAccess(ttl).buildAsync()
 
   private def fetch(key: CountKey): Fu[Int] =
     coll.primitiveOne[Int]($id(key), "v").dmap(_.orZero)
@@ -65,7 +67,7 @@ final class ViewerCountApi(db: lila.db.Db, cacheApi: CacheApi)(using scheduler: 
     val viewer = (req.remoteAddress, HTTPRequest.userAgent(req), user)
     hit(key, maxCount)(viewer)
 
-  scheduler.scheduleWithFixedDelay(2.minutes, 2.minutes): () =>
+  scheduler.scheduleWithFixedDelay(ttl / 2, ttl / 2): () =>
     cache.underlying.synchronous
       .asMap()
       .forEach: (key, vc) =>
