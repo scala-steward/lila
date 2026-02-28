@@ -60,7 +60,7 @@ export function initModule({
 
   const listenHandlers = [handleConfirm, handleCommand, handleAmbiguity, handleMove];
 
-  const commands: { [_: string]: () => ListenResult[] } = {
+  const commands: Record<string, () => ListenResult[]> = {
     no: as(['ok', 'clear'], () => (voice.showHelp() ? voice.showHelp(false) : clearMoveProgress())),
     help: as(['ok'], () => voice.showHelp(true)),
     vocabulary: as(['ok'], () => voice.showHelp('list')),

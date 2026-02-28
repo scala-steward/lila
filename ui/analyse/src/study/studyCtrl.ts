@@ -63,7 +63,7 @@ interface Handlers {
   promote(d: WithWhoAndPos & { toMainline: boolean }): void;
   liking(d: WithWho & { l: { likes: number; me: boolean } }): void;
   shapes(d: WithWhoAndPos & { s: DrawShape[] }): void;
-  members(d: { [id: string]: { user: { name: string; id: string }; role: 'r' | 'w' } }): void;
+  members(d: Record<string, { user: { name: string; id: string }; role: 'r' | 'w' }>): void;
   setComment(d: WithWhoAndPos & { c: TreeComment }): void;
   deleteComment(d: WithWhoAndPos & { id: string }): void;
   glyphs(d: WithWhoAndPos & { g: Glyph[] }): void;
@@ -407,7 +407,8 @@ export default class StudyCtrl {
 
   xhrReload = throttlePromiseDelay(
     () => 400,
-    (withChapters: boolean = false) => {
+    /* `callback` runs immediately after the xhr, and is not affected by the delay */
+    (withChapters: boolean = false, immediateCallback: () => void = () => {}) => {
       this.vm.loading = true;
       return xhr
         .reload(
@@ -416,7 +417,8 @@ export default class StudyCtrl {
           this.vm.mode.sticky ? undefined : this.vm.chapterId,
           withChapters,
         )
-        .then(this.onReload, site.reload);
+        .then(this.onReload, site.reload)
+        .then(immediateCallback);
     },
   );
 
@@ -478,8 +480,7 @@ export default class StudyCtrl {
   likeToggler = debounce(() => this.send('like', { liked: this.data.liked }), 1000);
 
   setChapter = async (idOrNumber: ChapterId | number, force?: boolean): Promise<boolean> => {
-    const prev = this.chapters.list.get(idOrNumber);
-    const id = prev?.id;
+    const id = this.chapters.list.get(idOrNumber)?.id;
     if (!id) {
       console.warn(`Chapter ${idOrNumber} not found`);
       return false;
@@ -509,7 +510,7 @@ export default class StudyCtrl {
       this.vm.chapterId = id;
       this.chapters.scroller.request('smooth'); // sticky scroll request is set in `changeChapter`
       this.relay?.liveboardPlugin?.reset();
-      await this.xhrReload(false).then(() => componentCallbacks(id));
+      await this.xhrReload(false, () => componentCallbacks(id));
     }
     if (displayColumns() > 2) window.scrollTo(0, 0);
     return true;

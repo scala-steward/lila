@@ -288,7 +288,7 @@ const augmentLichessComment = (comment: TreeComment, style: MoveStyle): string =
 const transRole = (role: Role): string =>
   (i18n.nvui[role as keyof typeof i18n.nvui] as string) || (role as string);
 
-const nato: { [file in Files]: string } = {
+const nato: Record<Files, string> = {
   a: 'alpha',
   b: 'bravo',
   c: 'charlie',
@@ -298,7 +298,7 @@ const nato: { [file in Files]: string } = {
   g: 'golf',
   h: 'hotel',
 };
-const anna: { [file in Files]: string } = {
+const anna: Record<Files, string> = {
   a: 'anna',
   b: 'bella',
   c: 'cesar',

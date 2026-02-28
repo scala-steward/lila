@@ -225,9 +225,7 @@ final private class AggregationPipeline(store: InsightStorage)(using Executor):
             (InsightMetric.requiresAnalysis(metric) || InsightDimension.requiresAnalysis(dimension))
               .so($doc(F.analysed -> true)) ++
             (InsightMetric.requiresStableRating(metric) || InsightDimension.requiresStableRating(dimension))
-              .so {
-                $doc(F.provisional.$ne(true))
-              }
+              .so($doc(F.provisional.$ne(true)))
         ) -> {
           sortDate ::: limitGames :: ((metric.match
             case M.MeanCpl =>

@@ -307,6 +307,7 @@
 
   .box {
     @extend %box-radius-bottom;
+    overflow: visible;
     .top {
       @extend %metal, %box-radius-top;
 

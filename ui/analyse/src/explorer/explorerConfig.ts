@@ -20,9 +20,7 @@ type ByDbSetting = {
   since: StoredProp<Month>;
   until: StoredProp<Month>;
 };
-type ByDbSettings = {
-  [key in ExplorerDb]: ByDbSetting;
-};
+type ByDbSettings = Record<ExplorerDb, ByDbSetting>;
 
 export interface ExplorerConfigData {
   open: Prop<boolean>;

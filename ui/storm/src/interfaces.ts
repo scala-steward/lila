@@ -22,12 +22,6 @@ export interface StormVm {
   lateStart: boolean;
 }
 
-export interface DailyBest {
-  score: number;
-  prev?: number;
-  at: number;
-}
-
 export interface StormRecap {
   puzzles: number;
   score: number;
