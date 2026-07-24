@@ -40,5 +40,5 @@ final class TeamLimiter(
 
 object TeamLimiter:
   val pmAllCost = 5
-  val pmAllCredits = 7
+  val pmAllCredits = 8
   val pmAllDays = 7
